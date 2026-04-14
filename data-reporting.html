@@ -1,0 +1,799 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Data & Reporting</title>
+  <link rel="shortcut icon" href="images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+  /* ── TOKENS ─────────────────────────────────────────────────── */
+  :root {
+    --teal:      #04474e;
+    --teal-deep: #020d0e;
+    --teal-mid:  #075f6a;
+    --teal-lite: #0d9db0;
+    --gold:      #c8973a;
+    --gold-lt:   #e8b65a;
+    --cream:     #faf8f4;
+    --ink:       #0d1a1b;
+    --border:    rgba(255,255,255,.07);
+    --muted:     rgba(255,255,255,.45);
+    --ff-d:      'Syne', sans-serif;
+    --ff-b:      'IBM Plex Serif', Georgia, serif;
+    --ff-m:      'IBM Plex Mono', monospace;
+    --ease:      cubic-bezier(0.4,0,0.2,1);
+  }
+
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+
+  /* FIX: prevent horizontal overflow at root level */
+  body {
+    font-family:var(--ff-b);
+    background:var(--teal-deep);
+    color:#fff;
+    overflow-x:hidden;
+    width:100%;
+    max-width:100vw;
+  }
+
+  ::-webkit-scrollbar { width:3px; }
+  ::-webkit-scrollbar-track { background:var(--teal-deep); }
+  ::-webkit-scrollbar-thumb { background:var(--gold); }
+
+  /* ── PROGRESS ────────────────────────────────────────────────── */
+  #prog { position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--teal-lite),var(--gold));z-index:9000;width:0;transition:width .08s linear; }
+
+  /* ── HEADER ──────────────────────────────────────────────────── */
+  #header { position:fixed;top:0;left:0;right:0;z-index:800;padding:1.3rem 4rem;display:flex;justify-content:flex-end;transition:background .4s; }
+  #header.solid { background:rgba(2,13,14,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border); }
+  #header nav ul { list-style:none;display:flex; }
+  #header nav ul li a { font-family:'Josefin Sans',sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);text-decoration:none;padding:.5rem 1rem;border:1px solid rgba(255,255,255,.15);border-radius:2px;transition:all .3s; }
+  #header nav ul li a:hover { color:var(--gold);border-color:var(--gold);background:rgba(200,151,58,.08); }
+
+  /* ── SIDE MENU ───────────────────────────────────────────────── */
+  #mo { display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1999;backdrop-filter:blur(4px); }
+  #mo.on { display:block; }
+  #menu { position:fixed;top:0;right:-380px;width:380px;height:100vh;background:var(--teal);z-index:2000;padding:5rem 3.5rem 3rem;transition:right .45s cubic-bezier(.77,0,.18,1); }
+  #menu.on { right:0; }
+  #mc { position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:rgba(255,255,255,.6);font-size:1.4rem;cursor:pointer;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s; }
+  #mc:hover { background:rgba(255,255,255,.1);color:#fff; }
+  #menu h2 { font-family:'Josefin Sans',sans-serif;font-size:.58rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:2.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,.1); }
+  #menu ul { list-style:none; }
+  #menu ul li { margin-bottom:.1rem;opacity:0;transform:translateX(24px);transition:all .35s; }
+  #menu.on ul li { opacity:1;transform:translateX(0); }
+  #menu.on ul li:nth-child(1){transition-delay:.08s} #menu.on ul li:nth-child(2){transition-delay:.14s}
+  #menu.on ul li:nth-child(3){transition-delay:.2s}  #menu.on ul li:nth-child(4){transition-delay:.26s}
+  #menu ul li a { display:block;font-family:'EB Garamond',Georgia,serif;font-size:1.5rem;color:rgba(255,255,255,.82);text-decoration:none;padding:.65rem 0;border-bottom:1px solid rgba(255,255,255,.07);transition:color .3s,padding-left .3s; }
+  #menu ul li a:hover { color:var(--gold);padding-left:.5rem; }
+
+  /* ── HERO ────────────────────────────────────────────────────── */
+  #hero {
+    min-height:100vh;
+    position:relative;
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+    background:var(--teal-deep);
+    /* FIX: clip decorative elements that bleed right */
+    width:100%;
+  }
+
+  .hero-grid {
+    position:absolute;inset:0;
+    background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size:80px 80px;
+    animation:gridPulse 8s ease-in-out infinite;
+  }
+  @keyframes gridPulse { 0%,100%{opacity:.5} 50%{opacity:1} }
+
+  .hero-scan {
+    position:absolute;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);
+    animation:scan 4s linear infinite;opacity:.5;
+  }
+  @keyframes scan { from{top:0%} to{top:100%} }
+
+  .hero-orb {
+    position:absolute;
+    /* FIX: clamp orb size so it doesn't extend past viewport */
+    width:clamp(300px,42vw,600px);
+    height:clamp(300px,42vw,600px);
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(4,71,78,.7),transparent 65%);
+    right:-80px;top:50%;transform:translateY(-50%);
+    pointer-events:none;
+  }
+
+  .hero-inner {
+    position:relative;z-index:2;
+    /* FIX: replaced fixed 8% padding + padding-top that could clip;
+       use safe padding that works at all widths */
+    padding: 7rem clamp(1.5rem, 6%, 7rem) 4rem clamp(1.5rem, 8%, 7rem);
+    width:100%;
+  }
+
+  .hero-mono {
+    font-family:var(--ff-m);font-size:.7rem;font-weight:400;
+    color:var(--gold);letter-spacing:.15em;
+    margin-bottom:1.5rem;display:flex;align-items:center;gap:.8rem;
+    opacity:0;animation:rise .8s var(--ease) .3s forwards;
+    /* FIX: prevent long mono string from overflowing */
+    word-break:break-all;
+    overflow-wrap:break-word;
+  }
+  .hero-mono::before { content:'>_';color:var(--teal-lite); }
+
+  .hero-title {
+    font-family:var(--ff-d);font-weight:800;
+    font-size:clamp(2.6rem,8vw,7rem);line-height:.92;
+    color:#fff;margin-bottom:1.2rem;
+    opacity:0;animation:rise 1s var(--ease) .5s forwards;
+  }
+  .hero-title .word-cycle {
+    display:inline-block;color:var(--gold);
+    overflow:hidden;vertical-align:bottom;
+    white-space:nowrap;
+  }
+
+  .hero-desc {
+    font-family:var(--ff-b);font-size:clamp(.9rem,1.5vw,1.05rem);font-weight:300;
+    font-style:italic;color:var(--muted);
+    max-width:560px;line-height:1.8;margin-bottom:3rem;
+    opacity:0;animation:rise .9s var(--ease) .8s forwards;
+  }
+
+  .hero-metrics {
+    display:flex;gap:clamp(1.2rem,3vw,3rem);flex-wrap:wrap;
+    opacity:0;animation:rise .8s var(--ease) 1s forwards;
+    padding-bottom:4rem;border-bottom:1px solid var(--border);
+  }
+  .hero-metric-val {
+    font-family:var(--ff-d);font-size:clamp(1.4rem,3vw,2rem);font-weight:800;
+    color:var(--gold);line-height:1;
+  }
+  .hero-metric-label {
+    font-family:var(--ff-m);font-size:.6rem;color:var(--muted);
+    letter-spacing:.1em;text-transform:uppercase;margin-top:.2rem;
+  }
+
+  @keyframes rise { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── MARQUEE TAPE ────────────────────────────────────────────── */
+  .tape {
+    background:var(--teal);
+    border-top:1px solid rgba(255,255,255,.08);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    padding:.9rem 0;overflow:hidden;white-space:nowrap;
+    width:100%;
+  }
+  .tape-track { display:inline-flex;gap:2.5rem;animation:tape 25s linear infinite; }
+  .tape-word { font-family:var(--ff-m);font-size:.68rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.5); }
+  .tape-sep { color:var(--gold);opacity:.5; }
+  @keyframes tape { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  /* ── MAIN LAYOUT ─────────────────────────────────────────────── */
+  /* FIX: constrain width properly; TOC only appears at large screens */
+  .main-layout {
+    display:grid;
+    grid-template-columns:1fr 220px;
+    gap:0;
+    /* FIX: removed max-width:1400px which caused overflow at some widths;
+       let the padding on children do the constraining */
+    width:100%;
+    align-items:start;
+  }
+
+  /* ── STICKY TOC ──────────────────────────────────────────────── */
+  .toc-rail {
+    position:sticky;top:100px;
+    /* FIX: add padding-left so it doesn't collide with content */
+    padding:3rem 1.5rem 3rem 1.5rem;
+    border-left:1px solid var(--border);
+    margin:3rem 0;
+  }
+  .toc-label {
+    font-family:var(--ff-m);font-size:.55rem;font-weight:500;
+    letter-spacing:.3em;text-transform:uppercase;color:var(--gold);
+    margin-bottom:1.5rem;display:block;
+  }
+  .toc-item {
+    display:block;font-family:var(--ff-d);font-size:.72rem;font-weight:600;
+    color:rgba(255,255,255,.3);text-decoration:none;
+    padding:.5rem 0 .5rem 1rem;border-left:2px solid transparent;
+    transition:all .3s;letter-spacing:.05em;line-height:1.3;
+    /* FIX: prevent TOC text wrapping oddly */
+    white-space:nowrap;
+  }
+  .toc-item:hover, .toc-item.active { color:#fff;border-left-color:var(--gold); }
+  .toc-item.active { color:var(--gold); }
+
+  /* ── CONTENT AREA ────────────────────────────────────────────── */
+  /* FIX: use min-width:0 to prevent grid blowout;
+     tighten padding so content doesn't clip on mid screens */
+  .content-area {
+    padding:4rem clamp(1.5rem,5%,5rem) 4rem clamp(1.5rem,6%,7rem);
+    min-width:0;
+    overflow:hidden;
+  }
+
+  /* ── SECTION BLOCKS ──────────────────────────────────────────── */
+  .sec { padding:5rem 0;border-bottom:1px solid var(--border); }
+  .sec:last-child { border-bottom:none; }
+
+  .sec-eye {
+    font-family:var(--ff-m);font-size:.6rem;font-weight:500;
+    letter-spacing:.3em;text-transform:uppercase;color:var(--gold);
+    display:flex;align-items:center;gap:.7rem;margin-bottom:1.2rem;
+  }
+  .sec-eye::before { content:'';display:block;width:24px;height:1px;background:var(--gold); }
+
+  .sec h2 {
+    font-family:var(--ff-d);font-size:clamp(1.5rem,3vw,2.8rem);
+    font-weight:800;color:#fff;margin-bottom:1.2rem;line-height:1.1;
+  }
+  .sec h2 em { font-style:normal;color:var(--gold); }
+  .sec h3 { font-family:var(--ff-d);font-size:1.1rem;font-weight:700;color:#fff;margin:2rem 0 .7rem; }
+  .sec p {
+    font-family:var(--ff-b);font-size:1rem;font-weight:300;
+    line-height:1.9;color:rgba(255,255,255,.65);margin-bottom:1rem;
+    /* FIX: allow natural wrapping, no overflow */
+    overflow-wrap:break-word;word-break:break-word;
+  }
+  .sec a { color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,151,58,.3);transition:border-color .3s; }
+  .sec a:hover { border-color:var(--gold); }
+
+  /* ── DATA CYCLE ──────────────────────────────────────────────── */
+  .cycle-wrap {
+    display:grid;
+    /* FIX: use responsive column sizes with min-width guard */
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:3rem;align-items:center;margin:3rem 0;
+  }
+  #cycle-svg { width:100%;max-width:340px;margin:0 auto;display:block; }
+
+  .cycle-step {
+    display:grid;grid-template-columns:40px 1fr;gap:1rem;
+    padding:1rem 0;border-bottom:1px solid var(--border);
+    opacity:.4;transition:opacity .4s;cursor:default;
+  }
+  .cycle-step.hl { opacity:1; }
+  .cycle-step-num { font-family:var(--ff-m);font-size:.7rem;font-weight:500;color:var(--gold);padding-top:.15rem; }
+  .cycle-step h4 { font-family:var(--ff-d);font-size:.95rem;font-weight:700;color:#fff;margin-bottom:.3rem; }
+  .cycle-step p { font-size:.85rem;color:var(--muted);margin:0;line-height:1.6; }
+
+  /* ── CHARTS ──────────────────────────────────────────────────── */
+  /* FIX: switch from 3-col to 2-col by default, 3-col only wide enough */
+  .chart-trio {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:1.5rem;margin:3rem 0;
+  }
+  .chart-card {
+    background:rgba(255,255,255,.03);border:1px solid var(--border);
+    border-radius:4px;padding:1.8rem 1.5rem;
+    position:relative;overflow:hidden;
+    /* FIX: prevent card from overflowing its grid cell */
+    min-width:0;
+  }
+  .chart-card::before {
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,var(--teal-lite),var(--gold));
+  }
+  .chart-title {
+    font-family:var(--ff-m);font-size:.58rem;font-weight:500;
+    letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;
+  }
+  .chart-delta { font-family:var(--ff-d);font-size:1.6rem;font-weight:800;color:var(--gold);margin-bottom:1.2rem; }
+  .chart-delta span { font-size:.75rem;font-weight:400;color:var(--muted);margin-left:.3rem; }
+
+  /* ── APPROACH SCROLLER ───────────────────────────────────────── */
+  .approach-scroller { position:relative;overflow:hidden;margin:3rem 0; }
+  .approach-track {
+    display:flex;gap:1.5rem;
+    overflow-x:auto;padding-bottom:1rem;scroll-snap-type:x mandatory;
+    scrollbar-width:thin;scrollbar-color:var(--gold) rgba(255,255,255,.05);
+    /* FIX: ensure track doesn't contribute to page-level overflow */
+    -webkit-overflow-scrolling:touch;
+  }
+  .approach-track::-webkit-scrollbar { height:3px; }
+  .approach-track::-webkit-scrollbar-track { background:rgba(255,255,255,.05); }
+  .approach-track::-webkit-scrollbar-thumb { background:var(--gold);border-radius:2px; }
+
+  .approach-card {
+    /* FIX: slightly narrower min-width to avoid card clipping on smaller screens */
+    min-width:clamp(240px,40vw,300px);
+    background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:4px;
+    padding:2rem 1.8rem;scroll-snap-align:start;flex-shrink:0;
+    position:relative;overflow:hidden;transition:all .4s var(--ease);
+  }
+  .approach-card:hover { background:rgba(255,255,255,.07);border-color:rgba(200,151,58,.3);transform:translateY(-4px); }
+  .approach-card::after { content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--gold);transition:width .5s var(--ease); }
+  .approach-card:hover::after { width:100%; }
+
+  .ac-num { font-family:var(--ff-m);font-size:.6rem;font-weight:500;color:var(--gold);letter-spacing:.2em;margin-bottom:1rem;display:block; }
+  .ac-icon { font-size:1.6rem;margin-bottom:.8rem;display:block;line-height:1; }
+  .approach-card h4 { font-family:var(--ff-d);font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:.7rem; }
+  .approach-card p { font-size:.85rem;color:var(--muted);line-height:1.7;margin:0; }
+
+  .scroll-hint { display:flex;gap:.5rem;justify-content:flex-end;margin-top:.8rem; }
+  .sh-btn { width:36px;height:36px;border:1px solid var(--border);background:none;color:rgba(255,255,255,.5);cursor:pointer;border-radius:2px;font-size:1rem;transition:all .3s; }
+  .sh-btn:hover { border-color:var(--gold);color:var(--gold); }
+
+  /* ── TOOLS FLIP GRID ─────────────────────────────────────────── */
+  /* FIX: use auto-fit so cards wrap gracefully instead of fixed 4-col */
+  .tools-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:1rem;margin:2rem 0;
+  }
+  .tool-flip { height:120px;perspective:800px;cursor:pointer; }
+  .tool-inner { width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .5s var(--ease); }
+  .tool-flip:hover .tool-inner, .tool-flip.flipped .tool-inner { transform:rotateY(180deg); }
+  .tool-front, .tool-back { position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--border);border-radius:3px;display:flex;align-items:center;justify-content:center;padding:1rem;text-align:center; }
+  .tool-front { background:rgba(255,255,255,.04); }
+  .tool-back { background:var(--teal);transform:rotateY(180deg);border-color:rgba(200,151,58,.3); }
+  .tool-front h4 { font-family:var(--ff-d);font-size:.9rem;font-weight:700;color:#fff;line-height:1.2; }
+  .tool-front .tool-cat { font-family:var(--ff-m);font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:.4rem; }
+  .tool-back p { font-size:.72rem;color:rgba(255,255,255,.8);line-height:1.6;margin:0; }
+
+  .tools-label { font-family:var(--ff-m);font-size:.58rem;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin:2.5rem 0 .8rem;display:flex;align-items:center;gap:.6rem; }
+  .tools-label::after { content:'';display:block;flex:1;height:1px;background:var(--border); }
+
+  /* ── PROJECTS ────────────────────────────────────────────────── */
+  /* FIX: min-width:0 on cells prevents chart canvas overflow */
+  .project-tiles {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:1.5rem;margin:2rem 0;
+  }
+  .ptile {
+    background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:4px;
+    overflow:hidden;transition:all .4s var(--ease);
+    min-width:0; /* FIX: critical for grid blowout prevention */
+  }
+  .ptile:hover { border-color:rgba(200,151,58,.35);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.3); }
+  .ptile-header { padding:1.5rem 1.8rem 1rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start; }
+  .ptile-tag { font-family:var(--ff-m);font-size:.52rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,151,58,.3);padding:.25rem .6rem;border-radius:100px;white-space:nowrap; }
+  .ptile h3 { font-family:var(--ff-d);font-size:1rem;font-weight:700;color:#fff;margin:.8rem 0 .4rem;line-height:1.3; }
+  .ptile p { font-size:.82rem;color:var(--muted);line-height:1.6;padding:0 1.8rem 1.2rem;margin:0; }
+  /* FIX: constrain canvas height so chart doesn't overflow tile */
+  .ptile-chart { padding:0 1.8rem 1.8rem;height:100px;position:relative; }
+  .ptile-chart canvas { max-width:100% !important; }
+  .ptile-delta { font-family:var(--ff-d);font-size:2rem;font-weight:800;color:var(--gold);padding:0 1.8rem .5rem;line-height:1; }
+  .ptile-delta small { font-size:.75rem;font-weight:400;color:var(--muted); }
+
+  /* ── CONTACT / FOOTER ────────────────────────────────────────── */
+  .contact-section { background:#000;display:grid;grid-template-columns:1fr 1fr; }
+  .contact-left { padding:6rem 5% 6rem 8%;border-right:1px solid rgba(255,255,255,.05); }
+  .contact-left h2 { font-family:var(--ff-d);font-size:2rem;font-weight:800;color:#fff;margin-bottom:.5rem; }
+  .contact-left .sub { font-family:var(--ff-b);font-style:italic;font-size:.95rem;color:rgba(255,255,255,.35);margin-bottom:2.5rem; }
+  .ff { margin-bottom:1.4rem; }
+  .ff input, .ff textarea { width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.12);padding:.7rem 0;color:#fff;font-family:var(--ff-b);font-size:.95rem;font-weight:300;outline:none;transition:border-color .3s; }
+  .ff input::placeholder,.ff textarea::placeholder { color:rgba(255,255,255,.22); }
+  .ff input:focus,.ff textarea:focus { border-bottom-color:var(--gold); }
+  .ff textarea { resize:none;min-height:90px; }
+  .ff-row { display:grid;grid-template-columns:1fr 1fr;gap:1.2rem; }
+  .send-btn { background:var(--gold);color:var(--teal-deep);border:none;padding:.85rem 2.2rem;cursor:pointer;font-family:var(--ff-d);font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;border-radius:2px;transition:all .3s; }
+  .send-btn:hover { background:var(--gold-lt);transform:translateY(-2px);box-shadow:0 8px 20px rgba(200,151,58,.3); }
+  .contact-right { padding:6rem 8% 6rem 5%;display:flex;flex-direction:column;justify-content:center; }
+  .contact-right h3 { font-family:var(--ff-d);font-style:normal;font-size:.8rem;font-weight:600;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:1.8rem;text-transform:uppercase; }
+  .socials { display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:3rem; }
+  .sc { display:flex;align-items:center;justify-content:center;height:44px;border:1px solid rgba(255,255,255,.08);border-radius:3px;color:rgba(255,255,255,.4);text-decoration:none;font-size:.75rem;font-weight:500;transition:all .3s; }
+  .sc:hover { border-color:var(--gold);color:var(--gold);background:rgba(200,151,58,.07); }
+  .footer-bar { background:#000;padding:1.2rem 8%;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.04); }
+  .footer-bar p { font-family:var(--ff-m);font-size:.6rem;color:rgba(255,255,255,.15);letter-spacing:.05em; }
+
+  /* ── REVEAL ──────────────────────────────────────────────────── */
+  .rv { opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease); }
+  .rv.vis { opacity:1;transform:translateY(0); }
+  .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+  /* ── RESPONSIVE ──────────────────────────────────────────────── */
+  /* TOC disappears below 1100px; content takes full width */
+  @media(max-width:1100px){
+    .main-layout { grid-template-columns:1fr; }
+    .toc-rail { display:none; }
+    .content-area { padding:3rem clamp(1rem,5%,4rem); }
+  }
+
+  @media(max-width:900px){
+    #header { padding:1.2rem 5%; }
+    /* cycle goes single column on mobile */
+    .cycle-wrap { grid-template-columns:1fr; }
+    /* contact stacks */
+    .contact-section { grid-template-columns:1fr; }
+    .contact-right { border-top:1px solid rgba(255,255,255,.05);padding:3rem 5%; }
+    .contact-left { border-right:none;padding:5rem 5%; }
+    .ff-row { grid-template-columns:1fr; }
+    /* hero metrics wrap more aggressively */
+    .hero-metrics { gap:1rem; }
+    .hero-metric-val { font-size:1.4rem; }
+  }
+
+  @media(max-width:600px){
+    #header { padding:1rem 4%; }
+    .hero-inner { padding:6rem 1.2rem 3rem; }
+    .hero-mono { font-size:.6rem; }
+    /* approach cards nearly full-width on phone */
+    .approach-card { min-width:clamp(200px,80vw,280px); }
+    /* tools grid 2-col minimum */
+    .tools-grid { grid-template-columns:repeat(2,1fr); }
+    /* project tiles single col */
+    .project-tiles { grid-template-columns:1fr; }
+    .contact-left { padding:4rem 1.2rem; }
+    .contact-right { padding:3rem 1.2rem; }
+  }
+  </style>
+</head>
+<body>
+
+<div id="prog"></div>
+<div id="mo"></div>
+<nav id="menu">
+  <button id="mc">✕</button>
+  <h2>Navigation</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="http://esvarj.wordpress.com">Health Articles</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<header id="header">
+  <nav><ul><li><a href="#" id="mt">Menu</a></li></ul></nav>
+</header>
+
+<!-- ═══ HERO ══════════════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-scan"></div>
+  <div class="hero-orb"></div>
+  <div class="hero-inner">
+    <div class="hero-mono">data_collection_and_reporting.html</div>
+    <h1 class="hero-title">
+      Data &amp;<br>
+      <span class="word-cycle" id="word-cycle">Reporting.</span>
+    </h1>
+    <p class="hero-desc">Evidence should clarify choices — not overwhelm those who need to act. When data is actively used rather than simply collected, it becomes a driver of learning, impact, and sustainable improvement.</p>
+    <div class="hero-metrics">
+      <div class="hero-metric-item">
+        <div class="hero-metric-val">5</div>
+        <div class="hero-metric-label">Cycle stages</div>
+      </div>
+      <div class="hero-metric-item">
+        <div class="hero-metric-val">+24%</div>
+        <div class="hero-metric-label">Avg NCD awareness lift</div>
+      </div>
+      <div class="hero-metric-item">
+        <div class="hero-metric-val">+31%</div>
+        <div class="hero-metric-label">Avg youth knowledge gain</div>
+      </div>
+      <div class="hero-metric-item">
+        <div class="hero-metric-val">12+</div>
+        <div class="hero-metric-label">Tools deployed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TAPE ═══════════════════════════════════════════════════════════ -->
+<div class="tape">
+  <div class="tape-track" aria-hidden="true">
+    <span class="tape-word">MEAL</span><span class="tape-sep">·</span>
+    <span class="tape-word">KoboToolbox</span><span class="tape-sep">·</span>
+    <span class="tape-word">Logical Frameworks</span><span class="tape-sep">·</span>
+    <span class="tape-word">Data Quality</span><span class="tape-sep">·</span>
+    <span class="tape-word">Dashboards</span><span class="tape-sep">·</span>
+    <span class="tape-word">OECD DAC</span><span class="tape-sep">·</span>
+    <span class="tape-word">Adaptive Management</span><span class="tape-sep">·</span>
+    <span class="tape-word">Indicators</span><span class="tape-sep">·</span>
+    <span class="tape-word">SPSS</span><span class="tape-sep">·</span>
+    <span class="tape-word">Learning Loops</span><span class="tape-sep">·</span>
+    <span class="tape-word">MEAL</span><span class="tape-sep">·</span>
+    <span class="tape-word">KoboToolbox</span><span class="tape-sep">·</span>
+    <span class="tape-word">Logical Frameworks</span><span class="tape-sep">·</span>
+    <span class="tape-word">Data Quality</span><span class="tape-sep">·</span>
+    <span class="tape-word">Dashboards</span><span class="tape-sep">·</span>
+    <span class="tape-word">OECD DAC</span><span class="tape-sep">·</span>
+    <span class="tape-word">Adaptive Management</span><span class="tape-sep">·</span>
+    <span class="tape-word">Indicators</span><span class="tape-sep">·</span>
+    <span class="tape-word">SPSS</span><span class="tape-sep">·</span>
+    <span class="tape-word">Learning Loops</span><span class="tape-sep">·</span>
+  </div>
+</div>
+
+<!-- ═══ MAIN LAYOUT ════════════════════════════════════════════════════ -->
+<div class="main-layout">
+
+  <div class="content-area">
+
+    <!-- OVERVIEW -->
+    <div class="sec rv" id="s-overview">
+      <div class="sec-eye">Overview</div>
+      <h2>From Field Reality to<br><em>Informed Decision</em></h2>
+      <p>Data collection and reporting are foundational to effective health systems and programs — providing the evidence needed to understand what is working, what is not, and where adjustments are required. Reliable data enables health actors to move beyond assumptions toward informed decision-making that improves service delivery, accountability, and population health outcomes.</p>
+      <p>Reporting is approached not as a compliance exercise, but as a <strong style="color:#fff;font-weight:600">learning tool</strong>. Clear, well-structured reports transform raw data into actionable insights that program teams, managers, and partners can understand and use. By analyzing trends, identifying gaps, and highlighting performance patterns, reporting supports continuous improvement and adaptive management.</p>
+      <h3>Scope of Data Collection</h3>
+      <p>Data collection activities are structured to support Monitoring, Evaluation, Accountability, and Learning processes across the project lifecycle — including routine monitoring data from service delivery points, periodic surveys and assessments, and qualitative data gathered through interviews, focus group discussions, and participatory approaches.</p>
+      <h3>Monitoring Frameworks and Indicators</h3>
+      <p>Frameworks are developed using clear results chains and logical frameworks that link inputs, activities, outputs, outcomes, and impact. Indicators are selected to be SMART and aligned with donor requirements, national health information systems, and global standards such as those outlined by the <a href="https://www.who.int/data" target="_blank" rel="noopener">World Health Organization</a>.</p>
+      <h3>Data Quality Assurance</h3>
+      <p>Data quality assurance measures include standardised tools, routine data verification, consistency checks, supervision support, and periodic data quality assessments — aligning with global MEAL guidance from organisations such as <a href="https://www.alnap.org" target="_blank" rel="noopener">ALNAP</a>.</p>
+    </div>
+
+    <!-- DATA CYCLE -->
+    <div class="sec rv" id="s-cycle">
+      <div class="sec-eye">Approach</div>
+      <h2>The <em>Data Cycle</em></h2>
+      <p>Data and reporting are approached as integrated components of effective program management. Each stage is designed to ensure evidence is relevant, reliable, and actively used to support decision-making, learning, and accountability.</p>
+
+      <div class="cycle-wrap">
+        <svg id="cycle-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="glow"><feGaussianBlur stdDeviation="3" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#0d9db0"/>
+              <stop offset="100%" stop-color="#c8973a"/>
+            </linearGradient>
+          </defs>
+          <circle cx="150" cy="150" r="120" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+          <circle cx="150" cy="150" r="120" fill="none" stroke="url(#ringGrad)" stroke-width="2" stroke-dasharray="754" stroke-dashoffset="754" id="ring-progress" style="transition:stroke-dashoffset 2s ease"/>
+          <circle cx="150" cy="150" r="45" fill="rgba(4,71,78,.5)" stroke="rgba(200,151,58,.3)" stroke-width="1"/>
+          <text x="150" y="145" text-anchor="middle" font-family="Syne,sans-serif" font-size="9" fill="rgba(255,255,255,.5)" font-weight="600" letter-spacing="1">DATA</text>
+          <text x="150" y="158" text-anchor="middle" font-family="Syne,sans-serif" font-size="9" fill="rgba(255,255,255,.5)" font-weight="600" letter-spacing="1">CYCLE</text>
+          <circle cx="150" cy="30" r="22" fill="#04474e" stroke="#c8973a" stroke-width="1.5" class="cycle-node" data-idx="0" style="cursor:pointer" filter="url(#glow)"/>
+          <text x="150" y="27" text-anchor="middle" font-family="Syne,sans-serif" font-size="7.5" fill="#fff" font-weight="700">ASSESS</text>
+          <circle cx="264" cy="205" r="22" fill="#04474e" stroke="rgba(255,255,255,.2)" stroke-width="1" class="cycle-node" data-idx="1" style="cursor:pointer"/>
+          <text x="264" y="202" text-anchor="middle" font-family="Syne,sans-serif" font-size="7.5" fill="rgba(255,255,255,.7)" font-weight="700">DESIGN</text>
+          <circle cx="207" cy="272" r="22" fill="#04474e" stroke="rgba(255,255,255,.2)" stroke-width="1" class="cycle-node" data-idx="2" style="cursor:pointer"/>
+          <text x="207" y="270" text-anchor="middle" font-family="Syne,sans-serif" font-size="6.5" fill="rgba(255,255,255,.7)" font-weight="700">IMPLEMENT</text>
+          <circle cx="93" cy="272" r="22" fill="#04474e" stroke="rgba(255,255,255,.2)" stroke-width="1" class="cycle-node" data-idx="3" style="cursor:pointer"/>
+          <text x="93" y="270" text-anchor="middle" font-family="Syne,sans-serif" font-size="7.5" fill="rgba(255,255,255,.7)" font-weight="700">ANALYSE</text>
+          <circle cx="36" cy="205" r="22" fill="#04474e" stroke="rgba(255,255,255,.2)" stroke-width="1" class="cycle-node" data-idx="4" style="cursor:pointer"/>
+          <text x="36" y="202" text-anchor="middle" font-family="Syne,sans-serif" font-size="7.5" fill="rgba(255,255,255,.7)" font-weight="700">REPORT</text>
+          <path d="M168 48 Q220 100 248 185" fill="none" stroke="rgba(200,151,58,.25)" stroke-width="1" stroke-dasharray="4 3"/>
+          <path d="M252 225 Q240 260 225 256" fill="none" stroke="rgba(200,151,58,.15)" stroke-width="1" stroke-dasharray="4 3"/>
+          <path d="M185 272 L115 272" fill="none" stroke="rgba(200,151,58,.15)" stroke-width="1" stroke-dasharray="4 3"/>
+          <path d="M75 256 Q60 250 52 228" fill="none" stroke="rgba(200,151,58,.15)" stroke-width="1" stroke-dasharray="4 3"/>
+          <path d="M42 185 Q80 80 132 34" fill="none" stroke="rgba(200,151,58,.15)" stroke-width="1" stroke-dasharray="4 3"/>
+        </svg>
+
+        <div id="cycle-steps">
+          <div class="cycle-step hl" data-idx="0"><div class="cycle-step-num">01</div><div><h4>Assess</h4><p>Understanding data needs, decision-making context, existing systems, and operational realities before any collection begins.</p></div></div>
+          <div class="cycle-step" data-idx="1"><div class="cycle-step-num">02</div><div><h4>Design</h4><p>Creating indicators, tools, and workflows that are analytically rigorous but feasible under real-world conditions.</p></div></div>
+          <div class="cycle-step" data-idx="2"><div class="cycle-step-num">03</div><div><h4>Implement</h4><p>Collecting, cleaning, and validating data as a continuous quality management process — not a one-time exercise.</p></div></div>
+          <div class="cycle-step" data-idx="3"><div class="cycle-step-num">04</div><div><h4>Analyse</h4><p>Generating disaggregated insights and visualizations that explain results, surface equity gaps, and prioritize interpretation over description.</p></div></div>
+          <div class="cycle-step" data-idx="4"><div class="cycle-step-num">05</div><div><h4>Report</h4><p>Delivering actionable findings with embedded feedback loops — reporting as a decision-support mechanism, not a static document.</p></div></div>
+        </div>
+      </div>
+
+      <div class="approach-scroller">
+        <div class="approach-track" id="approach-track">
+          <div class="approach-card"><span class="ac-num">STEP 01</span><span class="ac-icon">🔍</span><h4>Assessment</h4><p>Examines program objectives, management questions, reporting requirements, and existing information systems to determine what evidence is genuinely required.</p></div>
+          <div class="approach-card"><span class="ac-num">STEP 02</span><span class="ac-icon">📐</span><h4>Design</h4><p>Balances analytical rigour with feasibility. Data systems perform best when simple, standardized, and embedded within routine service delivery rather than operating as parallel structures.</p></div>
+          <div class="approach-card"><span class="ac-num">STEP 03</span><span class="ac-icon">⚙️</span><h4>Implementation</h4><p>Data quality challenges often arise from ambiguous definitions, time constraints, and misaligned incentives. Routine validation checks and ongoing support help identify errors early.</p></div>
+          <div class="approach-card"><span class="ac-num">STEP 04</span><span class="ac-icon">📊</span><h4>Analysis</h4><p>Prioritizes interpretation over description — focusing on trends, disparities, and performance patterns that explain results. Visualization techniques reduce cognitive load.</p></div>
+          <div class="approach-card"><span class="ac-num">STEP 05</span><span class="ac-icon">📋</span><h4>Reporting & Feedback</h4><p>Reports emphasize implications, risks, and opportunities. Feedback loops are intentionally integrated so findings inform planning, resource allocation, and adjustments.</p></div>
+        </div>
+        <div class="scroll-hint">
+          <button class="sh-btn" id="sh-left">←</button>
+          <button class="sh-btn" id="sh-right">→</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FIELD PROJECTS -->
+    <div class="sec rv" id="s-projects">
+      <div class="sec-eye">Applied Projects — Trans-Nzoia County</div>
+      <h2>Evidence in the <em>Field</em></h2>
+      <p>Beyond frameworks and theory, community health work is grounded in real-world implementation under St. Martha Hospital-supported initiatives. The following project tiles show how data-driven decision-making shaped outcomes in three focus areas.</p>
+
+      <div class="project-tiles">
+        <div class="ptile rv">
+          <div class="ptile-header"><div><div class="ptile-tag">Malaria Prevention</div><h3>Mosquito Net Utilisation Campaign</h3></div></div>
+          <div class="ptile-delta"><span class="ctr" data-target="24">0</span>% <small>lift in consistent net use</small></div>
+          <div class="ptile-chart"><canvas id="c-malaria"></canvas></div>
+          <p>Rapid household survey + community dialogue revealed heat discomfort and damaged nets as key barriers. Insights informed targeted health education via CHVs. Follow-up monitoring showed measurable increase in net usage among households with children under five.</p>
+        </div>
+
+        <div class="ptile rv d1">
+          <div class="ptile-header"><div><div class="ptile-tag">Non-Communicable Disease</div><h3>NCD Awareness &amp; Community Screening</h3></div></div>
+          <div class="ptile-delta"><span class="ctr" data-target="25">0</span>% <small>lift in screening awareness</small></div>
+          <div class="ptile-chart"><canvas id="c-ncd"></canvas></div>
+          <p>Knowledge survey administered at community forums and market-day events. Findings showed general NCD awareness was moderate but understanding of screening importance remained low — guiding simplified health talks and mobile screening days.</p>
+        </div>
+
+        <div class="ptile rv d2">
+          <div class="ptile-header"><div><div class="ptile-tag">Youth Health</div><h3>Youth Preventive Health Awareness</h3></div></div>
+          <div class="ptile-delta"><span class="ctr" data-target="31">0</span>% <small>higher uptake via peer-led sessions</small></div>
+          <div class="ptile-chart"><canvas id="c-youth"></canvas></div>
+          <p>Anonymous surveys revealed peer-led and school-linked activities significantly outperformed facility-based messaging. Insights adjusted outreach delivery toward youth participation and localized messaging over generic health promotion materials.</p>
+        </div>
+
+        <div class="ptile rv d3">
+          <div class="ptile-header"><div><div class="ptile-tag">Data Presentation</div><h3>Dashboard Design for Decision-Making</h3></div></div>
+          <div class="ptile-delta">4 <small>design principles</small></div>
+          <div style="padding:0 1.8rem 1.2rem;display:flex;flex-direction:column;gap:.5rem;">
+            <div style="display:flex;align-items:center;gap:.8rem;padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,.05);"><span style="font-family:var(--ff-m);font-size:.55rem;color:var(--gold);letter-spacing:.15em;min-width:60px;flex-shrink:0">CLARITY</span><span style="font-size:.78rem;color:var(--muted)">Focus on the information that matters most for decisions</span></div>
+            <div style="display:flex;align-items:center;gap:.8rem;padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,.05);"><span style="font-family:var(--ff-m);font-size:.55rem;color:var(--gold);letter-spacing:.15em;min-width:60px;flex-shrink:0">HIERARCHY</span><span style="font-size:.78rem;color:var(--muted)">Guide attention to critical insights using layout, color, emphasis</span></div>
+            <div style="display:flex;align-items:center;gap:.8rem;padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,.05);"><span style="font-family:var(--ff-m);font-size:.55rem;color:var(--gold);letter-spacing:.15em;min-width:60px;flex-shrink:0">SIMPLICITY</span><span style="font-size:.78rem;color:var(--muted)">Simplify complex metrics without losing analytical rigour</span></div>
+            <div style="display:flex;align-items:center;gap:.8rem;padding:.6rem 0;"><span style="font-family:var(--ff-m);font-size:.55rem;color:var(--gold);letter-spacing:.15em;min-width:60px;flex-shrink:0">CONTEXT</span><span style="font-size:.78rem;color:var(--muted)">Pair quantitative data with narrative interpretation</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOOLS -->
+    <div class="sec rv" id="s-tools">
+      <div class="sec-eye">Toolkit</div>
+      <h2>Tools &amp; <em>Systems</em></h2>
+      <p>A practical MEAL toolkit combining digital data collection, statistical analysis, visualization, and coordination tools. <strong style="color:rgba(255,255,255,.5);font-weight:400">Hover each card to see details.</strong></p>
+
+      <div class="tools-label">Primary Data Collection</div>
+      <div class="tools-grid">
+        <div class="tool-flip"><div class="tool-inner"><div class="tool-front"><div><span class="tool-cat">Field</span><h4>KoboToolbox</h4></div></div><div class="tool-back"><p>Mobile data collection for surveys, assessments, and monitoring in low-connectivity environments.</p></div></div></div>
+        <div class="tool-flip"><div class="tool-inner"><div class="tool-front"><div><span class="tool-cat">Field</span><h4>ODK</h4></div></div><div class="tool-back"><p>Open Data Kit — structured data capture for routine monitoring and field research workflows.</p></div></div></div>
+        <div class="tool-flip"><div class="tool-inner"><div class="tool-front"><div><span class="tool-cat">Community</span><h4>CommCare</h4></div></div><div class="tool-back"><p>Case-based data collection and workflow support for community health programs and CHW tracking.</p></div></div></div>
+        <div class="tool-flip"><div class="tool-inner"><div class="tool-front"><div><span class="tool-cat">Field</span><h4>Survey CTO</h4></div></div><div class="tool-back"><p>Advanced survey platform for rigorous data collection with built-in validation logic.</p></div></div></div>
+      </div>
+
+      <div class="tools-label">Analysis & Statistics</div>
+      <div class="tools-grid">
+        <div class="tool-flip"><div class="tool-inner"><div class="tool-front"><div><span class="tool-cat">Stats</span><h4>SPSS</h4></div></div><div class="tool-back"><p>Statistical analysis for survey data, program monitoring, and formal evaluations.</p></div></div></div>
+        <div class="tool-flip"><div class="tool-inner"><div class="tool-front"><div><span class="tool-cat">Analysis</span><h4>Excel</h4></div></div><div class="tool-back"><p>Data cleaning, descriptive analysis, pivot tables, and routine reporting and dashboards.</p></div></div></div>
+        <div class="tool-flip"><div class="tool-inner"><div class="tool-front"><div><span class="tool-cat">Collab</span><h4>Google Sheets</h4></div></div><div class="tool-back"><p>Collaborative data review, real-time monitoring, and shared reporting across teams.</p></div></div></div>
+        <div class="tool-flip"><div class="tool-inner"><div class="tool-front"><div><span class="tool-cat">Viz</span><h4>Dashboards</h4></div></div><div class="tool-back"><p>Performance tracking and rapid decision support via Excel and Google-based interactive dashboards.</p></div></div></div>
+      </div>
+
+      <div class="tools-label">Coordination & Reporting</div>
+      <div class="tools-grid">
+        <div class="tool-flip"><div class="tool-inner"><div class="tool-front"><div><span class="tool-cat">Tasks</span><h4>Asana</h4></div></div><div class="tool-back"><p>Task tracking and workflow coordination for multi-stakeholder program management.</p></div></div></div>
+        <div class="tool-flip"><div class="tool-inner"><div class="tool-front"><div><span class="tool-cat">Planning</span><h4>Trello</h4></div></div><div class="tool-back"><p>Lightweight project planning and visual progress tracking for agile implementation.</p></div></div></div>
+        <div class="tool-flip"><div class="tool-inner"><div class="tool-front"><div><span class="tool-cat">Scheduling</span><h4>MS Project</h4></div></div><div class="tool-back"><p>Structured project scheduling and detailed timeline management for complex programs.</p></div></div></div>
+        <div class="tool-flip"><div class="tool-inner"><div class="tool-front"><div><span class="tool-cat">Reporting</span><h4>PowerPoint</h4></div></div><div class="tool-back"><p>Clear synthesis and visual presentation of findings for management and partner audiences.</p></div></div></div>
+      </div>
+    </div>
+
+  </div><!-- /content-area -->
+
+  <!-- TOC RAIL -->
+  <div class="toc-rail">
+    <span class="toc-label">On This Page</span>
+    <a class="toc-item active" href="#s-overview" data-section="s-overview">Overview</a>
+    <a class="toc-item" href="#s-cycle" data-section="s-cycle">Data Cycle</a>
+    <a class="toc-item" href="#s-projects" data-section="s-projects">Field Projects</a>
+    <a class="toc-item" href="#s-tools" data-section="s-tools">Tools</a>
+  </div>
+
+</div><!-- /main-layout -->
+
+<!-- CONTACT -->
+<div class="contact-section">
+  <div class="contact-left">
+    <div class="rv sec-eye" style="font-family:var(--ff-m);font-size:.58rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.7rem;margin-bottom:1.2rem;"><span style="display:block;width:24px;height:1px;background:var(--gold)"></span>Get in Touch</div>
+    <h2 class="rv d1">Let's Work Together</h2>
+    <p class="sub rv d2">Interested in data systems, MEAL support, or health program collaboration?</p>
+    <form method="POST" action="https://formspree.io/f/xwvpkvzl" class="rv d2">
+      <div class="ff-row ff"><div><input type="text" name="name" placeholder="Name" required></div><div><input type="email" name="email" placeholder="Email" required></div></div>
+      <div class="ff"><textarea name="message" placeholder="Your message…" rows="4"></textarea></div>
+      <button type="submit" class="send-btn">Send Message →</button>
+    </form>
+  </div>
+  <div class="contact-right rv">
+    <h3>Follow the work</h3>
+    <div class="socials">
+      <a class="sc" href="https://x.com/humanistories" target="_blank">𝕏</a>
+      <a class="sc" href="https://web.facebook.com/humanitarian.stories/" target="_blank">f</a>
+      <a class="sc" href="https://www.instagram.com/humanitarian_stories/" target="_blank">◎</a>
+      <a class="sc" href="https://www.linkedin.com/in/josemariaescriva/" target="_blank">in</a>
+      <a class="sc" href="https://github.com/escrivajosemaria" target="_blank">⌥</a>
+      <a class="sc" href="https://escrivajosemaria.github.io/escopy.io/" target="_blank">⊕</a>
+      <a class="sc" href="https://www.youtube.com/@escrivahealthcollective" target="_blank">▶</a>
+      <a class="sc" href="http://esvarj.wordpress.com" target="_blank">W</a>
+    </div>
+  </div>
+</div>
+
+<div class="footer-bar">
+  <p>&copy; Escriva Josemaria 2024</p>
+  <p>Design: escriva.https</p>
+</div>
+
+<script>
+(function(){
+  const pb=document.getElementById('prog');
+  window.addEventListener('scroll',()=>{ const s=document.documentElement; pb.style.width=(window.scrollY/(s.scrollHeight-window.innerHeight)*100)+'%'; },{passive:true});
+
+  const hdr=document.getElementById('header');
+  window.addEventListener('scroll',()=>hdr.classList.toggle('solid',window.scrollY>60),{passive:true});
+
+  const menuEl=document.getElementById('menu'),ov=document.getElementById('mo');
+  document.getElementById('mt').addEventListener('click',e=>{e.preventDefault();menuEl.classList.add('on');ov.classList.add('on');});
+  document.getElementById('mc').addEventListener('click',()=>{menuEl.classList.remove('on');ov.classList.remove('on');});
+  ov.addEventListener('click',()=>{menuEl.classList.remove('on');ov.classList.remove('on');});
+
+  const words=['Reporting.','Evidence.','Accountability.','Learning.','Impact.'];
+  let wi=0;
+  const wc=document.getElementById('word-cycle');
+  if(wc){
+    wc.style.transition='opacity .35s ease, transform .35s ease';
+    setInterval(()=>{
+      wc.style.opacity='0'; wc.style.transform='translateY(-12px)';
+      setTimeout(()=>{ wi=(wi+1)%words.length; wc.textContent=words[wi]; wc.style.opacity='1'; wc.style.transform='translateY(0)'; },350);
+    },2200);
+  }
+
+  const rvObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('vis');rvObs.unobserve(e.target);} });
+  },{threshold:.1,rootMargin:'0px 0px -50px 0px'});
+  document.querySelectorAll('.rv').forEach(el=>rvObs.observe(el));
+
+  function animCount(el,target,dur=1500){
+    let start=null;
+    const step=ts=>{ if(!start)start=ts; const p=Math.min((ts-start)/dur,1); const e2=1-Math.pow(1-p,3); el.textContent=Math.floor(e2*target); if(p<1)requestAnimationFrame(step); else el.textContent=target; };
+    requestAnimationFrame(step);
+  }
+  const cObs=new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting){animCount(e.target,parseInt(e.target.dataset.target));cObs.unobserve(e.target);} }); },{threshold:.5});
+  document.querySelectorAll('.ctr').forEach(el=>cObs.observe(el));
+
+  const ring=document.getElementById('ring-progress');
+  const ringObs=new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting){ring.style.strokeDashoffset='0';ringObs.unobserve(e.target);} }); },{threshold:.3});
+  if(ring)ringObs.observe(ring);
+
+  const cycleNodes=document.querySelectorAll('.cycle-node');
+  const cycleSteps=document.querySelectorAll('.cycle-step');
+  cycleNodes.forEach(node=>{
+    node.addEventListener('click',()=>{
+      const idx=parseInt(node.dataset.idx);
+      cycleSteps.forEach((s,i)=>s.classList.toggle('hl',i===idx));
+      cycleNodes.forEach((n,i)=>{ n.setAttribute('stroke',i===idx?'#c8973a':'rgba(255,255,255,.2)'); n.setAttribute('stroke-width',i===idx?'2':'1'); });
+    });
+  });
+  let cycleIdx=0;
+  setInterval(()=>{
+    cycleIdx=(cycleIdx+1)%5;
+    cycleSteps.forEach((s,i)=>s.classList.toggle('hl',i===cycleIdx));
+    cycleNodes.forEach((n,i)=>{ n.setAttribute('stroke',i===cycleIdx?'#c8973a':'rgba(255,255,255,.2)'); n.setAttribute('stroke-width',i===cycleIdx?'2':'1'); });
+  },2500);
+
+  const track=document.getElementById('approach-track');
+  document.getElementById('sh-left')?.addEventListener('click',()=>track.scrollBy({left:-320,behavior:'smooth'}));
+  document.getElementById('sh-right')?.addEventListener('click',()=>track.scrollBy({left:320,behavior:'smooth'}));
+
+  const tocItems=document.querySelectorAll('.toc-item');
+  const sections=['s-overview','s-cycle','s-projects','s-tools'].map(id=>document.getElementById(id)).filter(Boolean);
+  const tocObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ tocItems.forEach(t=>t.classList.toggle('active',t.dataset.section===e.target.id)); } });
+  },{threshold:.3,rootMargin:'-100px 0px -50% 0px'});
+  sections.forEach(s=>tocObs.observe(s));
+  tocItems.forEach(t=>t.addEventListener('click',e=>{ e.preventDefault(); document.getElementById(t.dataset.section)?.scrollIntoView({behavior:'smooth'}); }));
+
+  const chartDefaults={
+    plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(2,13,14,.9)',titleColor:'#c8973a',bodyColor:'rgba(255,255,255,.7)',borderColor:'rgba(200,151,58,.3)',borderWidth:1}},
+    scales:{
+      x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'rgba(255,255,255,.45)',font:{family:"'IBM Plex Mono',monospace",size:9}}},
+      y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'rgba(255,255,255,.45)',font:{family:"'IBM Plex Mono',monospace",size:9}},beginAtZero:true,max:100}
+    },
+    animation:{duration:1200,easing:'easeOutCubic'},
+    maintainAspectRatio:false
+  };
+
+  const mCtx=document.getElementById('c-malaria')?.getContext('2d');
+  if(mCtx) new Chart(mCtx,{type:'bar',data:{labels:['Before','After'],datasets:[{data:[54,78],backgroundColor:['rgba(4,71,78,.7)','rgba(200,151,58,.8)'],borderColor:['#075f6a','#c8973a'],borderWidth:1.5,borderRadius:3}]},options:{...chartDefaults}});
+
+  const nCtx=document.getElementById('c-ncd')?.getContext('2d');
+  if(nCtx) new Chart(nCtx,{type:'line',data:{labels:['Baseline','Post-Campaign'],datasets:[{data:[46,71],borderColor:'#c8973a',backgroundColor:'rgba(200,151,58,.08)',borderWidth:2,pointBackgroundColor:'#c8973a',pointRadius:5,tension:.3,fill:true}]},options:{...chartDefaults}});
+
+  const yCtx=document.getElementById('c-youth')?.getContext('2d');
+  if(yCtx) new Chart(yCtx,{type:'bar',data:{labels:['Facility','Peer-Led'],datasets:[{data:[52,83],backgroundColor:['rgba(4,71,78,.7)','rgba(200,151,58,.8)'],borderColor:['#075f6a','#c8973a'],borderWidth:1.5,borderRadius:3}]},options:{...chartDefaults}});
+
+})();
+</script>
+</body>
+</html>

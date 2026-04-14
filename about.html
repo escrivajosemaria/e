@@ -1,0 +1,816 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>About — Escriva Josemaria</title>
+  <link rel="shortcut icon" href="images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+  :root {
+    --teal:      #04474e;
+    --teal-deep: #020d0e;
+    --teal-mid:  #075f6a;
+    --teal-lite: #0d9db0;
+    --gold:      #c8973a;
+    --gold-lt:   #e8b65a;
+    --cream:     #faf8f4;
+    --ink:       #0d1a1b;
+    --border:    rgba(255,255,255,.07);
+    --border-d:  rgba(4,71,78,.15);
+    --ff-d:      'EB Garamond', Georgia, serif;
+    --ff-ui:     'Josefin Sans', sans-serif;
+    --ease:      cubic-bezier(0.4,0,0.2,1);
+  }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { font-family:var(--ff-d); background:var(--teal-deep); color:#fff; overflow-x:hidden; }
+  ::-webkit-scrollbar { width:3px; }
+  ::-webkit-scrollbar-track { background:var(--teal-deep); }
+  ::-webkit-scrollbar-thumb { background:var(--gold); }
+
+  /* ── PROGRESS ─────────────────────────────── */
+  #prog { position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--teal-lite),var(--gold));z-index:9000;width:0;transition:width .08s linear; }
+
+  /* ── HEADER ───────────────────────────────── */
+  #header { position:fixed;top:0;left:0;right:0;z-index:800;padding:1.2rem 4rem;display:flex;justify-content:flex-end;transition:background .4s; }
+  #header.solid { background:rgba(2,13,14,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border); }
+  #header nav ul { list-style:none;display:flex; }
+  #header nav ul li a { font-family:var(--ff-ui);font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);text-decoration:none;padding:.5rem 1rem;border:1px solid rgba(255,255,255,.15);border-radius:2px;transition:all .3s; }
+  #header nav ul li a:hover { color:var(--gold);border-color:var(--gold);background:rgba(200,151,58,.08); }
+
+  /* ── SIDE MENU ────────────────────────────── */
+  #mo { display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1999;backdrop-filter:blur(4px); }
+  #mo.on { display:block; }
+  #menu { position:fixed;top:0;right:-380px;width:380px;height:100vh;background:var(--teal);z-index:2000;padding:5rem 3.5rem 3rem;transition:right .45s cubic-bezier(.77,0,.18,1); }
+  #menu.on { right:0; }
+  #mc { position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:rgba(255,255,255,.6);font-size:1.4rem;cursor:pointer;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s; }
+  #mc:hover { background:rgba(255,255,255,.1);color:#fff; }
+  #menu h2 { font-family:var(--ff-ui);font-size:.58rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:2.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,.1); }
+  #menu ul { list-style:none; }
+  #menu ul li { margin-bottom:.1rem;opacity:0;transform:translateX(24px);transition:all .35s; }
+  #menu.on ul li { opacity:1;transform:translateX(0); }
+  #menu.on ul li:nth-child(1){transition-delay:.08s} #menu.on ul li:nth-child(2){transition-delay:.14s}
+  #menu.on ul li:nth-child(3){transition-delay:.2s}  #menu.on ul li:nth-child(4){transition-delay:.26s}
+  #menu ul li a { display:block;font-family:var(--ff-d);font-size:1.5rem;color:rgba(255,255,255,.82);text-decoration:none;padding:.65rem 0;border-bottom:1px solid rgba(255,255,255,.07);transition:color .3s,padding-left .3s; }
+  #menu ul li a:hover { color:var(--gold);padding-left:.5rem; }
+
+  /* ══════════════════════════════════════════════
+     OPENING FULLSCREEN STATEMENT
+  ══════════════════════════════════════════════ */
+  .intro-screen {
+    min-height: 100vh;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    background: var(--teal-deep);
+  }
+  .intro-screen::before {
+    content: '';
+    position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 79px,
+      rgba(255,255,255,.025) 80px
+    );
+  }
+
+  /* Full-width type panel */
+  .intro-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 9rem 20% 6rem 10%;
+    position: relative;
+    z-index: 2;
+  }
+
+  .i-label {
+    font-family: var(--ff-ui); font-size: .55rem; font-weight: 700;
+    letter-spacing: .4em; text-transform: uppercase; color: var(--gold);
+    display: flex; align-items: center; gap: .8rem; margin-bottom: 2.5rem;
+    opacity: 0; animation: up .8s var(--ease) .3s forwards;
+  }
+  .i-label::before { content:''; width:28px; height:1px; background:var(--gold); display:block; }
+
+  .i-name {
+    font-family: var(--ff-d); font-size: clamp(3rem, 5vw, 5.5rem);
+    font-weight: 700; line-height: .88; letter-spacing: -.02em;
+    color: #fff; margin-bottom: 2rem;
+    opacity: 0; animation: up 1s var(--ease) .5s forwards;
+  }
+  .i-name em { font-style: italic; color: var(--gold); display: block; }
+
+  .i-role-list {
+    list-style: none; margin-bottom: 3rem;
+    opacity: 0; animation: up .9s var(--ease) .75s forwards;
+  }
+  .i-role-list li {
+    font-family: var(--ff-ui); font-size: .62rem; font-weight: 600;
+    letter-spacing: .18em; text-transform: uppercase;
+    color: rgba(255,255,255,.45); padding: .5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    display: flex; align-items: center; gap: .8rem;
+    transition: color .3s;
+  }
+  .i-role-list li::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--gold); opacity:.5; flex-shrink:0; }
+  .i-role-list li:hover { color: rgba(255,255,255,.8); }
+
+  .i-cta {
+    display: inline-flex; align-items: center; gap: .6rem;
+    font-family: var(--ff-ui); font-size: .6rem; font-weight: 700;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: var(--gold); text-decoration: none;
+    padding: .8rem 1.6rem; border: 1px solid rgba(200,151,58,.4);
+    border-radius: 2px; transition: all .35s;
+    opacity: 0; animation: up .8s var(--ease) 1.1s forwards;
+    align-self: flex-start;
+  }
+  .i-cta:hover { background: rgba(200,151,58,.1); border-color: var(--gold); transform: translateX(4px); }
+
+  /* Stat chips — inline row */
+  .intro-chips {
+    display: flex; gap: 1.5rem; margin-top: 3rem; flex-wrap: wrap;
+    opacity: 0; animation: up .9s var(--ease) 1.3s forwards;
+  }
+  .chip {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(200,151,58,.2); border-radius: 2px;
+    padding: .8rem 1.4rem;
+  }
+  .chip-val {
+    font-family: var(--ff-d); font-size: 1.6rem; font-weight: 700;
+    color: var(--gold); line-height: 1; margin-bottom: .2rem;
+  }
+  .chip-label {
+    font-family: var(--ff-ui); font-size: .48rem; font-weight: 600;
+    letter-spacing: .15em; text-transform: uppercase;
+    color: rgba(255,255,255,.35); line-height: 1.4;
+  }
+
+  @keyframes up { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes zoomIn { from{transform:scale(1.06)} to{transform:scale(1)} }
+
+  /* ══════════════════════════════════════════════
+     FULL-BLEED PULL QUOTE
+  ══════════════════════════════════════════════ */
+  .pullquote-section {
+    background: var(--teal);
+    padding: 7rem 10%;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 5rem;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .pullquote-section::before {
+    content: '\201C';
+    position: absolute; right: 5%; top: -1rem;
+    font-family: var(--ff-d); font-size: 22rem; font-weight: 700;
+    color: rgba(200,151,58,.04); line-height: 1;
+    pointer-events: none;
+  }
+  .pq-left {
+    border-right: 1px solid rgba(200,151,58,.2);
+    padding-right: 5rem;
+  }
+  .pq-label {
+    font-family: var(--ff-ui); font-size: .52rem; font-weight: 700;
+    letter-spacing: .35em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.2rem;
+    writing-mode: vertical-lr; transform: rotate(180deg);
+    height: 120px;
+  }
+  blockquote {
+    font-family: var(--ff-d); font-size: clamp(1.6rem, 3vw, 2.5rem);
+    font-style: italic; font-weight: 400;
+    color: #fff; line-height: 1.35;
+    position: relative; z-index: 2;
+  }
+  blockquote strong { font-style: normal; font-weight: 700; color: var(--gold); }
+  blockquote cite {
+    display: block; margin-top: 1.5rem;
+    font-family: var(--ff-ui); font-size: .55rem; font-weight: 600;
+    letter-spacing: .25em; text-transform: uppercase;
+    color: rgba(255,255,255,.3); font-style: normal;
+  }
+
+  /* ══════════════════════════════════════════════
+     BIOGRAPHY — STICKY TIMELINE LAYOUT
+  ══════════════════════════════════════════════ */
+  .bio-section {
+    background: var(--teal-deep);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: 100vh;
+  }
+
+  /* Left sticky timeline */
+  .bio-timeline {
+    position: sticky;
+    top: 80px;
+    height: fit-content;
+    padding: 5rem 0 5rem 8%;
+    border-right: 1px solid rgba(255,255,255,.05);
+  }
+  .tl-heading {
+    font-family: var(--ff-ui); font-size: .52rem; font-weight: 700;
+    letter-spacing: .3em; text-transform: uppercase;
+    color: rgba(255,255,255,.25); margin-bottom: 2rem;
+  }
+  .tl-item {
+    display: flex; align-items: flex-start; gap: .8rem;
+    margin-bottom: 1.5rem; cursor: pointer;
+    transition: all .3s;
+  }
+  .tl-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    border: 1px solid rgba(200,151,58,.4);
+    background: transparent; flex-shrink: 0;
+    margin-top: .25rem; transition: all .3s;
+  }
+  .tl-item.active .tl-dot,
+  .tl-item:hover .tl-dot { background: var(--gold); border-color: var(--gold); }
+ 
+  .tl-chapter {
+    font-family: var(--ff-ui); font-size: .52rem; font-weight: 700;
+    letter-spacing: .15em; text-transform: uppercase;
+    color: rgba(255,255,255,.25); margin-bottom: .15rem;
+    transition: color .3s;
+  }
+  .tl-item.active .tl-chapter,
+  .tl-item:hover .tl-chapter { color: var(--gold); }
+  .tl-title {
+    font-family: var(--ff-d); font-size: .9rem; font-style: italic;
+    color: rgba(255,255,255,.35); line-height: 1.3;
+    transition: color .3s;
+  }
+  .tl-item.active .tl-title,
+  .tl-item:hover .tl-title { color: rgba(255,255,255,.75); }
+
+  /* Right bio content */
+  .bio-content {
+    padding: 5rem 8% 5rem 5%;
+  }
+
+  .bio-chapter {
+    padding-bottom: 5rem;
+    margin-bottom: 5rem;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+  }
+  .bio-chapter:last-child { border-bottom: none; }
+
+  .chapter-header {
+    display: flex; align-items: flex-start; gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  .chapter-num {
+    font-family: var(--ff-d); font-size: 5rem; font-weight: 700;
+    color: rgba(200,151,58,.08); line-height: .85; flex-shrink: 0;
+    margin-top: -.5rem;
+  }
+ 
+  .chapter-label {
+    font-family: var(--ff-ui); font-size: .52rem; font-weight: 700;
+    letter-spacing: .3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: .5rem;
+  }
+  .chapter-title {
+    font-family: var(--ff-d); font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+    font-weight: 600; color: #fff; letter-spacing: -.01em; line-height: 1.1;
+  }
+
+  /* Chapter with image */
+  .chapter-body {
+    display: grid; gap: 3rem;
+  }
+  .chapter-body.with-image {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+  .chapter-image {
+    position: relative; overflow: hidden; border-radius: 1px;
+  }
+  .chapter-image img {
+    width: 100%; display: block;
+    filter: saturate(.55) brightness(.6);
+    transition: filter .5s, transform .5s var(--ease);
+  }
+  .chapter-image:hover img { filter: saturate(.7) brightness(.75); transform: scale(1.02); }
+  /* Dark overlay */
+  .chapter-image .img-overlay {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,.45);
+    pointer-events: none; z-index: 1;
+    transition: opacity .4s;
+  }
+  .chapter-image:hover .img-overlay { opacity: .3; }
+  /* Gold corner accent */
+  .chapter-image::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 40px; height: 40px;
+    border-top: 2px solid var(--gold);
+    border-left: 2px solid var(--gold);
+    z-index: 2; pointer-events: none;
+  }
+  .chapter-image::after {
+    content: '';
+    position: absolute; bottom: 0; right: 0;
+    width: 40px; height: 40px;
+    border-bottom: 2px solid var(--gold);
+    border-right: 2px solid var(--gold);
+    z-index: 2; pointer-events: none;
+    opacity: .5;
+  }
+
+  .chapter-text h3 {
+    font-family: var(--ff-d); font-size: 1.15rem; font-weight: 600;
+    color: rgba(255,255,255,.85); line-height: 1.3; margin-bottom: 1.2rem;
+    padding-left: 1rem; border-left: 3px solid var(--gold);
+  }
+  .chapter-text p {
+    font-family: var(--ff-d); font-size: 1rem; line-height: 1.9;
+    color: rgba(255,255,255,.5); font-style: italic; margin-bottom: 1.2rem;
+  }
+  .chapter-text p:last-child { margin-bottom: 0; }
+
+  /* Tag row */
+  .chapter-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.5rem; }
+  .ctag {
+    font-family: var(--ff-ui); font-size: .5rem; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: rgba(255,255,255,.35); padding: .3rem .8rem;
+    border: 1px solid rgba(255,255,255,.08); border-radius: 100px;
+    transition: all .3s;
+  }
+  .ctag:hover { color: var(--gold); border-color: rgba(200,151,58,.3); background: rgba(200,151,58,.06); }
+
+  /* ══════════════════════════════════════════════
+     CREDENTIALS STRIP — DARK CREAM
+  ══════════════════════════════════════════════ */
+  .creds-section {
+    background: var(--cream); color: var(--ink);
+    padding: 6rem 8%;
+  }
+  .creds-header { margin-bottom: 4rem; }
+  .creds-header .label {
+    font-family: var(--ff-ui); font-size: .55rem; font-weight: 700;
+    letter-spacing: .35em; text-transform: uppercase; color: var(--teal);
+    display: flex; align-items: center; gap: .7rem; margin-bottom: 1rem;
+  }
+  .creds-header .label::before { content:''; width:24px; height:2px; background:var(--gold); display:block; }
+  .creds-header h2 {
+    font-family: var(--ff-d); font-size: clamp(2rem, 3.5vw, 3.2rem);
+    font-weight: 700; color: var(--teal); letter-spacing: -.01em;
+  }
+  .creds-header h2 em { font-style: italic; color: var(--gold); }
+
+  .creds-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .cred-card {
+    background: #fff; border: 1px solid var(--border-d);
+    border-radius: 3px; padding: 2rem 1.8rem;
+    position: relative; overflow: hidden;
+    transition: all .35s; border-top: 3px solid transparent;
+  }
+  .cred-card:hover { border-top-color: var(--gold); transform: translateY(-4px); box-shadow: 0 12px 32px rgba(4,71,78,.1); }
+  .cred-icon {
+    font-size: 1.4rem; margin-bottom: 1rem; display: block;
+  }
+  .cred-org {
+    font-family: var(--ff-ui); font-size: .52rem; font-weight: 700;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: var(--teal-lite); margin-bottom: .5rem;
+  }
+  .cred-title {
+    font-family: var(--ff-d); font-size: 1rem; font-weight: 600;
+    color: var(--teal); line-height: 1.3; margin-bottom: .5rem;
+  }
+  .cred-detail {
+    font-family: var(--ff-d); font-size: .88rem; font-style: italic;
+    color: #5a6a6b; line-height: 1.5;
+  }
+
+  /* ══════════════════════════════════════════════
+     AFFILIATIONS TICKER
+  ══════════════════════════════════════════════ */
+  .ticker-wrap {
+    background: var(--teal-deep); padding: 1rem 0;
+    border-top: 1px solid rgba(255,255,255,.06);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    overflow: hidden;
+  }
+  .ticker-track { display: inline-block; animation: ticker 35s linear infinite; white-space: nowrap; }
+  .ticker-track span {
+    font-family: var(--ff-ui); font-size: .58rem; font-weight: 600;
+    letter-spacing: .22em; text-transform: uppercase;
+    color: rgba(255,255,255,.25); padding: 0 2.5rem;
+  }
+  .ticker-track span.gold { color: var(--gold); opacity: .7; }
+  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  /* ══════════════════════════════════════════════
+     CONTACT + FOOTER
+  ══════════════════════════════════════════════ */
+  .contact-section { background:var(--teal-deep); display:grid; grid-template-columns:1fr 1fr; }
+  .contact-left { padding:6rem 5% 6rem 8%; border-right:1px solid rgba(255,255,255,.05); }
+  .contact-left h2 { font-family:var(--ff-d);font-size:2.5rem;font-weight:700;color:#fff;margin-bottom:.4rem;letter-spacing:-.01em; }
+  .contact-left .sub { font-family:var(--ff-d);font-style:italic;font-size:.95rem;color:rgba(255,255,255,.3);margin-bottom:2.5rem; }
+  .ff { margin-bottom:1.4rem; }
+  .ff input,.ff textarea { width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.12);padding:.7rem 0;color:#fff;font-family:var(--ff-d);font-size:1rem;outline:none;transition:border-color .3s; }
+  .ff input::placeholder,.ff textarea::placeholder { color:rgba(255,255,255,.2); }
+  .ff input:focus,.ff textarea:focus { border-bottom-color:var(--gold); }
+  .ff textarea { resize:none;min-height:90px; }
+  .ff-row { display:grid;grid-template-columns:1fr 1fr;gap:1.2rem; }
+  .send-btn { background:var(--gold);color:var(--teal-deep);border:none;padding:.85rem 2.2rem;cursor:pointer;font-family:var(--ff-ui);font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;border-radius:2px;transition:all .3s; }
+  .send-btn:hover { background:var(--gold-lt);transform:translateY(-2px);box-shadow:0 8px 20px rgba(200,151,58,.3); }
+  .contact-right { padding:6rem 8% 6rem 5%;display:flex;flex-direction:column;justify-content:center; }
+  .contact-right h3 { font-family:var(--ff-d);font-style:italic;font-size:1.1rem;color:rgba(255,255,255,.3);margin-bottom:1.8rem; }
+  .socials { display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:2.5rem; }
+  .sc { display:flex;align-items:center;justify-content:center;height:46px;border:1px solid rgba(255,255,255,.08);border-radius:3px;color:rgba(255,255,255,.4);text-decoration:none;font-size:.8rem;font-weight:500;transition:all .3s; }
+  .sc:hover { border-color:var(--gold);color:var(--gold);background:rgba(200,151,58,.07); }
+  .footer-bar { background:#000;padding:1.2rem 8%;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.04); }
+  .footer-bar p { font-family:var(--ff-ui);font-size:.58rem;color:rgba(255,255,255,.15);letter-spacing:.05em; }
+
+  /* REVEAL */
+  .rv { opacity:0;transform:translateY(24px);transition:opacity .85s var(--ease),transform .85s var(--ease); }
+  .rv.vis { opacity:1;transform:translateY(0); }
+  .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+  /* RESPONSIVE */
+  @media(max-width:1100px){
+    .bio-section{grid-template-columns:1fr}
+    .bio-timeline{position:static;padding:3rem 8% 0;border-right:none;border-bottom:1px solid rgba(255,255,255,.05);}
+    .tl-item{display:inline-flex;margin-right:1.5rem;margin-bottom:0;}
+    .bio-timeline{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;}
+    .tl-heading{width:100%;}
+    .chapter-body.with-image{grid-template-columns:1fr}
+    .creds-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:900px){
+    
+    #header{padding:1.2rem 5%}
+    .pullquote-section{grid-template-columns:1fr;gap:2rem}
+    .pq-left{border-right:none;padding-right:0;display:flex;gap:1rem;align-items:center}
+    .pq-label{writing-mode:horizontal-tb;transform:none;height:auto}
+    .contact-section{grid-template-columns:1fr}
+    .contact-right{padding:3rem 5%}
+    .contact-left{border-right:none;padding:5rem 5%}
+    .ff-row{grid-template-columns:1fr}
+    .creds-grid{grid-template-columns:1fr}
+  }
+  </style>
+</head>
+<body>
+
+<div id="prog"></div>
+<div id="mo"></div>
+<nav id="menu">
+  <button id="mc">✕</button>
+  <h2>Navigation</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="http://esvarj.wordpress.com">Health Articles</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+<header id="header">
+  <nav><ul><li><a href="#" id="mt">Menu</a></li></ul></nav>
+</header>
+
+<!-- ══════════════════════════════════════════════
+     OPENING SCREEN
+══════════════════════════════════════════════ -->
+<section class="intro-screen">
+
+  <div class="intro-left">
+    <div class="i-label">About</div>
+
+    <h1 class="i-name">
+      Escriva<br>
+      <em>Josemaria</em>
+    </h1>
+
+    <ul class="i-role-list">
+      <li>Community Health Professional</li>
+      <li>Humanitarian Practitioner</li>
+      <li>Researcher & Program Manager</li>
+      <li>Writer & Public Health Advocate</li>
+    </ul>
+
+    <a href="#bio" class="i-cta">Read the Story ↓</a>
+
+  <div class="intro-chips">
+    <div class="chip">
+      <div class="chip-val">10+</div>
+      <div class="chip-label">Years in public<br>health practice</div>
+    </div>
+    <div class="chip">
+      <div class="chip-val">3</div>
+      <div class="chip-label">Publications &<br>manuscripts</div>
+    </div>
+    <div class="chip">
+      <div class="chip-val">Kenya</div>
+      <div class="chip-label">East Africa<br>focused</div>
+    </div>
+  </div>
+
+</div><!-- /intro-left -->
+
+</section>
+
+<!-- ══════════════════════════════════════════════
+     PULL QUOTE
+══════════════════════════════════════════════ -->
+<div class="pullquote-section rv">
+  <div class="pq-left">
+    <div class="pq-label">On Responsibility</div>
+  </div>
+  <blockquote>
+    To be the <strong>change</strong> is to face the work others ignore, to <strong>speak</strong> when silence is easier, and to take <strong>responsibility</strong> for making the world better — starting today.
+    <cite>— Escriva Josemaria</cite>
+  </blockquote>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     BIOGRAPHY — STICKY TIMELINE
+══════════════════════════════════════════════ -->
+<section class="bio-section" id="bio">
+
+  <!-- Sticky timeline nav -->
+  <div class="bio-timeline">
+    <div class="tl-heading">Chapters</div>
+    <div class="tl-item active" data-target="ch1">
+      <div class="tl-dot"></div>
+      <div class="tl-text">
+        <div class="tl-chapter">01</div>
+        <div class="tl-title">The Practitioner</div>
+      </div>
+    </div>
+    <div class="tl-item" data-target="ch2">
+      <div class="tl-dot"></div>
+      <div class="tl-text">
+        <div class="tl-chapter">02</div>
+        <div class="tl-title">The Framework</div>
+      </div>
+    </div>
+    <div class="tl-item" data-target="ch3">
+      <div class="tl-dot"></div>
+      <div class="tl-text">
+        <div class="tl-chapter">03</div>
+        <div class="tl-title">The Foundation</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bio chapters -->
+  <div class="bio-content">
+
+    <!-- Chapter 1 -->
+    <div class="bio-chapter rv" id="ch1">
+      <div class="chapter-header">
+        <div class="chapter-num">01</div>
+        <div class="chapter-meta">
+          <div class="chapter-label">The Practitioner</div>
+          <h2 class="chapter-title">At the Intersection of Systems,<br>Data & Community</h2>
+        </div>
+      </div>
+      <div class="chapter-body with-image">
+        <div class="chapter-text">
+          <h3>Community health professional and humanitarian practitioner working where public health systems meet on-the-ground realities.</h3>
+          <p>He has worked across hospital systems, NGOs, UN-affiliated programs, and grassroots organizations in Kenya, contributing to community health strengthening, emergency response, vaccination campaigns, and monitoring, evaluation, accountability, and learning systems. His work emphasizes evidence-based decision making, participatory approaches, and real-time feedback mechanisms that improve service delivery and health outcomes.</p>
+          <p>Escriva has supported national and international initiatives including WHO polio eradication campaigns, UNDP communications and outreach, and Red Cross community health promotion. He has collaborated with hospitals, civil society organizations, and local governments to design and implement programs aligned with the Sustainable Development Goals, particularly in maternal and child health, mental health, and health system resilience.</p>
+          <p>As a researcher and writer, he has contributed to academic and professional publications on community mental health, development policy, and applied public health practice — combining field research, mixed-methods analysis, and storytelling to translate complex data into actionable insights.</p>
+          <div class="chapter-tags">
+            <span class="ctag">WHO</span>
+            <span class="ctag">UNDP</span>
+            <span class="ctag">Kenya Red Cross</span>
+            <span class="ctag">Maternal Health</span>
+            <span class="ctag">MEAL Systems</span>
+            <span class="ctag">SDGs</span>
+          </div>
+        </div>
+        <div class="chapter-image">
+          <img src="images/prank.webp" alt="Field work"><div class="img-overlay"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chapter 2 -->
+    <div class="bio-chapter rv" id="ch2">
+      <div class="chapter-header">
+        <div class="chapter-num">02</div>
+        <div class="chapter-meta">
+          <div class="chapter-label">The Framework</div>
+          <h2 class="chapter-title">Bridging Data, Policy<br>& Lived Experience</h2>
+        </div>
+      </div>
+      <div class="chapter-body with-image">
+        <div class="chapter-image">
+          <img src="images/gre.webp" alt="Research and practice"><div class="img-overlay"></div>
+        </div>
+        <div class="chapter-text">
+          <h3>Bridging the gap between evidence and implementation in health programs that are accountable, human-centered, and responsive to real-world complexity.</h3>
+          <p>He works to ensure that data systems do not exist in isolation, but serve as tools for listening to communities, informing adaptive management, and strengthening trust between service providers and beneficiaries.</p>
+          <p>His practice recognizes that effective health interventions must balance quantitative evidence with qualitative insight, institutional requirements with community realities, and global frameworks with local knowledge. By integrating real-time data, community feedback mechanisms, and participatory decision making, Escriva contributes to programs that are not only technically sound but socially legitimate and sustainable.</p>
+          <p>At the core of his work is a commitment to dignity, equity, and learning as drivers of resilient health systems — approaching public health not merely as service delivery, but as a collaborative process of problem-solving that evolves through reflection, accountability, and continuous engagement with the communities it aims to serve.</p>
+          <div class="chapter-tags">
+            <span class="ctag">Adaptive Management</span>
+            <span class="ctag">Participatory Methods</span>
+            <span class="ctag">Data Systems</span>
+            <span class="ctag">Community Feedback</span>
+            <span class="ctag">Health Equity</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chapter 3 -->
+    <div class="bio-chapter rv" id="ch3">
+      <div class="chapter-header">
+        <div class="chapter-num">03</div>
+        <div class="chapter-meta">
+          <div class="chapter-label">The Foundation</div>
+          <h2 class="chapter-title">Education, Training<br>& Continuous Learning</h2>
+        </div>
+      </div>
+      <div class="chapter-body with-image">
+        <div class="chapter-text">
+          <h3>Grounded in a Bachelor of Science in Community Health and Development from the Catholic University of Eastern Africa.</h3>
+          <p>His academic training combined public health theory with applied community-based practice — emphasizing health systems strengthening, social determinants of health, epidemiology, development studies, and participatory approaches to community engagement.</p>
+          <p>In addition to formal university training, Escriva has completed extensive professional development with UNICEF, the Kenya Red Cross Society, and global learning platforms. These programs covered child safeguarding, prevention of sexual exploitation and abuse, humanitarian principles, emergency preparedness and response, project and financial management, monitoring and evaluation, evidence co-creation, and public health reporting.</p>
+          <p>This continuous learning has allowed him to adapt international standards and best practices to local realities, particularly in resource-constrained and emergency settings — remaining equipped to meet communities where they are.</p>
+          <div class="chapter-tags">
+            <span class="ctag">CUEA</span>
+            <span class="ctag">UNICEF Training</span>
+            <span class="ctag">Kenya Red Cross</span>
+            <span class="ctag">Emergency Response</span>
+            <span class="ctag">M&E</span>
+            <span class="ctag">Child Safeguarding</span>
+          </div>
+        </div>
+        <div class="chapter-image">
+          <img src="images/ME.webp" alt="Education and training"><div class="img-overlay"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     AFFILIATIONS TICKER
+══════════════════════════════════════════════ -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="gold">WHO</span><span>Polio Eradication</span>
+    <span class="gold">UNDP</span><span>Communications &amp; Outreach</span>
+    <span class="gold">Kenya Red Cross</span><span>Community Health Promotion</span>
+    <span class="gold">UNICEF</span><span>Child Safeguarding</span>
+    <span class="gold">CUEA</span><span>BSc Community Health</span>
+    <span class="gold">SDGs</span><span>2030 Agenda</span>
+    <span class="gold">WHO</span><span>Polio Eradication</span>
+    <span>UNDP</span><span>Communications &amp; Outreach</span>
+    <span class="gold">Kenya Red Cross</span><span>Community Health Promotion</span>
+    <span>UNICEF</span><span>Child Safeguarding</span>
+    <span class="gold">CUEA</span><span>BSc Community Health</span>
+    <span>SDGs</span><span>2030 Agenda</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     CREDENTIALS
+══════════════════════════════════════════════ -->
+<section class="creds-section">
+  <div class="creds-header rv">
+    <div class="label">Formation</div>
+    <h2>Education &amp; <em>Credentials</em></h2>
+  </div>
+  <div class="creds-grid">
+    <div class="cred-card rv">
+      <span class="cred-icon">🎓</span>
+      <div class="cred-org">Catholic University of Eastern Africa</div>
+      <div class="cred-title">BSc Community Health &amp; Development</div>
+      <div class="cred-detail">Combined public health theory with applied community-based practice across health systems, epidemiology, and development studies.</div>
+    </div>
+    <div class="cred-card rv d1">
+      <span class="cred-icon">🌍</span>
+      <div class="cred-org">UNICEF</div>
+      <div class="cred-title">Child Safeguarding &amp; Protection</div>
+      <div class="cred-detail">Prevention of sexual exploitation and abuse, humanitarian principles, and child rights in program delivery contexts.</div>
+    </div>
+    <div class="cred-card rv d2">
+      <span class="cred-icon">🏥</span>
+      <div class="cred-org">Kenya Red Cross Society</div>
+      <div class="cred-title">Emergency Preparedness &amp; Response</div>
+      <div class="cred-detail">Community health promotion, first responder training, and emergency management aligned with international humanitarian standards.</div>
+    </div>
+    <div class="cred-card rv d1">
+      <span class="cred-icon">📊</span>
+      <div class="cred-org">Global Learning Platforms</div>
+      <div class="cred-title">Monitoring, Evaluation &amp; Learning</div>
+      <div class="cred-detail">Project and financial management, evidence co-creation, MEAL systems design, and adaptive learning in program cycles.</div>
+    </div>
+    <div class="cred-card rv d2">
+      <span class="cred-icon">💉</span>
+      <div class="cred-org">World Health Organization</div>
+      <div class="cred-title">Polio Eradication Campaign Support</div>
+      <div class="cred-detail">National vaccination campaign coordination, community mobilization, and health system strengthening in sub-national settings.</div>
+    </div>
+    <div class="cred-card rv d3">
+      <span class="cred-icon">✍️</span>
+      <div class="cred-org">Academic Publishing</div>
+      <div class="cred-title">Research &amp; Publication</div>
+      <div class="cred-detail">Peer-reviewed and open-access contributions on community mental health, development policy, and applied public health practice.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     CONTACT
+══════════════════════════════════════════════ -->
+<div class="contact-section">
+  <div class="contact-left">
+    <div class="rv" style="font-family:var(--ff-ui);font-size:.58rem;font-weight:600;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;"><span style="display:block;width:24px;height:1px;background:var(--gold)"></span>Get in Touch</div>
+    <h2 class="rv d1">Let's Connect</h2>
+    <p class="sub rv d2">Available for collaboration, research partnerships, and consulting.</p>
+    <form method="POST" action="https://formspree.io/f/xwvpkvzl" class="rv d2">
+      <div class="ff-row ff"><div><input type="text" name="name" placeholder="Name" required></div><div><input type="email" name="email" placeholder="Email" required></div></div>
+      <div class="ff"><textarea name="message" placeholder="Your message…" rows="4"></textarea></div>
+      <button type="submit" class="send-btn">Send Message →</button>
+    </form>
+  </div>
+  <div class="contact-right rv">
+    <h3>Follow the work</h3>
+    <div class="socials">
+      <a class="sc" href="https://x.com/humanistories" target="_blank">𝕏</a>
+      <a class="sc" href="https://web.facebook.com/humanitarian.stories/" target="_blank">f</a>
+      <a class="sc" href="https://www.instagram.com/humanitarian_stories/" target="_blank">◎</a>
+      <a class="sc" href="https://www.linkedin.com/in/josemariaescriva/" target="_blank">in</a>
+      <a class="sc" href="https://github.com/escrivajosemaria" target="_blank">⌥</a>
+      <a class="sc" href="https://escrivajosemaria.github.io/escopy.io/" target="_blank">⊕</a>
+      <a class="sc" href="https://www.youtube.com/@escrivahealthcollective" target="_blank">▶</a>
+      <a class="sc" href="http://esvarj.wordpress.com" target="_blank">W</a>
+    </div>
+  </div>
+</div>
+
+<div class="footer-bar">
+  <p>&copy; Escriva Josemaria 2024</p>
+  <p>Design: escriva.https</p>
+</div>
+
+<script>
+(function(){
+  const pb = document.getElementById('prog');
+  window.addEventListener('scroll',()=>{
+    const s = document.documentElement;
+    pb.style.width = (window.scrollY / (s.scrollHeight - window.innerHeight) * 100) + '%';
+  },{passive:true});
+
+  const hdr = document.getElementById('header');
+  window.addEventListener('scroll',()=>hdr.classList.toggle('solid', window.scrollY > 60),{passive:true});
+
+  const menuEl = document.getElementById('menu'), ov = document.getElementById('mo');
+  document.getElementById('mt').addEventListener('click',e=>{e.preventDefault();menuEl.classList.add('on');ov.classList.add('on');});
+  document.getElementById('mc').addEventListener('click',()=>{menuEl.classList.remove('on');ov.classList.remove('on');});
+  ov.addEventListener('click',()=>{menuEl.classList.remove('on');ov.classList.remove('on');});
+
+  /* REVEAL */
+  const rvObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('vis');rvObs.unobserve(e.target);} });
+  },{threshold:.08, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.rv').forEach(el=>rvObs.observe(el));
+
+  /* STICKY TIMELINE active state */
+  const chapters = document.querySelectorAll('.bio-chapter');
+  const tlItems = document.querySelectorAll('.tl-item');
+  const chObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const id = e.target.id;
+        tlItems.forEach(t=>{
+          t.classList.toggle('active', t.dataset.target === id);
+        });
+      }
+    });
+  },{threshold:.4});
+  chapters.forEach(ch=>chObs.observe(ch));
+
+  /* Timeline click scroll */
+  tlItems.forEach(item=>{
+    item.addEventListener('click',()=>{
+      const target = document.getElementById(item.dataset.target);
+      if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+})();
+</script>
+</body>
+</html>

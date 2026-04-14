@@ -1,0 +1,820 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Enroll — Escriva Health Collective</title>
+  <link rel="shortcut icon" href="images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+  :root {
+    --teal:      #04474e;
+    --teal-deep: #020d0e;
+    --teal-mid:  #075f6a;
+    --teal-lite: #0d9db0;
+    --gold:      #c8973a;
+    --gold-lt:   #e8b65a;
+    --cream:     #faf8f4;
+    --ink:       #0d1a1b;
+    --border:    rgba(255,255,255,.07);
+    --border-d:  rgba(4,71,78,.15);
+    --ff-d:      'EB Garamond', Georgia, serif;
+    --ff-ui:     'Josefin Sans', sans-serif;
+    --ease:      cubic-bezier(0.4,0,0.2,1);
+  }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { font-family:var(--ff-d); background:var(--teal-deep); color:#fff; overflow-x:hidden; }
+  ::-webkit-scrollbar { width:3px; }
+  ::-webkit-scrollbar-track { background:var(--teal-deep); }
+  ::-webkit-scrollbar-thumb { background:var(--gold); }
+
+  /* PROGRESS */
+  #prog { position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--teal-lite),var(--gold));z-index:9000;width:0;transition:width .08s linear; }
+
+  /* HEADER */
+  #header { position:fixed;top:0;left:0;right:0;z-index:800;padding:1.2rem 4rem;display:flex;justify-content:flex-end;transition:background .4s; }
+  #header.solid { background:rgba(2,13,14,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border); }
+  #header nav ul { list-style:none;display:flex; }
+  #header nav ul li a { font-family:var(--ff-ui);font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);text-decoration:none;padding:.5rem 1rem;border:1px solid rgba(255,255,255,.15);border-radius:2px;transition:all .3s; }
+  #header nav ul li a:hover { color:var(--gold);border-color:var(--gold);background:rgba(200,151,58,.08); }
+
+  /* SIDE MENU */
+  #mo { display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1999;backdrop-filter:blur(4px); }
+  #mo.on { display:block; }
+  #menu { position:fixed;top:0;right:-380px;width:380px;height:100vh;background:var(--teal);z-index:2000;padding:5rem 3.5rem 3rem;transition:right .45s cubic-bezier(.77,0,.18,1); }
+  #menu.on { right:0; }
+  #mc { position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:rgba(255,255,255,.6);font-size:1.4rem;cursor:pointer;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s; }
+  #mc:hover { background:rgba(255,255,255,.1);color:#fff; }
+  #menu h2 { font-family:var(--ff-ui);font-size:.58rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:2.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,.1); }
+  #menu ul { list-style:none; }
+  #menu ul li { margin-bottom:.1rem;opacity:0;transform:translateX(24px);transition:all .35s; }
+  #menu.on ul li { opacity:1;transform:translateX(0); }
+  #menu.on ul li:nth-child(1){transition-delay:.08s} #menu.on ul li:nth-child(2){transition-delay:.14s}
+  #menu.on ul li:nth-child(3){transition-delay:.2s}  #menu.on ul li:nth-child(4){transition-delay:.26s}
+  #menu ul li a { display:block;font-family:var(--ff-d);font-size:1.5rem;color:rgba(255,255,255,.82);text-decoration:none;padding:.65rem 0;border-bottom:1px solid rgba(255,255,255,.07);transition:color .3s,padding-left .3s; }
+  #menu ul li a:hover { color:var(--gold);padding-left:.5rem; }
+
+  /* ═══ SPLIT HERO ══════════════════════════════════════════════════ */
+  .split-hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Left Panel — full height editorial */
+  .hero-panel-left {
+    background: var(--teal);
+    padding: 8rem 5% 5rem 8%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .hero-panel-left::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 59px,
+      rgba(255,255,255,.03) 60px
+    );
+    pointer-events: none;
+  }
+  .hpl-overline {
+    font-family: var(--ff-ui);
+    font-size: .55rem; font-weight: 700;
+    letter-spacing: .4em; text-transform: uppercase;
+    color: var(--gold);
+    display: flex; align-items: center; gap: .8rem;
+    opacity: 0; animation: fadeUp .8s var(--ease) .3s forwards;
+  }
+  .hpl-overline::before { content:''; width:28px; height:1px; background:var(--gold); display:block; }
+
+  .hpl-title {
+    font-family: var(--ff-d);
+    font-size: clamp(3.2rem, 5.5vw, 6rem);
+    font-weight: 700; line-height: .92;
+    letter-spacing: -.015em;
+    color: #fff;
+    margin: 1.8rem 0 1.6rem;
+    opacity: 0; animation: fadeUp 1s var(--ease) .5s forwards;
+  }
+  .hpl-title em { font-style: italic; color: var(--gold); }
+
+  .hpl-body {
+    font-family: var(--ff-d);
+    font-size: 1.05rem; font-style: italic;
+    color: rgba(255,255,255,.55);
+    line-height: 1.85; max-width: 500px;
+    border-left: 3px solid rgba(200,151,58,.4);
+    padding-left: 1.2rem;
+    opacity: 0; animation: fadeUp .9s var(--ease) .75s forwards;
+  }
+
+  /* Pillars strip */
+  .hpl-pillars {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: .8rem;
+    margin-top: 3rem;
+    opacity: 0; animation: fadeUp .9s var(--ease) 1s forwards;
+  }
+  .pillar {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 3px;
+    padding: 1.2rem 1rem;
+    position: relative;
+    overflow: hidden;
+    transition: background .3s, border-color .3s;
+  }
+  .pillar::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--gold); opacity: 0; transition: opacity .3s;
+  }
+  .pillar:hover { background: rgba(200,151,58,.07); border-color: rgba(200,151,58,.25); }
+  .pillar:hover::before { opacity: 1; }
+  .pillar-num {
+    font-family: var(--ff-d); font-size: 2.2rem; font-weight: 700;
+    color: rgba(200,151,58,.2); line-height: 1; margin-bottom: .5rem;
+  }
+  .pillar-title {
+    font-family: var(--ff-ui); font-size: .58rem; font-weight: 700;
+    letter-spacing: .18em; text-transform: uppercase;
+    color: rgba(255,255,255,.7); margin-bottom: .3rem;
+  }
+  .pillar-desc {
+    font-family: var(--ff-d); font-size: .88rem; font-style: italic;
+    color: rgba(255,255,255,.35); line-height: 1.5;
+  }
+
+  /* Collective logo area */
+  .hpl-logo-row {
+    display: flex; align-items: center; gap: 1rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid rgba(255,255,255,.08);
+    margin-top: 2.5rem;
+    opacity: 0; animation: fadeUp .8s var(--ease) 1.2s forwards;
+  }
+  .logo-circle {
+    width: 56px; height: 56px; border-radius: 50%;
+    overflow: hidden; flex-shrink: 0;
+    border: 1px solid rgba(200,151,58,.3);
+  }
+  .logo-circle img { width: 100%; height: 100%; object-fit: cover; }
+
+  .logo-name {
+    font-family: var(--ff-d); font-size: 1rem; font-weight: 600;
+    color: #fff; margin-bottom: .1rem;
+  }
+  .logo-sub {
+    font-family: var(--ff-ui); font-size: .5rem; font-weight: 600;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: rgba(255,255,255,.3);
+  }
+
+  /* Right panel — form */
+  .hero-panel-right {
+    background: var(--teal-deep);
+    padding: 8rem 8% 5rem 5%;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative;
+  }
+  .form-eyebrow {
+    font-family: var(--ff-ui); font-size: .55rem; font-weight: 700;
+    letter-spacing: .35em; text-transform: uppercase;
+    color: var(--teal-lite); margin-bottom: 1.2rem;
+    opacity: 0; animation: fadeUp .8s var(--ease) .4s forwards;
+  }
+  .form-title {
+    font-family: var(--ff-d); font-size: 2rem; font-weight: 600;
+    color: #fff; letter-spacing: -.01em; margin-bottom: .5rem;
+    opacity: 0; animation: fadeUp .8s var(--ease) .55s forwards;
+  }
+  .form-sub {
+    font-family: var(--ff-d); font-style: italic; font-size: .95rem;
+    color: rgba(255,255,255,.3); margin-bottom: 2.5rem;
+    opacity: 0; animation: fadeUp .8s var(--ease) .7s forwards;
+  }
+  .enroll-form {
+    opacity: 0; animation: fadeUp .9s var(--ease) .9s forwards;
+  }
+
+  /* Form field groups */
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .form-group { margin-bottom: 1rem; }
+  .form-label {
+    font-family: var(--ff-ui); font-size: .52rem; font-weight: 700;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: rgba(255,255,255,.35); display: block; margin-bottom: .5rem;
+  }
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    background: rgba(255,255,255,.04);
+    border: none; border-bottom: 1px solid rgba(255,255,255,.12);
+    padding: .75rem 0;
+    color: #fff;
+    font-family: var(--ff-d); font-size: 1rem;
+    outline: none; transition: border-color .3s;
+    border-radius: 0;
+  }
+  .form-input::placeholder, .form-textarea::placeholder { color: rgba(255,255,255,.2); }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-bottom-color: var(--gold); }
+  .form-select {
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(255,255,255,.3)'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0 center;
+    padding-right: 1.5rem;
+    cursor: pointer;
+  }
+  .form-select option { background: var(--teal-deep); color: #fff; }
+  .form-textarea { resize: none; min-height: 80px; border: 1px solid rgba(255,255,255,.08); padding: .75rem; border-radius: 2px; }
+  .form-textarea:focus { border-color: var(--gold); }
+
+  /* Intent selector — pill radio buttons */
+  .intent-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: .5rem; margin-top: .5rem;
+  }
+  .intent-pill input { display: none; }
+  .intent-pill label {
+    display: block; cursor: pointer;
+    font-family: var(--ff-ui); font-size: .52rem; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: rgba(255,255,255,.4);
+    padding: .65rem .8rem;
+    border: 1px solid rgba(255,255,255,.1); border-radius: 2px;
+    text-align: center;
+    transition: all .3s;
+  }
+  .intent-pill input:checked + label {
+    color: var(--gold);
+    border-color: rgba(200,151,58,.5);
+    background: rgba(200,151,58,.08);
+  }
+  .intent-pill label:hover { color: rgba(255,255,255,.7); border-color: rgba(255,255,255,.2); }
+
+  .submit-row {
+    display: flex; align-items: center; gap: 1.5rem;
+    margin-top: 1.8rem;
+  }
+  .submit-btn {
+    background: var(--gold); color: var(--teal-deep);
+    border: none; padding: .95rem 2.4rem;
+    font-family: var(--ff-ui); font-size: .65rem;
+    font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+    border-radius: 2px; cursor: pointer;
+    transition: all .3s;
+  }
+  .submit-btn:hover { background: var(--gold-lt); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,151,58,.3); }
+  .submit-note {
+    font-family: var(--ff-d); font-style: italic; font-size: .82rem;
+    color: rgba(255,255,255,.2); line-height: 1.5;
+  }
+
+  /* ═══ FEATURE MARQUEE ══════════════════════════════════════════════ */
+  .marquee-wrap {
+    background: var(--gold);
+    padding: .75rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-track {
+    display: inline-block;
+    animation: marquee 30s linear infinite;
+  }
+  .marquee-track span {
+    font-family: var(--ff-ui); font-size: .6rem; font-weight: 700;
+    letter-spacing: .25em; text-transform: uppercase;
+    color: var(--teal-deep); padding: 0 2.5rem;
+  }
+  .marquee-track span::before { content: '—'; margin-right: 2.5rem; opacity: .4; }
+  @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  /* ═══ WHO JOINS — 3-COLUMN PORTRAIT SECTION ═══════════════════════ */
+  .who-section {
+    background: var(--teal);
+    padding: 7rem 8%;
+  }
+  .who-header {
+    display: flex; align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 4rem;
+  }
+  .who-header h2 {
+    font-family: var(--ff-d); font-size: clamp(2.2rem,4vw,3.8rem);
+    font-weight: 700; color: #fff; letter-spacing: -.015em;
+    line-height: .95;
+  }
+  .who-header h2 em { font-style: italic; color: var(--gold); }
+  .who-header p {
+    font-family: var(--ff-d); font-style: italic;
+    font-size: 1rem; color: rgba(255,255,255,.4);
+    max-width: 280px; text-align: right; line-height: 1.7;
+  }
+
+  .portrait-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1.5px;
+  }
+  .portrait-card {
+    position: relative; overflow: hidden;
+    aspect-ratio: 3/4;
+    background: var(--teal-mid);
+  }
+  .portrait-card img {
+    width: 100%; height: 100%; object-fit: cover;
+    display: block;
+    transition: transform .6s var(--ease), filter .5s;
+    filter: saturate(.6);
+  }
+  .portrait-card:hover img { transform: scale(1.05); filter: saturate(.8); }
+  .portrait-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(2,13,14,.95) 0%, rgba(2,13,14,.1) 55%, transparent 100%);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 1.8rem 1.5rem;
+  }
+  .po-role {
+    font-family: var(--ff-ui); font-size: .5rem; font-weight: 700;
+    letter-spacing: .22em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: .5rem;
+  }
+  .po-title {
+    font-family: var(--ff-d); font-size: 1.2rem; font-weight: 600;
+    color: #fff; line-height: 1.15; margin-bottom: .6rem;
+  }
+  .po-desc {
+    font-family: var(--ff-d); font-style: italic; font-size: .85rem;
+    color: rgba(255,255,255,.5); line-height: 1.5;
+    max-height: 0; overflow: hidden;
+    transition: max-height .4s var(--ease), opacity .4s;
+    opacity: 0;
+  }
+  .portrait-card:hover .po-desc { max-height: 100px; opacity: 1; }
+
+  /* ═══ WHAT YOU GET — HORIZONTAL SCROLL CARDS ══════════════════════ */
+  .benefits-section {
+    background: var(--teal-deep);
+    padding: 7rem 8%;
+  }
+  .benefits-header { margin-bottom: 3.5rem; }
+  .benefits-header .label {
+    font-family: var(--ff-ui); font-size: .55rem; font-weight: 700;
+    letter-spacing: .35em; text-transform: uppercase;
+    color: var(--gold); display: flex; align-items: center; gap: .7rem;
+    margin-bottom: 1rem;
+  }
+  .benefits-header .label::before { content:''; display:block; width:28px; height:1px; background:var(--gold); }
+  .benefits-header h2 {
+    font-family: var(--ff-d); font-size: clamp(2rem,3.5vw,3.2rem);
+    font-weight: 700; color: #fff; letter-spacing: -.01em;
+  }
+  .benefits-header h2 em { font-style:italic; color:var(--gold); }
+
+  .benefits-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    border: 1px solid rgba(255,255,255,.07);
+  }
+  .benefit-cell {
+    padding: 2.5rem 2rem;
+    border-right: 1px solid rgba(255,255,255,.07);
+    position: relative; overflow: hidden;
+    transition: background .35s;
+  }
+  .benefit-cell:last-child { border-right: none; }
+  .benefit-cell:hover { background: rgba(255,255,255,.03); }
+  .benefit-cell::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: var(--gold); transform: scaleX(0);
+    transform-origin: left; transition: transform .4s var(--ease);
+  }
+  .benefit-cell:hover::after { transform: scaleX(1); }
+  .bc-num {
+    font-family: var(--ff-d); font-size: 3.5rem; font-weight: 700;
+    color: rgba(200,151,58,.12); line-height: 1; margin-bottom: 1rem;
+  }
+  .bc-title {
+    font-family: var(--ff-ui); font-size: .65rem; font-weight: 700;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: rgba(255,255,255,.7); margin-bottom: .8rem;
+  }
+  .bc-desc {
+    font-family: var(--ff-d); font-style: italic; font-size: .95rem;
+    color: rgba(255,255,255,.4); line-height: 1.75;
+  }
+
+  /* ═══ CALENDAR SECTION ═════════════════════════════════════════════ */
+  .cal-section {
+    background: var(--cream);
+    padding: 7rem 8%;
+    color: var(--ink);
+  }
+  .cal-header { margin-bottom: 3rem; }
+  .cal-header .label {
+    font-family: var(--ff-ui); font-size: .55rem; font-weight: 700;
+    letter-spacing: .35em; text-transform: uppercase;
+    color: var(--teal); display: flex; align-items: center; gap: .7rem;
+    margin-bottom: 1rem;
+  }
+  .cal-header .label::before { content:''; display:block; width:24px; height:2px; background:var(--gold); }
+  .cal-header h2 {
+    font-family: var(--ff-d); font-size: clamp(2rem,3.5vw,3rem);
+    font-weight: 700; color: var(--teal); letter-spacing: -.01em;
+    margin-bottom: .7rem;
+  }
+  .cal-header p {
+    font-family: var(--ff-d); font-style: italic; font-size: 1rem;
+    color: #5a6a6b; max-width: 540px; line-height: 1.8;
+  }
+  .cal-frame {
+    border: 1px solid var(--border-d); border-radius: 3px;
+    overflow: hidden;
+  }
+  .cal-frame iframe {
+    display: block; width: 100%; height: 560px; border: none;
+  }
+
+  /* ═══ CONTACT FOOTER ═══════════════════════════════════════════════ */
+  .contact-bar {
+    background: var(--teal-deep);
+    display: grid; grid-template-columns: 1fr 1fr;
+  }
+  .contact-left { padding:6rem 5% 6rem 8%; border-right:1px solid rgba(255,255,255,.05); }
+  .contact-left h2 { font-family:var(--ff-d);font-size:2.5rem;font-weight:700;color:#fff;margin-bottom:.4rem;letter-spacing:-.01em; }
+  .contact-left .sub { font-family:var(--ff-d);font-style:italic;font-size:.95rem;color:rgba(255,255,255,.3);margin-bottom:2.5rem; }
+  .ff { margin-bottom:1.4rem; }
+  .ff input,.ff textarea { width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.12);padding:.7rem 0;color:#fff;font-family:var(--ff-d);font-size:1rem;outline:none;transition:border-color .3s; }
+  .ff input::placeholder,.ff textarea::placeholder { color:rgba(255,255,255,.2); }
+  .ff input:focus,.ff textarea:focus { border-bottom-color:var(--gold); }
+  .ff textarea { resize:none;min-height:90px; }
+  .ff-row { display:grid;grid-template-columns:1fr 1fr;gap:1.2rem; }
+  .send-btn { background:var(--gold);color:var(--teal-deep);border:none;padding:.85rem 2.2rem;cursor:pointer;font-family:var(--ff-ui);font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;border-radius:2px;transition:all .3s; }
+  .send-btn:hover { background:var(--gold-lt);transform:translateY(-2px);box-shadow:0 8px 20px rgba(200,151,58,.3); }
+  .contact-right { padding:6rem 8% 6rem 5%;display:flex;flex-direction:column;justify-content:center; }
+  .contact-right h3 { font-family:var(--ff-d);font-style:italic;font-size:1.1rem;color:rgba(255,255,255,.3);margin-bottom:1.8rem; }
+  .socials { display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:2.5rem; }
+  .sc { display:flex;align-items:center;justify-content:center;height:46px;border:1px solid rgba(255,255,255,.08);border-radius:3px;color:rgba(255,255,255,.4);text-decoration:none;font-size:.8rem;font-weight:500;transition:all .3s; }
+  .sc:hover { border-color:var(--gold);color:var(--gold);background:rgba(200,151,58,.07); }
+
+  .footer-bar { background:#000;padding:1.2rem 8%;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.04); }
+  .footer-bar p { font-family:var(--ff-ui);font-size:.58rem;color:rgba(255,255,255,.15);letter-spacing:.05em; }
+
+  /* REVEAL */
+  .rv { opacity:0;transform:translateY(24px);transition:opacity .85s var(--ease),transform .85s var(--ease); }
+  .rv.vis { opacity:1;transform:translateY(0); }
+  .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+  /* RESPONSIVE */
+  @media(max-width:1100px){
+    .portrait-grid{grid-template-columns:repeat(2,1fr)}
+    .benefits-grid{grid-template-columns:1fr 1fr}
+    .benefit-cell:nth-child(2){border-right:none}
+    .benefit-cell:nth-child(3){border-right:none}
+  }
+  @media(max-width:900px){
+    .split-hero{grid-template-columns:1fr}
+    .hero-panel-left{min-height:auto;padding:7rem 5% 4rem}
+    .hero-panel-right{padding:4rem 5%}
+    #header{padding:1.2rem 5%}
+    .who-header{flex-direction:column;gap:1rem;align-items:flex-start}
+    .who-header p{text-align:left}
+    .portrait-grid{grid-template-columns:1fr 1fr}
+    .contact-bar{grid-template-columns:1fr}
+    .contact-right{padding:3rem 5%}
+    .contact-left{border-right:none;padding:5rem 5%}
+    .ff-row{grid-template-columns:1fr}
+    .form-row{grid-template-columns:1fr}
+    .intent-grid{grid-template-columns:1fr}
+    .benefits-grid{grid-template-columns:1fr}
+    .benefit-cell{border-right:none}
+  }
+  </style>
+</head>
+<body>
+
+<div id="prog"></div>
+<div id="mo"></div>
+<nav id="menu">
+  <button id="mc">✕</button>
+  <h2>Navigation</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="http://esvarj.wordpress.com">Health Articles</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<header id="header">
+  <nav><ul><li><a href="#" id="mt">Menu</a></li></ul></nav>
+</header>
+
+<!-- ═══ SPLIT HERO ════════════════════════════════════════════════════ -->
+<section class="split-hero">
+
+  <!-- LEFT: Editorial identity panel -->
+  <div class="hero-panel-left">
+    <div>
+      <div class="hpl-overline">Escriva Health Collective</div>
+      <h1 class="hpl-title">
+        Learn.<br>
+        Serve.<br>
+        <em>Grow.</em>
+      </h1>
+      <p class="hpl-body">
+        An online learning and action community for students, healthcare professionals, educators, and community-focused individuals committed to growth, service, and real-world impact in health and humanitarian spaces.
+      </p>
+    </div>
+
+    <div>
+      <div class="hpl-pillars">
+        <div class="pillar">
+          <div class="pillar-num">01</div>
+          <div class="pillar-title">Shared Learning</div>
+          <div class="pillar-desc">Health talks, mentorship, and guided discussions that bridge theory and practice.</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">02</div>
+          <div class="pillar-title">Community Action</div>
+          <div class="pillar-desc">Volunteer and humanitarian engagement rooted in your local context.</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">03</div>
+          <div class="pillar-title">Career & Growth</div>
+          <div class="pillar-desc">Pathways, exposure, and professional development for early-career professionals.</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">04</div>
+          <div class="pillar-title">Open Access</div>
+          <div class="pillar-desc">Sessions, resources, and networks available across East Africa and beyond.</div>
+        </div>
+      </div>
+
+      <div class="hpl-logo-row">
+        <div class="logo-circle">
+          <img src="https://placehold.co/56x56/04474e/c8973a?text=EHC" alt="Escriva Health Collective">
+        </div>
+        <div class="logo-text-block">
+          <div class="logo-name">Escriva Health Collective</div>
+          <div class="logo-sub">Est. Community · East Africa</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Enrollment form -->
+  <div class="hero-panel-right">
+    <div class="form-eyebrow">Enrollment Request</div>
+    <h2 class="form-title">Join the Collective</h2>
+    <p class="form-sub">Participation is open to those willing to engage thoughtfully, learn collaboratively, and contribute positively.</p>
+
+    <form class="enroll-form" method="POST" action="https://formspree.io/f/xwvpkvzl">
+      <input type="hidden" name="_subject" value="New Enrollment Request – Escriva Health Collective">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="name">Full Name</label>
+          <input class="form-input" id="name" type="text" name="full_name" placeholder="Your full name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <input class="form-input" id="email" type="email" name="email" placeholder="your@email.com" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="profession">Role or Profession</label>
+          <input class="form-input" id="profession" type="text" name="profession" placeholder="Student, Nurse, Educator…">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="institution">Institution / Organization</label>
+          <input class="form-input" id="institution" type="text" name="institution" placeholder="Where you work or study">
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:1.2rem;">
+        <label class="form-label">I am enrolling to —</label>
+        <div class="intent-grid">
+          <div class="intent-pill">
+            <input type="radio" name="enrollment_intent" id="i1" value="Join the Escriva Health Collective" checked>
+            <label for="i1">Join the Collective</label>
+          </div>
+          <div class="intent-pill">
+            <input type="radio" name="enrollment_intent" id="i2" value="Volunteer or participate in humanitarian work">
+            <label for="i2">Volunteer / Humanitarian</label>
+          </div>
+          <div class="intent-pill">
+            <input type="radio" name="enrollment_intent" id="i3" value="Attend or host a health talk">
+            <label for="i3">Health Talk / Session</label>
+          </div>
+          <div class="intent-pill">
+            <input type="radio" name="enrollment_intent" id="i4" value="Explore collaboration or partnership">
+            <label for="i4">Collaborate / Partner</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="interest">Main Area of Interest</label>
+        <select class="form-select" id="interest" name="main_interest">
+          <option>Community &amp; Public Health</option>
+          <option>Humanitarian &amp; Volunteer Work</option>
+          <option>Career Development &amp; Mentorship</option>
+          <option>Health Education &amp; Teaching</option>
+          <option>Innovation &amp; Health Systems</option>
+          <option>Research &amp; Learning</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="reason">How you hope to contribute or benefit</label>
+        <textarea class="form-textarea" id="reason" name="reason_and_contribution" placeholder="A brief note on your intent — no minimum length required." rows="3"></textarea>
+      </div>
+
+      <div class="submit-row">
+        <button type="submit" class="submit-btn">Request Enrollment →</button>
+        <p class="submit-note">Requests are reviewed. Next steps shared by email.</p>
+      </div>
+    </form>
+  </div>
+
+</section>
+
+<!-- ═══ MARQUEE ═══════════════════════════════════════════════════════ -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Health Education</span><span>Community Action</span><span>Mentorship</span>
+    <span>East Africa</span><span>Public Health</span><span>Shared Learning</span>
+    <span>Volunteer</span><span>Innovation</span><span>Research</span><span>Humanitarian</span>
+    <span>Health Education</span><span>Community Action</span><span>Mentorship</span>
+    <span>East Africa</span><span>Public Health</span><span>Shared Learning</span>
+    <span>Volunteer</span><span>Innovation</span><span>Research</span><span>Humanitarian</span>
+  </div>
+</div>
+
+<!-- ═══ WHO JOINS ═════════════════════════════════════════════════════ -->
+<section class="who-section">
+  <div class="who-header rv">
+    <h2>Who<br>the Collective<br><em>is for</em></h2>
+    <p>Every background, every stage. What matters is curiosity, responsibility, and a commitment to meaningful engagement.</p>
+  </div>
+
+  <div class="portrait-grid">
+    <div class="portrait-card rv">
+      <img src="https://placehold.co/400x533/04474e/0d9db0?text=Students" alt="Students">
+      <div class="portrait-overlay">
+        <div class="po-role">Students</div>
+        <div class="po-title">Early Learners &<br>Future Practitioners</div>
+        <div class="po-desc">Gain insight, direction, and exposure to real-world health and humanitarian challenges before entering the field.</div>
+      </div>
+    </div>
+    <div class="portrait-card rv d1">
+      <img src="https://placehold.co/400x533/075f6a/c8973a?text=Healthcare+Pros" alt="Healthcare Professionals">
+      <div class="portrait-overlay">
+        <div class="po-role">Healthcare Professionals</div>
+        <div class="po-title">Clinicians &<br>Public Health Workers</div>
+        <div class="po-desc">Share experience, mentor the next generation, and engage in conversations that shape health practice and policy.</div>
+      </div>
+    </div>
+    <div class="portrait-card rv d2">
+      <img src="https://placehold.co/400x533/020d0e/e8b65a?text=Educators" alt="Educators">
+      <div class="portrait-overlay">
+        <div class="po-role">Educators</div>
+        <div class="po-title">Teachers &<br>Academic Leaders</div>
+        <div class="po-desc">Host sessions, propose workshops, and collaborate with a community committed to evidence-informed health learning.</div>
+      </div>
+    </div>
+    <div class="portrait-card rv d3">
+      <img src="https://placehold.co/400x533/04474e/faf8f4?text=Community+Leaders" alt="Community Leaders">
+      <div class="portrait-overlay">
+        <div class="po-role">Community Leaders</div>
+        <div class="po-title">Volunteers &<br>Change-Makers</div>
+        <div class="po-desc">Bring lived experience, on-the-ground perspective, and volunteer energy to dialogues that bridge knowledge and action.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHAT YOU GET ════════════════════════════════════════════════== -->
+<section class="benefits-section">
+  <div class="benefits-header rv">
+    <div class="label">Membership Value</div>
+    <h2>What the Collective<br><em>gives you</em></h2>
+  </div>
+
+  <div class="benefits-grid">
+    <div class="benefit-cell rv">
+      <div class="bc-num">I</div>
+      <div class="bc-title">Guided Health Talks</div>
+      <div class="bc-desc">Regular online sessions led by practitioners and experts across healthcare, public health, and humanitarian work — curated for depth, not just breadth.</div>
+    </div>
+    <div class="benefit-cell rv d1">
+      <div class="bc-num">II</div>
+      <div class="bc-title">Mentorship Access</div>
+      <div class="bc-desc">Career discussions and mentorship pathways connecting early-career professionals and students with experienced practitioners willing to guide and share.</div>
+    </div>
+    <div class="benefit-cell rv d2">
+      <div class="bc-num">III</div>
+      <div class="bc-title">Volunteer Engagement</div>
+      <div class="bc-desc">Opportunities to contribute to humanitarian and community health initiatives, bringing your skills and energy to places where they are genuinely needed.</div>
+    </div>
+    <div class="benefit-cell rv d3">
+      <div class="bc-num">IV</div>
+      <div class="bc-title">Innovation Dialogues</div>
+      <div class="bc-desc">Structured conversations around health systems, technology, and creative solutions to public health challenges in East Africa and beyond.</div>
+    </div>
+    <div class="benefit-cell rv d1">
+      <div class="bc-num">V</div>
+      <div class="bc-title">Research & Learning</div>
+      <div class="bc-desc">Access to reading circles, discussion on current evidence, and exposure to ongoing research in public health and development relevant to the region.</div>
+    </div>
+    <div class="benefit-cell rv d2">
+      <div class="bc-num">VI</div>
+      <div class="bc-title">Diverse Network</div>
+      <div class="bc-desc">A community of students, professionals, educators, and leaders who bring varied backgrounds — making every session and exchange genuinely cross-disciplinary.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CALENDAR ══════════════════════════════════════════════════════ -->
+<section class="cal-section">
+  <div class="cal-header rv">
+    <div class="label">Sessions &amp; Events</div>
+    <h2>Upcoming in the Collective</h2>
+    <p>Explore scheduled discussions, health talks, and community activities. All times are East Africa Time (EAT).</p>
+  </div>
+  <div class="cal-frame rv d1">
+    <iframe
+      src="https://calendar.google.com/calendar/embed?src=018bc836bbd15a79f044371425dff3daacd27474428d8b243e44ffd7c56c4ba3%40group.calendar.google.com&ctz=Africa%2FNairobi"
+      scrolling="no"
+      title="Escriva Health Collective — Upcoming Sessions">
+    </iframe>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ════════════════════════════════════════════════════════ -->
+<div class="contact-bar">
+  <div class="contact-left">
+    <div class="rv" style="font-family:var(--ff-ui);font-size:.58rem;font-weight:600;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;"><span style="display:block;width:24px;height:1px;background:var(--gold)"></span>Get in Touch</div>
+    <h2 class="rv d1">Questions & Enquiries</h2>
+    <p class="sub rv d2">Reach out about sessions, partnerships, or anything else.</p>
+    <form method="POST" action="https://formspree.io/f/xwvpkvzl" class="rv d2">
+      <div class="ff-row ff"><div><input type="text" name="name" placeholder="Name" required></div><div><input type="email" name="email" placeholder="Email" required></div></div>
+      <div class="ff"><textarea name="message" placeholder="Your message…" rows="4"></textarea></div>
+      <button type="submit" class="send-btn">Send Message →</button>
+    </form>
+  </div>
+  <div class="contact-right rv">
+    <h3>Connect &amp; follow the Collective</h3>
+    <div class="socials">
+      <a class="sc" href="https://x.com/humanistories" target="_blank">𝕏</a>
+      <a class="sc" href="https://web.facebook.com/humanitarian.stories/" target="_blank">f</a>
+      <a class="sc" href="https://www.instagram.com/humanitarian_stories/" target="_blank">◎</a>
+      <a class="sc" href="https://www.linkedin.com/in/josemariaescriva/" target="_blank">in</a>
+      <a class="sc" href="https://github.com/escrivajosemaria" target="_blank">⌥</a>
+      <a class="sc" href="https://escrivajosemaria.github.io/escopy.io/" target="_blank">⊕</a>
+      <a class="sc" href="https://www.youtube.com/@escrivahealthcollective" target="_blank">▶</a>
+      <a class="sc" href="http://esvarj.wordpress.com" target="_blank">W</a>
+    </div>
+  </div>
+</div>
+
+<div class="footer-bar">
+  <p>&copy; Escriva Josemaria 2024</p>
+  <p>Design: escriva.https</p>
+</div>
+
+<script>
+(function(){
+  const pb = document.getElementById('prog');
+  window.addEventListener('scroll',()=>{
+    const s = document.documentElement;
+    pb.style.width = (window.scrollY / (s.scrollHeight - window.innerHeight) * 100) + '%';
+  },{passive:true});
+
+  const hdr = document.getElementById('header');
+  window.addEventListener('scroll',()=>hdr.classList.toggle('solid', window.scrollY > 60),{passive:true});
+
+  const menuEl = document.getElementById('menu'), ov = document.getElementById('mo');
+  document.getElementById('mt').addEventListener('click',e=>{e.preventDefault();menuEl.classList.add('on');ov.classList.add('on');});
+  document.getElementById('mc').addEventListener('click',()=>{menuEl.classList.remove('on');ov.classList.remove('on');});
+  ov.addEventListener('click',()=>{menuEl.classList.remove('on');ov.classList.remove('on');});
+
+  const rvObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('vis');rvObs.unobserve(e.target);} });
+  },{threshold:.08, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.rv').forEach(el=>rvObs.observe(el));
+})();
+</script>
+</body>
+</html>

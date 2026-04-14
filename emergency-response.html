@@ -1,0 +1,1297 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Emergency Response & Preparedness</title>
+  <link rel="shortcut icon" href="images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+  :root {
+    --teal:      #04474e;
+    --teal-deep: #020d0e;
+    --teal-mid:  #075f6a;
+    --teal-lite: #0d9db0;
+    --gold:      #c8973a;
+    --gold-lt:   #e8b65a;
+    --cream:     #faf8f4;
+    --ink:       #0d1a1b;
+    --border:    rgba(255,255,255,.07);
+    --border-d:  rgba(4,71,78,.15);
+    --alert:     #c8973a;
+    --ff-d:      'EB Garamond', Georgia, serif;
+    --ff-ui:     'Josefin Sans', sans-serif;
+    --ease:      cubic-bezier(0.4,0,0.2,1);
+  }
+
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { font-family:var(--ff-d); background:var(--teal-deep); color:#fff; overflow-x:hidden; }
+  ::-webkit-scrollbar { width:3px; }
+  ::-webkit-scrollbar-track { background:var(--teal-deep); }
+  ::-webkit-scrollbar-thumb { background:var(--gold); }
+
+  /* ── PROGRESS ─────────────────────────────────────────────────── */
+  #prog { position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--teal-lite),var(--gold));z-index:9000;width:0;transition:width .08s linear; }
+
+  /* ── HEADER ───────────────────────────────────────────────────── */
+  #header { position:fixed;top:0;left:0;right:0;z-index:800;padding:1.2rem 4rem;display:flex;justify-content:flex-end;transition:background .4s; }
+  #header.solid { background:rgba(2,13,14,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border); }
+  #header nav ul { list-style:none;display:flex; }
+  #header nav ul li a { font-family:var(--ff-ui);font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);text-decoration:none;padding:.5rem 1rem;border:1px solid rgba(255,255,255,.15);border-radius:2px;transition:all .3s; }
+  #header nav ul li a:hover { color:var(--gold);border-color:var(--gold);background:rgba(200,151,58,.08); }
+
+  /* ── SIDE MENU ────────────────────────────────────────────────── */
+  #mo { display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1999;backdrop-filter:blur(4px); }
+  #mo.on { display:block; }
+  #menu { position:fixed;top:0;right:-380px;width:380px;height:100vh;background:var(--teal);z-index:2000;padding:5rem 3.5rem 3rem;transition:right .45s cubic-bezier(.77,0,.18,1); }
+  #menu.on { right:0; }
+  #mc { position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:rgba(255,255,255,.6);font-size:1.4rem;cursor:pointer;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s; }
+  #mc:hover { background:rgba(255,255,255,.1);color:#fff; }
+  #menu h2 { font-family:var(--ff-ui);font-size:.58rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:2.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,.1); }
+  #menu ul { list-style:none; }
+  #menu ul li { margin-bottom:.1rem;opacity:0;transform:translateX(24px);transition:all .35s; }
+  #menu.on ul li { opacity:1;transform:translateX(0); }
+  #menu.on ul li:nth-child(1){transition-delay:.08s} #menu.on ul li:nth-child(2){transition-delay:.14s}
+  #menu.on ul li:nth-child(3){transition-delay:.2s}  #menu.on ul li:nth-child(4){transition-delay:.26s}
+  #menu ul li a { display:block;font-family:var(--ff-d);font-size:1.5rem;color:rgba(255,255,255,.82);text-decoration:none;padding:.65rem 0;border-bottom:1px solid rgba(255,255,255,.07);transition:color .3s,padding-left .3s; }
+  #menu ul li a:hover { color:var(--gold);padding-left:.5rem; }
+
+  @keyframes rise { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+  /* ═══════════════════════════════════════════════════════════════
+     COMMAND HERO — full viewport, grid-overlay aesthetic
+  ═══════════════════════════════════════════════════════════════ */
+  .cmd-hero {
+    position: relative;
+    min-height: 100vh;
+    background: var(--teal-deep);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 5rem;
+  }
+
+  /* Background image */
+  .cmd-hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1583508915901-b5f84c1dcde1?w=1600&q=70');
+    background-size: cover;
+    background-position: center 30%;
+    filter: brightness(.25) saturate(.5);
+    transform: scale(1.05);
+    animation: heroZoom 12s var(--ease) forwards;
+  }
+  @keyframes heroZoom { from{transform:scale(1.05)} to{transform:scale(1)} }
+
+  /* Crosshatch grid overlay */
+  .cmd-grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(200,151,58,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,151,58,.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  /* Corner brackets */
+  .cmd-bracket {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    pointer-events: none;
+    z-index: 3;
+  }
+  .cmd-bracket.tl { top:5rem;left:5%; border-top:1px solid rgba(200,151,58,.4); border-left:1px solid rgba(200,151,58,.4); }
+  .cmd-bracket.tr { top:5rem;right:5%; border-top:1px solid rgba(200,151,58,.4); border-right:1px solid rgba(200,151,58,.4); }
+  .cmd-bracket.bl { bottom:4rem;left:5%; border-bottom:1px solid rgba(200,151,58,.4); border-left:1px solid rgba(200,151,58,.4); }
+  .cmd-bracket.br { bottom:4rem;right:5%; border-bottom:1px solid rgba(200,151,58,.4); border-right:1px solid rgba(200,151,58,.4); }
+
+  /* Live ticker at very top */
+  .ticker-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 5;
+    background: rgba(200,151,58,.08);
+    border-bottom: 1px solid rgba(200,151,58,.2);
+    padding: .5rem 8%;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    overflow: hidden;
+    margin-top: 3.8rem;
+  }
+  .ticker-label {
+    font-family: var(--ff-ui);
+    font-size: .5rem;
+    font-weight: 700;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .ticker-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: pulse 1.5s ease infinite;
+  }
+  .ticker-scroll {
+    display: flex;
+    gap: 3rem;
+    animation: tickerMove 30s linear infinite;
+    white-space: nowrap;
+  }
+  @keyframes tickerMove { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  .ticker-item {
+    font-family: var(--ff-ui);
+    font-size: .52rem;
+    letter-spacing: .08em;
+    color: rgba(255,255,255,.45);
+  }
+  .ticker-item span { color: var(--gold); margin-right: .4rem; }
+
+  /* Main hero content */
+  .cmd-hero-content {
+    position: relative;
+    z-index: 4;
+    padding: 0 8%;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4rem;
+    align-items: flex-end;
+  }
+
+  .cmd-eyebrow {
+    font-family: var(--ff-ui);
+    font-size: .55rem;
+    font-weight: 600;
+    letter-spacing: .4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: rise .8s var(--ease) .3s forwards;
+  }
+  .cmd-eyebrow::before { content:''; display:block; width:28px; height:1px; background:var(--gold); }
+
+  .cmd-title {
+    font-family: var(--ff-d);
+    font-weight: 700;
+    font-size: clamp(3.5rem, 7.5vw, 8rem);
+    line-height: .88;
+    letter-spacing: -.02em;
+    color: #fff;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: rise 1s var(--ease) .5s forwards;
+  }
+  .cmd-title em { font-style:italic; color:var(--gold); }
+
+  .cmd-tagline {
+    font-family: var(--ff-d);
+    font-size: 1.05rem;
+    font-style: italic;
+    color: rgba(255,255,255,.5);
+    line-height: 1.8;
+    max-width: 520px;
+    border-left: 3px solid rgba(200,151,58,.5);
+    padding-left: 1.2rem;
+    opacity: 0;
+    animation: rise .9s var(--ease) .75s forwards;
+  }
+
+  /* Right: status panel */
+  .cmd-status-panel {
+    background: rgba(2,13,14,.75);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(200,151,58,.2);
+    border-radius: 3px;
+    padding: 1.8rem;
+    min-width: 240px;
+    opacity: 0;
+    animation: rise .9s var(--ease) .9s forwards;
+  }
+  .csp-label {
+    font-family: var(--ff-ui);
+    font-size: .48rem;
+    font-weight: 700;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.25);
+    margin-bottom: 1.2rem;
+    padding-bottom: .8rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .csp-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .6rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .csp-row:last-child { border-bottom: none; }
+  .csp-key {
+    font-family: var(--ff-ui);
+    font-size: .5rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.35);
+  }
+  .csp-val {
+    font-family: var(--ff-d);
+    font-size: .95rem;
+    font-weight: 600;
+    color: #fff;
+  }
+  .csp-val.gold { color: var(--gold); }
+  .csp-val.lit  { color: var(--teal-lite); }
+
+  /* Scroll cue */
+  .scroll-cue {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+    opacity: 0;
+    animation: fadeIn 1s var(--ease) 1.5s forwards;
+  }
+  .scroll-cue span {
+    font-family: var(--ff-ui);
+    font-size: .45rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.25);
+  }
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(200,151,58,.6), transparent);
+    animation: scrollBob 2s ease infinite;
+  }
+  @keyframes scrollBob { 0%,100%{transform:scaleY(1);opacity:1} 50%{transform:scaleY(.5);opacity:.4} }
+
+  /* ═══ CONTINUUM PHASE STRIP ════════════════════════════════════ */
+  .phase-strip {
+    background: var(--teal);
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .phase-cell {
+    padding: 3rem 2.5rem;
+    border-right: 1px solid rgba(255,255,255,.06);
+    position: relative;
+    overflow: hidden;
+    transition: background .4s;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .7s var(--ease), transform .7s var(--ease), background .4s;
+  }
+  .phase-cell.vis { opacity:1; transform:translateY(0); }
+  .phase-cell:last-child { border-right: none; }
+  .phase-cell:hover { background: rgba(4,71,78,.6); }
+  .phase-cell::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .5s var(--ease);
+  }
+  .phase-cell:hover::after { transform: scaleX(1); }
+  .phase-num {
+    font-family: var(--ff-d);
+    font-size: 4.5rem;
+    font-weight: 700;
+    color: rgba(255,255,255,.04);
+    line-height: 1;
+    position: absolute;
+    top: 1rem; right: 1.5rem;
+    pointer-events: none;
+  }
+  .phase-tag {
+    font-family: var(--ff-ui);
+    font-size: .5rem;
+    font-weight: 700;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: .7rem;
+  }
+  .phase-title {
+    font-family: var(--ff-d);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: .6rem;
+    line-height: 1.15;
+  }
+  .phase-desc {
+    font-family: var(--ff-d);
+    font-size: .88rem;
+    font-style: italic;
+    color: rgba(255,255,255,.4);
+    line-height: 1.65;
+  }
+
+  /* ═══ SYSTEMS BY DESIGN ════════════════════════════════════════ */
+  .design-section {
+    padding: 7rem 8%;
+    background: var(--teal-deep);
+  }
+  .design-section-head {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 5rem;
+    align-items: start;
+    margin-bottom: 5rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .design-section-head-left { position: sticky; top: 100px; }
+  .big-label {
+    font-family: var(--ff-d);
+    font-size: clamp(5rem, 10vw, 9rem);
+    font-weight: 700;
+    color: rgba(255,255,255,.04);
+    line-height: 1;
+    letter-spacing: -.04em;
+  }
+  .section-tag {
+    font-family: var(--ff-ui);
+    font-size: .54rem;
+    font-weight: 700;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin-bottom: 1rem;
+  }
+  .section-tag::before { content:''; display:block; width:20px; height:1px; background:var(--gold); }
+  .design-section-head-right h2 {
+    font-family: var(--ff-d);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.1;
+    letter-spacing: -.01em;
+    margin-bottom: 1.5rem;
+  }
+  .design-section-head-right h2 em { font-style:italic; color:var(--gold); }
+  .body-text {
+    font-family: var(--ff-d);
+    font-size: 1rem;
+    line-height: 1.9;
+    color: rgba(255,255,255,.5);
+    margin-bottom: 1rem;
+  }
+
+  /* Design system cards — horizontal "table" rows */
+  .design-table { display: flex; flex-direction: column; gap: 1px; background: var(--border); }
+  .design-row {
+    background: var(--teal-deep);
+    display: grid;
+    grid-template-columns: 3rem 1fr 1fr auto;
+    gap: 2.5rem;
+    align-items: center;
+    padding: 2rem 2.5rem;
+    transition: background .3s;
+    opacity: 0;
+    transform: translateX(-16px);
+    transition: opacity .7s var(--ease), transform .7s var(--ease), background .3s;
+  }
+  .design-row.vis { opacity:1; transform:translateX(0); }
+  .design-row:hover { background: rgba(4,71,78,.3); }
+  .dr-num {
+    font-family: var(--ff-d);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: rgba(255,255,255,.1);
+    line-height: 1;
+  }
+  .dr-title {
+    font-family: var(--ff-d);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.25;
+  }
+  .dr-desc {
+    font-family: var(--ff-d);
+    font-size: .9rem;
+    font-style: italic;
+    color: rgba(255,255,255,.4);
+    line-height: 1.65;
+  }
+  .dr-meter { width: 120px; }
+  .dr-meter-label {
+    font-family: var(--ff-ui);
+    font-size: .45rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.25);
+    margin-bottom: .4rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  .dr-bar {
+    height: 3px;
+    background: rgba(255,255,255,.08);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .dr-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal-lite), var(--gold));
+    border-radius: 2px;
+    transition: width 1.2s var(--ease);
+    width: 0;
+  }
+  .design-row.vis .dr-fill { width: var(--w); }
+
+  /* ═══ OPERATIONS WALL — full-bleed image + incident cards ══════ */
+  .ops-wall {
+    position: relative;
+    min-height: 80vh;
+    overflow: hidden;
+  }
+  .ops-wall-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1600&q=70');
+    background-size: cover;
+    background-position: center;
+    filter: brightness(.2) saturate(.4);
+  }
+  .ops-wall-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(2,13,14,.97) 0%, rgba(2,13,14,.7) 55%, rgba(2,13,14,.3) 100%);
+  }
+  .ops-wall-content {
+    position: relative;
+    z-index: 2;
+    padding: 7rem 8%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .ops-wall-left h2 {
+    font-family: var(--ff-d);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -.01em;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+  }
+  .ops-wall-left h2 em { font-style:italic; color:var(--gold); }
+  .ops-bullet {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: .9rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .ops-bullet:last-of-type { border-bottom: none; }
+  .obs-arrow {
+    font-family: var(--ff-ui);
+    color: var(--gold);
+    font-size: .7rem;
+    flex-shrink: 0;
+    padding-top: .2rem;
+  }
+  .obs-text {
+    font-family: var(--ff-d);
+    font-size: .95rem;
+    color: rgba(255,255,255,.6);
+    line-height: 1.6;
+  }
+  .obs-text strong { color: #fff; font-weight: 600; }
+
+  /* Incident data cards — right column */
+  .incident-stack {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .8rem;
+  }
+  .inc-card {
+    background: rgba(2,13,14,.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 3px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity .7s var(--ease), transform .7s var(--ease), border-color .3s;
+  }
+  .inc-card.vis { opacity:1; transform:translateY(0); }
+  .inc-card:hover { border-color: rgba(200,151,58,.3); }
+  .inc-card::before {
+    content:'';
+    position:absolute; top:0; left:0; right:0; height:2px;
+    background: linear-gradient(90deg, var(--teal-lite), var(--gold));
+  }
+  .inc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.2rem;
+    gap: .5rem;
+  }
+  .inc-title {
+    font-family: var(--ff-d);
+    font-size: .88rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.3;
+    flex: 1;
+  }
+  .inc-status {
+    font-family: var(--ff-ui);
+    font-size: .42rem;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+  }
+  .inc-status::before {
+    content:'';
+    width:5px;height:5px;border-radius:50%;
+    background:var(--gold);
+    animation: pulse 1.8s ease infinite;
+  }
+  .inc-status.monitor { color:var(--teal-lite); }
+  .inc-status.monitor::before { background:var(--teal-lite); }
+  .inc-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .8rem;
+  }
+
+  .inc-val {
+    font-family: var(--ff-d);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: .15rem;
+  }
+  .inc-mkey {
+    font-family: var(--ff-ui);
+    font-size: .42rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.25);
+    line-height: 1.3;
+  }
+
+  /* ═══ INTELLIGENCE & ETHICS — two-column editorial ════════════ */
+  .intel-section {
+    background: var(--teal);
+    padding: 7rem 8%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-top: 1px solid rgba(255,255,255,.06);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .intel-col {
+    padding: 0 4rem 0 0;
+    border-right: 1px solid rgba(255,255,255,.06);
+  }
+  .intel-col:last-child { padding: 0 0 0 4rem; border-right: none; }
+  .intel-col h2 {
+    font-family: var(--ff-d);
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -.01em;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+  .intel-col h2 em { font-style:italic; color:var(--gold); }
+
+  /* Insight blocks */
+  .insight-block {
+    margin-top: 2rem;
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity .7s var(--ease), transform .7s var(--ease);
+  }
+  .insight-block.vis { opacity:1; transform:translateY(0); }
+  .insight-trigger {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 1.5rem 0;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .insight-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(200,151,58,.08);
+    border: 1px solid rgba(200,151,58,.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: .7rem;
+    transition: all .3s;
+  }
+  .insight-block.open .insight-icon { background:rgba(200,151,58,.2); border-color:var(--gold); }
+  .insight-head {
+    font-family: var(--ff-d);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: rgba(255,255,255,.7);
+    flex: 1;
+    transition: color .3s;
+  }
+  .insight-block.open .insight-head { color: #fff; }
+  .insight-chev {
+    font-size: .7rem;
+    color: rgba(255,255,255,.25);
+    transition: transform .35s var(--ease), color .3s;
+  }
+  .insight-block.open .insight-chev { transform:rotate(90deg); color:var(--gold); }
+  .insight-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .5s var(--ease);
+    padding-left: calc(32px + 1.5rem);
+  }
+  .insight-block.open .insight-body { max-height: 300px; }
+  .insight-body p {
+    font-family: var(--ff-d);
+    font-size: .95rem;
+    line-height: 1.9;
+    color: rgba(255,255,255,.5);
+    padding-bottom: 1.5rem;
+    font-style: italic;
+  }
+
+  /* Ethics accent */
+  .ethics-accent {
+    border-left: 3px solid var(--gold);
+    padding-left: 1.2rem;
+    margin: 2rem 0;
+  }
+  .ethics-accent p {
+    font-family: var(--ff-d);
+    font-size: 1.15rem;
+    font-style: italic;
+    color: rgba(255,255,255,.75);
+    line-height: 1.7;
+  }
+
+  /* ═══ AAR CLOSING STRIP ════════════════════════════════════════ */
+  .aar-strip {
+    background: var(--cream);
+    color: var(--ink);
+    padding: 6rem 8%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .aar-left h2 {
+    font-family: var(--ff-d);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 700;
+    color: var(--teal);
+    line-height: 1.05;
+    letter-spacing: -.02em;
+    margin-bottom: 1rem;
+  }
+  .aar-left h2 em { font-style:italic; color:var(--gold); }
+  .aar-left p {
+    font-family: var(--ff-d);
+    font-size: 1rem;
+    line-height: 1.85;
+    color: #3a4a4b;
+    margin-bottom: 1rem;
+  }
+  .aar-principles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border-d);
+  }
+  .aar-cell {
+    background: #fff;
+    padding: 1.8rem;
+    transition: all .35s;
+    border-left: 3px solid transparent;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity .6s var(--ease), transform .6s var(--ease), border-color .3s, background .3s;
+  }
+  .aar-cell.vis { opacity:1; transform:translateY(0); }
+  .aar-cell:hover { border-left-color: var(--gold); background:#f8faf8; }
+  .aar-cell-num {
+    font-family: var(--ff-d);
+    font-size: 2rem;
+    font-weight: 700;
+    color: rgba(4,71,78,.08);
+    line-height: 1;
+    margin-bottom: .6rem;
+  }
+  .aar-cell-title {
+    font-family: var(--ff-d);
+    font-size: .95rem;
+    font-weight: 600;
+    color: var(--teal);
+    margin-bottom: .3rem;
+  }
+  .aar-cell-desc {
+    font-family: var(--ff-d);
+    font-size: .85rem;
+    color: #5a6a6b;
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  /* ═══ CONTACT ═════════════════════════════════════════════════ */
+  .contact-section { background:var(--teal-deep); display:grid; grid-template-columns:1fr 1fr; }
+  .contact-left { padding:6rem 5% 6rem 8%; border-right:1px solid rgba(255,255,255,.05); }
+  .contact-left h2 { font-family:var(--ff-d);font-size:2.5rem;font-weight:700;color:#fff;margin-bottom:.4rem;letter-spacing:-.01em; }
+  .contact-left .sub { font-family:var(--ff-d);font-style:italic;font-size:.95rem;color:rgba(255,255,255,.3);margin-bottom:2.5rem; }
+  .ff { margin-bottom:1.4rem; }
+  .ff input,.ff textarea { width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.12);padding:.7rem 0;color:#fff;font-family:var(--ff-d);font-size:1rem;font-weight:400;outline:none;transition:border-color .3s; }
+  .ff input::placeholder,.ff textarea::placeholder { color:rgba(255,255,255,.2); }
+  .ff input:focus,.ff textarea:focus { border-bottom-color:var(--gold); }
+  .ff textarea { resize:none;min-height:90px; }
+  .ff-row { display:grid;grid-template-columns:1fr 1fr;gap:1.2rem; }
+  .send-btn { background:var(--gold);color:var(--teal-deep);border:none;padding:.85rem 2.2rem;cursor:pointer;font-family:var(--ff-ui);font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;border-radius:2px;transition:all .3s; }
+  .send-btn:hover { background:var(--gold-lt);transform:translateY(-2px);box-shadow:0 8px 20px rgba(200,151,58,.3); }
+  .contact-right { padding:6rem 8% 6rem 5%;display:flex;flex-direction:column;justify-content:center; }
+  .contact-right h3 { font-family:var(--ff-d);font-style:italic;font-size:1.1rem;color:rgba(255,255,255,.3);margin-bottom:1.8rem; }
+  .socials { display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:2.5rem; }
+  .sc { display:flex;align-items:center;justify-content:center;height:46px;border:1px solid rgba(255,255,255,.08);border-radius:3px;color:rgba(255,255,255,.4);text-decoration:none;font-size:.8rem;font-weight:500;transition:all .3s; }
+  .sc:hover { border-color:var(--gold);color:var(--gold);background:rgba(200,151,58,.07); }
+  .footer-bar { background:#000;padding:1.2rem 8%;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.04); }
+  .footer-bar p { font-family:var(--ff-ui);font-size:.58rem;color:rgba(255,255,255,.15);letter-spacing:.05em; }
+
+  /* REVEAL */
+  .rv { opacity:0;transform:translateY(24px);transition:opacity .85s var(--ease),transform .85s var(--ease); }
+  .rv.vis { opacity:1;transform:translateY(0); }
+  .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+  /* RESPONSIVE */
+  @media(max-width:1100px){
+    .cmd-hero-content{grid-template-columns:1fr}
+    .cmd-status-panel{display:none}
+    .phase-strip{grid-template-columns:1fr 1fr}
+    .design-section-head{grid-template-columns:1fr;gap:2rem}
+    .design-section-head-left{position:static}
+    .design-row{grid-template-columns:3rem 1fr 1fr;gap:1.5rem}
+    .dr-meter{display:none}
+    .ops-wall-content{grid-template-columns:1fr;gap:3rem}
+    .intel-section{grid-template-columns:1fr}
+    .intel-col{padding:0 0 4rem 0;border-right:none;border-bottom:1px solid rgba(255,255,255,.06)}
+    .intel-col:last-child{padding:4rem 0 0 0;border-bottom:none}
+    .aar-strip{grid-template-columns:1fr;gap:3rem}
+    .aar-principles{grid-template-columns:1fr}
+    .contact-section{grid-template-columns:1fr}
+    .contact-right{padding:3rem 5%}
+    .contact-left{border-right:none;padding:5rem 5%}
+    .ff-row{grid-template-columns:1fr}
+  }
+  @media(max-width:700px){
+    #header{padding:1.2rem 5%}
+    .cmd-hero-content{padding:0 5%}
+    .phase-strip{grid-template-columns:1fr}
+    .design-row{grid-template-columns:3rem 1fr}
+    .dr-desc{display:none}
+    .incident-stack{grid-template-columns:1fr}
+    .ticker-bar{display:none}
+    .cmd-bracket{display:none}
+  }
+  </style>
+</head>
+<body>
+
+<div id="prog"></div>
+<div id="mo"></div>
+<nav id="menu">
+  <button id="mc">✕</button>
+  <h2>Navigation</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="http://esvarj.wordpress.com">Health Articles</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+<header id="header">
+  <nav><ul><li><a href="#" id="mt">Menu</a></li></ul></nav>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     COMMAND HERO
+═══════════════════════════════════════════════════════════════ -->
+<section class="cmd-hero">
+  <div class="cmd-hero-bg"></div>
+  <div class="cmd-grid-overlay"></div>
+
+  <!-- Corner brackets -->
+  <div class="cmd-bracket tl"></div>
+  <div class="cmd-bracket tr"></div>
+  <div class="cmd-bracket bl"></div>
+  <div class="cmd-bracket br"></div>
+
+  <!-- Live ticker -->
+  <div class="ticker-bar">
+    <div class="ticker-label"><div class="ticker-dot"></div>Live Status</div>
+    <div class="ticker-scroll">
+      <span class="ticker-item"><span>CHOLERA</span> Outbreak Response — Urban Informal Settlements — CFR 0.8%</span>
+      <span class="ticker-item"><span>FLOOD</span> Response Active — Western Kenya — 14k Households Reached</span>
+      <span class="ticker-item"><span>DROUGHT</span> Surveillance — ASAL Counties — SAM Rate 6.4%</span>
+      <span class="ticker-item"><span>DISPLACEMENT</span> Response — Border Counties — 23 Sites Supported</span>
+      <span class="ticker-item"><span>CHOLERA</span> Outbreak Response — Urban Informal Settlements — CFR 0.8%</span>
+      <span class="ticker-item"><span>FLOOD</span> Response Active — Western Kenya — 14k Households Reached</span>
+      <span class="ticker-item"><span>DROUGHT</span> Surveillance — ASAL Counties — SAM Rate 6.4%</span>
+      <span class="ticker-item"><span>DISPLACEMENT</span> Response — Border Counties — 23 Sites Supported</span>
+    </div>
+  </div>
+
+  <div class="cmd-hero-content">
+    <div class="cmd-hero-left">
+      <div class="cmd-eyebrow">Health Systems Resilience · Kenya</div>
+      <h1 class="cmd-title">
+        Emergency<br>
+        Response &amp;<br>
+        <em>Preparedness</em>
+      </h1>
+      <p class="cmd-tagline">
+        Building systems that anticipate crises, respond rapidly, and sustain essential services when it matters most.
+      </p>
+    </div>
+    <div class="cmd-status-panel">
+      <div class="csp-label">System Status Overview</div>
+      <div class="csp-row"><span class="csp-key">Active Responses</span><span class="csp-val gold">4</span></div>
+      <div class="csp-row"><span class="csp-key">Response Domains</span><span class="csp-val">Health · WASH</span></div>
+      <div class="csp-row"><span class="csp-key">Avg Activation</span><span class="csp-val lit">48–72h</span></div>
+      <div class="csp-row"><span class="csp-key">Coordination</span><span class="csp-val">MoH · WHO · RC</span></div>
+      <div class="csp-row"><span class="csp-key">Open Access</span><span class="csp-val gold">Yes</span></div>
+    </div>
+  </div>
+
+  <div class="scroll-cue">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══ 4-PHASE CONTINUUM STRIP ═══════════════════════════════════ -->
+<div class="phase-strip">
+  <div class="phase-cell" style="transition-delay:.05s">
+    <div class="phase-num" aria-hidden="true">01</div>
+    <div class="phase-tag">Phase One</div>
+    <div class="phase-title">Preparedness</div>
+    <div class="phase-desc">Risk mapping, early warning architecture, stockpiling, and simulation drills before the crisis arrives.</div>
+  </div>
+  <div class="phase-cell" style="transition-delay:.12s">
+    <div class="phase-num" aria-hidden="true">02</div>
+    <div class="phase-tag">Phase Two</div>
+    <div class="phase-title">Response</div>
+    <div class="phase-desc">Rapid activation, coordinated deployment, inter-agency operations, and real-time situational tracking.</div>
+  </div>
+  <div class="phase-cell" style="transition-delay:.19s">
+    <div class="phase-num" aria-hidden="true">03</div>
+    <div class="phase-tag">Phase Three</div>
+    <div class="phase-title">Recovery</div>
+    <div class="phase-desc">Restoring services, rebuilding systems, and transitioning from emergency footing without collapse.</div>
+  </div>
+  <div class="phase-cell" style="transition-delay:.26s">
+    <div class="phase-num" aria-hidden="true">04</div>
+    <div class="phase-tag">Phase Four</div>
+    <div class="phase-title">Learning</div>
+    <div class="phase-desc">After-action reviews institutionalized into SOPs, training updates, and readiness benchmarks.</div>
+  </div>
+</div>
+
+<!-- ═══ EMERGENCY SYSTEMS BY DESIGN ══════════════════════════════ -->
+<section id="design" class="design-section">
+  <div class="design-section-head rv">
+    <div class="design-section-head-left">
+      <div class="big-label" aria-hidden="true">02</div>
+      <div class="section-tag">Preparedness</div>
+    </div>
+    <div class="design-section-head-right">
+      <h2>Emergency Systems<br><em>by Design</em></h2>
+      <p class="body-text">Preparedness is not a static plan — it is a set of living systems that are tested, monitored, and continuously adjusted. These architectures allow health systems to detect risk early, absorb shock, and transition into coordinated response without delay.</p>
+    </div>
+  </div>
+
+  <div class="design-table">
+    <div class="design-row" style="--w:92%;transition-delay:.05s">
+      <div class="dr-num">01</div>
+      <div class="dr-title">Early Warning &amp; Surveillance Architecture</div>
+      <div class="dr-desc">A layered design integrating routine facility data, event-based alerts, and community signals — prioritizing frequency and signal value over reporting completeness to enable pre-threshold outbreak detection.</div>
+      <div class="dr-meter">
+        <div class="dr-meter-label"><span>Detection Readiness</span><span>High</span></div>
+        <div class="dr-bar"><div class="dr-fill"></div></div>
+      </div>
+    </div>
+    <div class="design-row" style="--w:85%;transition-delay:.1s">
+      <div class="dr-num">02</div>
+      <div class="dr-title">Rapid Response Activation Framework</div>
+      <div class="dr-desc">A decision-trigger model defining when, how, and at what scale response mechanisms activate — reducing reliance on ad-hoc calls by predefining escalation thresholds and deployment timelines.</div>
+      <div class="dr-meter">
+        <div class="dr-meter-label"><span>Activation Speed</span><span>48–72h</span></div>
+        <div class="dr-bar"><div class="dr-fill"></div></div>
+      </div>
+    </div>
+    <div class="design-row" style="--w:90%;transition-delay:.15s">
+      <div class="dr-num">03</div>
+      <div class="dr-title">Incident Command &amp; Coordination Model</div>
+      <div class="dr-desc">Aligned with national disaster frameworks and humanitarian cluster systems, clarifying roles across government, Red Cross, UN agencies, and local actors to prevent duplication while preserving operational autonomy.</div>
+      <div class="dr-meter">
+        <div class="dr-meter-label"><span>Coordination Integrity</span><span>Very High</span></div>
+        <div class="dr-bar"><div class="dr-fill"></div></div>
+      </div>
+    </div>
+    <div class="design-row" style="--w:88%;transition-delay:.2s">
+      <div class="dr-num">04</div>
+      <div class="dr-title">Emergency Supply Chain Continuity</div>
+      <div class="dr-desc">A logistics architecture built around redundancy, prepositioning, and last-mile flexibility — anticipating disruption through alternative routing, supplier diversification, and real-time stock visibility.</div>
+      <div class="dr-meter">
+        <div class="dr-meter-label"><span>Delivery Reliability</span><span>High</span></div>
+        <div class="dr-bar"><div class="dr-fill"></div></div>
+      </div>
+    </div>
+    <div class="design-row" style="--w:86%;transition-delay:.25s">
+      <div class="dr-num">05</div>
+      <div class="dr-title">Risk Communication &amp; Community Trust</div>
+      <div class="dr-desc">Focused on two-way communication, rumor tracking, and trust calibration — ensuring communities are active contributors to situational awareness, not passive recipients of information.</div>
+      <div class="dr-meter">
+        <div class="dr-meter-label"><span>Trust Resilience</span><span>Strong</span></div>
+        <div class="dr-bar"><div class="dr-fill"></div></div>
+      </div>
+    </div>
+    <div class="design-row" style="--w:91%;transition-delay:.3s">
+      <div class="dr-num">06</div>
+      <div class="dr-title">Learning, Review &amp; Adaptation Loop</div>
+      <div class="dr-desc">A formalized after-action design converting response experience into system improvement — institutionalizing findings into SOPs, training updates, and readiness benchmarks rather than leaving them as narrative reports.</div>
+      <div class="dr-meter">
+        <div class="dr-meter-label"><span>Institutional Memory</span><span>Embedded</span></div>
+        <div class="dr-bar"><div class="dr-fill"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ OPERATIONS WALL — cinematic + incident cards ══════════════ -->
+<section id="response" class="ops-wall">
+  <div class="ops-wall-bg"></div>
+  <div class="ops-wall-overlay"></div>
+  <div class="ops-wall-content">
+    <div class="ops-wall-left rv">
+      <div class="section-tag" style="margin-bottom:1rem;">Implementation</div>
+      <h2>Response<br><em>in Practice</em></h2>
+      <p class="body-text" style="margin:1.2rem 0 2rem;">Emergency response is not episodic — it is sustained, parallel action across multiple risk profiles, maintaining speed, ethics, and system integrity simultaneously.</p>
+      <div class="ops-bullet">
+        <span class="obs-arrow">→</span>
+        <span class="obs-text"><strong>Rapid Assessments:</strong> 48–72 hour deployment cycles across health and WASH sectors.</span>
+      </div>
+      <div class="ops-bullet">
+        <span class="obs-arrow">→</span>
+        <span class="obs-text"><strong>Inter-Agency Coordination:</strong> Red Cross, MoH, WHO, and county disaster management units.</span>
+      </div>
+      <div class="ops-bullet">
+        <span class="obs-arrow">→</span>
+        <span class="obs-text"><strong>Operational Intelligence:</strong> Live surveillance, logistics tracking, and field feedback loops.</span>
+      </div>
+      <div class="ops-bullet">
+        <span class="obs-arrow">→</span>
+        <span class="obs-text"><strong>Continuity Planning:</strong> Transitioning response into recovery without system collapse.</span>
+      </div>
+    </div>
+
+    <div class="incident-stack">
+      <!-- Incident 1 -->
+      <div class="inc-card" style="transition-delay:.1s">
+        <div class="inc-header">
+          <div class="inc-title">Cholera Outbreak — Urban Informal Settlements</div>
+          <div class="inc-status">Active</div>
+        </div>
+        <div class="inc-metrics">
+          <div class="inc-metric"><div class="inc-val">0.8%</div><div class="inc-mkey">Case Fatality Rate</div></div>
+          <div class="inc-metric"><div class="inc-val">92%</div><div class="inc-mkey">Vax Coverage</div></div>
+          <div class="inc-metric"><div class="inc-val">4.2h</div><div class="inc-mkey">Lead Time</div></div>
+          <div class="inc-metric"><div class="inc-val">88/100</div><div class="inc-mkey">Trust Index</div></div>
+        </div>
+      </div>
+      <!-- Incident 2 -->
+      <div class="inc-card" style="transition-delay:.17s">
+        <div class="inc-header">
+          <div class="inc-title">Flood Response — Western Kenya</div>
+          <div class="inc-status">Active</div>
+        </div>
+        <div class="inc-metrics">
+          <div class="inc-metric"><div class="inc-val">14k</div><div class="inc-mkey">Households Reached</div></div>
+          <div class="inc-metric"><div class="inc-val">81%</div><div class="inc-mkey">WASH Coverage</div></div>
+          <div class="inc-metric"><div class="inc-val">6.1h</div><div class="inc-mkey">Response Time</div></div>
+          <div class="inc-metric"><div class="inc-val">95%</div><div class="inc-mkey">Supply Integrity</div></div>
+        </div>
+      </div>
+      <!-- Incident 3 -->
+      <div class="inc-card" style="transition-delay:.24s">
+        <div class="inc-header">
+          <div class="inc-title">Drought &amp; Nutrition — ASAL Counties</div>
+          <div class="inc-status monitor">Monitoring</div>
+        </div>
+        <div class="inc-metrics">
+          <div class="inc-metric"><div class="inc-val">6.4%</div><div class="inc-mkey">SAM Rate</div></div>
+          <div class="inc-metric"><div class="inc-val">78%</div><div class="inc-mkey">Screening Coverage</div></div>
+          <div class="inc-metric"><div class="inc-val">12h</div><div class="inc-mkey">Alert Lag</div></div>
+          <div class="inc-metric"><div class="inc-val">84%</div><div class="inc-mkey">Referral Success</div></div>
+        </div>
+      </div>
+      <!-- Incident 4 -->
+      <div class="inc-card" style="transition-delay:.31s">
+        <div class="inc-header">
+          <div class="inc-title">Population Displacement — Border Counties</div>
+          <div class="inc-status">Active</div>
+        </div>
+        <div class="inc-metrics">
+          <div class="inc-metric"><div class="inc-val">23</div><div class="inc-mkey">Sites Supported</div></div>
+          <div class="inc-metric"><div class="inc-val">89%</div><div class="inc-mkey">Health Access</div></div>
+          <div class="inc-metric"><div class="inc-val">Low</div><div class="inc-mkey">Protection Flags</div></div>
+          <div class="inc-metric"><div class="inc-val">91/100</div><div class="inc-mkey">Coordination Score</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INTELLIGENCE & ETHICS ════════════════════════════════════ -->
+<div id="intelligence" class="intel-section">
+  <!-- Intelligence col -->
+  <div class="intel-col rv">
+    <div class="section-tag">Intelligence</div>
+    <h2>Surveillance<br>&amp; <em>Data</em></h2>
+    <p class="body-text">During emergencies, routine reporting systems are often too slow to support operational decisions. The focus shifts to high-frequency, event-based surveillance enabling real-time situational awareness.</p>
+
+    <div class="insight-block">
+      <button class="insight-trigger">
+        <div class="insight-icon">⟳</div>
+        <span class="insight-head">Real-Time Analysis</span>
+        <span class="insight-chev">›</span>
+      </button>
+      <div class="insight-body">
+        <p>Shifting from retrospective reporting to prospective analysis allows teams to anticipate surges, preposition resources, and reduce response lag during critical windows where hours determine outcomes.</p>
+      </div>
+    </div>
+
+    <div class="insight-block">
+      <button class="insight-trigger">
+        <div class="insight-icon">◈</div>
+        <span class="insight-head">Operational Intelligence</span>
+        <span class="insight-chev">›</span>
+      </button>
+      <div class="insight-body">
+        <p>Integrating epidemiological trends, service delivery data, and community feedback to inform adaptive decision-making under uncertainty — where perfect information is rarely available.</p>
+      </div>
+    </div>
+
+    <div class="insight-block">
+      <button class="insight-trigger">
+        <div class="insight-icon">△</div>
+        <span class="insight-head">Event-Based Surveillance</span>
+        <span class="insight-chev">›</span>
+      </button>
+      <div class="insight-body">
+        <p>Tracking informal signals — rumours, social media reports, health worker observations — alongside formal case reports to detect outbreaks before they cross official notification thresholds.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ethics col -->
+  <div class="intel-col rv d2">
+    <div class="section-tag">Integrity</div>
+    <h2>Ethics &amp;<br><em>Protection</em></h2>
+    <p class="body-text">Crisis response demands more than speed. Ethical decision-making, accountability to affected populations, and protection principles must guide every intervention — especially in fragile contexts.</p>
+
+    <div class="ethics-accent">
+      <p>The response cycle only closes when lessons are institutionalized. Speed without accountability compounds harm rather than preventing it.</p>
+    </div>
+
+    <div class="insight-block">
+      <button class="insight-trigger">
+        <div class="insight-icon">⊕</div>
+        <span class="insight-head">Do No Harm</span>
+        <span class="insight-chev">›</span>
+      </button>
+      <div class="insight-body">
+        <p>Ensuring that response actions do not exacerbate vulnerability, marginalization, or inequity — particularly in fragile and displaced populations where power imbalances are already acute.</p>
+      </div>
+    </div>
+
+    <div class="insight-block">
+      <button class="insight-trigger">
+        <div class="insight-icon">↺</div>
+        <span class="insight-head">After-Action Review</span>
+        <span class="insight-chev">›</span>
+      </button>
+      <div class="insight-body">
+        <p>Structured after-action reviews translate field experience into system strengthening — converting what happened into why it happened, and what we change before the next emergency arrives.</p>
+      </div>
+    </div>
+
+    <div class="insight-block">
+      <button class="insight-trigger">
+        <div class="insight-icon">◯</div>
+        <span class="insight-head">Accountability to Affected Populations</span>
+        <span class="insight-chev">›</span>
+      </button>
+      <div class="insight-body">
+        <p>Feedback mechanisms, community scorecards, and complaint channels ensure that affected people can speak, be heard, and shape the response that is supposed to serve them.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AAR / LEARNING CLOSING ═══════════════════════════════════ -->
+<section id="learning" class="aar-strip">
+  <div class="aar-left rv">
+    <div style="font-family:var(--ff-ui);font-size:.54rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--teal);display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;"><span style="display:block;width:20px;height:2px;background:var(--gold)"></span>04 · Learning</div>
+    <h2>Every response is a<br><em>lesson for the next</em></h2>
+    <p>Emergency systems that do not learn are systems that repeat their failures. Structured review, honest assessment, and institutionalized change — not narrative reports filed away — are what close the preparedness cycle.</p>
+    <p>These principles shape how every response is evaluated and how every improvement finds its way into practice before the next emergency arrives.</p>
+  </div>
+  <div class="aar-principles">
+    <div class="aar-cell" style="transition-delay:.05s">
+      <div class="aar-cell-num">01</div>
+      <div class="aar-cell-title">Document honestly</div>
+      <div class="aar-cell-desc">What failed matters as much as what worked — institutional learning requires candor, not just celebration.</div>
+    </div>
+    <div class="aar-cell" style="transition-delay:.1s">
+      <div class="aar-cell-num">02</div>
+      <div class="aar-cell-title">Institutionalize findings</div>
+      <div class="aar-cell-desc">Lessons that stay as narrative reports die there. They must become SOPs, training content, and procurement decisions.</div>
+    </div>
+    <div class="aar-cell" style="transition-delay:.15s">
+      <div class="aar-cell-num">03</div>
+      <div class="aar-cell-title">Test the system</div>
+      <div class="aar-cell-desc">Simulations, tabletop exercises, and drills reveal gaps before real-world conditions demand them to surface.</div>
+    </div>
+    <div class="aar-cell" style="transition-delay:.2s">
+      <div class="aar-cell-num">04</div>
+      <div class="aar-cell-title">Close the loop</div>
+      <div class="aar-cell-desc">Preparedness is a cycle, not a checklist. The end of recovery is the beginning of improved readiness.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══════════════════════════════════════════════════ -->
+<div class="contact-section">
+  <div class="contact-left">
+    <div class="rv" style="font-family:var(--ff-ui);font-size:.58rem;font-weight:600;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;"><span style="display:block;width:24px;height:1px;background:var(--gold)"></span>Get in Touch</div>
+    <h2 class="rv d1">Emergency Response Enquiries</h2>
+    <p class="sub rv d2">Available for coordination support, response planning, and field partnership.</p>
+    <form method="POST" action="https://formspree.io/f/xwvpkvzl" class="rv d2">
+      <div class="ff-row ff"><div><input type="text" name="name" placeholder="Name" required></div><div><input type="email" name="email" placeholder="Email" required></div></div>
+      <div class="ff"><textarea name="message" placeholder="Describe your enquiry or collaboration idea…" rows="4"></textarea></div>
+      <button type="submit" class="send-btn">Send Message →</button>
+    </form>
+  </div>
+  <div class="contact-right rv">
+    <h3>Connect &amp; follow the work</h3>
+    <div class="socials">
+      <a class="sc" href="https://x.com/humanistories" target="_blank">𝕏</a>
+      <a class="sc" href="https://web.facebook.com/humanitarian.stories/" target="_blank">f</a>
+      <a class="sc" href="https://www.instagram.com/humanitarian_stories/" target="_blank">◎</a>
+      <a class="sc" href="https://www.linkedin.com/in/josemariaescriva/" target="_blank">in</a>
+      <a class="sc" href="https://github.com/escrivajosemaria" target="_blank">⌥</a>
+      <a class="sc" href="https://escrivajosemaria.github.io/escopy.io/" target="_blank">⊕</a>
+      <a class="sc" href="https://www.youtube.com/@escrivahealthcollective" target="_blank">▶</a>
+      <a class="sc" href="http://esvarj.wordpress.com" target="_blank">W</a>
+    </div>
+  </div>
+</div>
+
+<div class="footer-bar">
+  <p>&copy; Escriva Josemaria 2024</p>
+  <p>Design: escriva.https</p>
+</div>
+
+<script>
+(function(){
+  /* PROGRESS */
+  const pb = document.getElementById('prog');
+  window.addEventListener('scroll', () => {
+    const s = document.documentElement;
+    pb.style.width = (window.scrollY / (s.scrollHeight - window.innerHeight) * 100) + '%';
+  }, { passive:true });
+
+  /* HEADER */
+  const hdr = document.getElementById('header');
+  window.addEventListener('scroll', () => hdr.classList.toggle('solid', window.scrollY > 60), { passive:true });
+
+  /* MENU */
+  const menuEl = document.getElementById('menu'), ov = document.getElementById('mo');
+  document.getElementById('mt').addEventListener('click', e => { e.preventDefault(); menuEl.classList.add('on'); ov.classList.add('on'); });
+  document.getElementById('mc').addEventListener('click', () => { menuEl.classList.remove('on'); ov.classList.remove('on'); });
+  ov.addEventListener('click', () => { menuEl.classList.remove('on'); ov.classList.remove('on'); });
+
+  /* REVEAL (all .rv + phase-cells + inc-cards + design-rows + aar-cells + insight-blocks) */
+  const rvObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); rvObs.unobserve(e.target); } });
+  }, { threshold:.08, rootMargin:'0px 0px -40px 0px' });
+  document.querySelectorAll('.rv, .phase-cell, .inc-card, .design-row, .aar-cell, .insight-block').forEach(el => rvObs.observe(el));
+
+  /* ACCORDION — insight blocks */
+  document.querySelectorAll('.insight-trigger').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const block = btn.closest('.insight-block');
+      const isOpen = block.classList.contains('open');
+      document.querySelectorAll('.insight-block').forEach(b => b.classList.remove('open'));
+      if (!isOpen) block.classList.add('open');
+    });
+  });
+})();
+</script>
+</body>
+</html>

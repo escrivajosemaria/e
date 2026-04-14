@@ -1,0 +1,1305 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Partnerships & Stakeholder Engagement</title>
+  <link rel="shortcut icon" href="images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+  :root {
+    --teal:      #04474e;
+    --teal-deep: #020d0e;
+    --teal-mid:  #075f6a;
+    --teal-lite: #0d9db0;
+    --gold:      #c8973a;
+    --gold-lt:   #e8b65a;
+    --cream:     #faf8f4;
+    --ink:       #0d1a1b;
+    --border:    rgba(255,255,255,.07);
+    --border-d:  rgba(4,71,78,.15);
+    --ff-d:      'EB Garamond', Georgia, serif;
+    --ff-ui:     'Josefin Sans', sans-serif;
+    --ease:      cubic-bezier(0.4,0,0.2,1);
+  }
+
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { font-family:var(--ff-d); background:var(--teal-deep); color:#fff; overflow-x:hidden; }
+  ::-webkit-scrollbar { width:3px; }
+  ::-webkit-scrollbar-track { background:var(--teal-deep); }
+  ::-webkit-scrollbar-thumb { background:var(--gold); }
+
+  #prog { position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--teal-lite),var(--gold));z-index:9000;width:0;transition:width .08s linear; }
+
+  /* HEADER */
+  #header { position:fixed;top:0;left:0;right:0;z-index:800;padding:1.2rem 4rem;display:flex;justify-content:flex-end;transition:background .4s; }
+  #header.solid { background:rgba(2,13,14,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border); }
+  #header nav ul { list-style:none;display:flex; }
+  #header nav ul li a { font-family:var(--ff-ui);font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);text-decoration:none;padding:.5rem 1rem;border:1px solid rgba(255,255,255,.15);border-radius:2px;transition:all .3s; }
+  #header nav ul li a:hover { color:var(--gold);border-color:var(--gold);background:rgba(200,151,58,.08); }
+
+  /* SIDE MENU */
+  #mo { display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1999;backdrop-filter:blur(4px); }
+  #mo.on { display:block; }
+  #menu { position:fixed;top:0;right:-380px;width:380px;height:100vh;background:var(--teal);z-index:2000;padding:5rem 3.5rem 3rem;transition:right .45s cubic-bezier(.77,0,.18,1); }
+  #menu.on { right:0; }
+  #mc { position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:rgba(255,255,255,.6);font-size:1.4rem;cursor:pointer;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s; }
+  #mc:hover { background:rgba(255,255,255,.1);color:#fff; }
+  #menu h2 { font-family:var(--ff-ui);font-size:.58rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:2.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,.1); }
+  #menu ul { list-style:none; }
+  #menu ul li { margin-bottom:.1rem;opacity:0;transform:translateX(24px);transition:all .35s; }
+  #menu.on ul li { opacity:1;transform:translateX(0); }
+  #menu.on ul li:nth-child(1){transition-delay:.08s} #menu.on ul li:nth-child(2){transition-delay:.14s}
+  #menu.on ul li:nth-child(3){transition-delay:.2s}  #menu.on ul li:nth-child(4){transition-delay:.26s}
+  #menu ul li a { display:block;font-family:var(--ff-d);font-size:1.5rem;color:rgba(255,255,255,.82);text-decoration:none;padding:.65rem 0;border-bottom:1px solid rgba(255,255,255,.07);transition:color .3s,padding-left .3s; }
+  #menu ul li a:hover { color:var(--gold);padding-left:.5rem; }
+
+  @keyframes rise { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+  /* ══════════════════════════════════════════════════════════════
+     HERO — diagonal split
+  ══════════════════════════════════════════════════════════════ */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 6rem;
+  }
+
+  /* Background image — right-biased */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1600&q=70');
+    background-size: cover;
+    background-position: center 40%;
+    filter: brightness(.18) saturate(.5);
+  }
+
+  /* Diagonal mask: left side dark, right side image */
+  .hero-mask {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      var(--teal-deep) 0%,
+      var(--teal-deep) 50%,
+      rgba(2,13,14,.55) 70%,
+      rgba(2,13,14,.2) 100%
+    );
+  }
+
+  /* Rotating ring decoration */
+  .hero-ring {
+    position: absolute;
+    right: 8%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: clamp(300px, 38vw, 520px);
+    height: clamp(300px, 38vw, 520px);
+    border-radius: 50%;
+    border: 1px solid rgba(200,151,58,.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .hero-ring::before {
+    content: '';
+    position: absolute;
+    inset: 20px;
+    border-radius: 50%;
+    border: 1px dashed rgba(200,151,58,.08);
+    animation: spin 60s linear infinite;
+  }
+  .hero-ring::after {
+    content: '';
+    position: absolute;
+    inset: 60px;
+    border-radius: 50%;
+    border: 1px solid rgba(13,157,176,.07);
+  }
+
+  /* Partner logo orbit dots on ring */
+  .orbit-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: .35;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 3;
+    padding: 0 8%;
+    max-width: 680px;
+  }
+
+  .hero-label {
+    font-family: var(--ff-ui);
+    font-size: .55rem;
+    font-weight: 600;
+    letter-spacing: .4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: rise .8s var(--ease) .2s forwards;
+  }
+  .hero-label::before { content:''; display:block; width:28px; height:1px; background:var(--gold); }
+
+  .hero-title {
+    font-family: var(--ff-d);
+    font-weight: 700;
+    font-size: clamp(3rem, 6.5vw, 7rem);
+    line-height: .9;
+    letter-spacing: -.02em;
+    color: #fff;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: rise 1s var(--ease) .4s forwards;
+  }
+  .hero-title em { font-style:italic; color:var(--gold); display:block; }
+
+  .hero-intro {
+    font-family: var(--ff-d);
+    font-size: 1.1rem;
+    font-style: italic;
+    color: rgba(255,255,255,.5);
+    line-height: 1.8;
+    border-left: 3px solid var(--gold);
+    padding-left: 1.2rem;
+    max-width: 500px;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: rise .9s var(--ease) .65s forwards;
+  }
+
+  /* Stat row at bottom of hero */
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: rise .9s var(--ease) .85s forwards;
+  }
+
+  .hstat-val {
+    font-family: var(--ff-d);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: .2rem;
+  }
+  .hstat-label {
+    font-family: var(--ff-ui);
+    font-size: .5rem;
+    font-weight: 600;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.3);
+  }
+  .hstat-divider {
+    width: 1px;
+    background: rgba(255,255,255,.08);
+    align-self: stretch;
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     CONTEXT INTRO — 3 column manifesto layout
+  ══════════════════════════════════════════════════════════════ */
+  .context-section {
+    background: var(--teal);
+    padding: 6rem 8%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3rem;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .ctx-block {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .8s var(--ease), transform .8s var(--ease);
+  }
+  .ctx-block.vis { opacity:1; transform:translateY(0); }
+  .ctx-num {
+    font-family: var(--ff-d);
+    font-size: 4rem;
+    font-weight: 700;
+    color: rgba(255,255,255,.05);
+    line-height: 1;
+    margin-bottom: .5rem;
+  }
+  .ctx-stat-num {
+    font-family: var(--ff-d);
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: .4rem;
+  }
+  .ctx-title {
+    font-family: var(--ff-ui);
+    font-size: .54rem;
+    font-weight: 700;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.35);
+    margin-bottom: .8rem;
+  }
+  .ctx-text {
+    font-family: var(--ff-d);
+    font-size: .95rem;
+    line-height: 1.85;
+    color: rgba(255,255,255,.5);
+    font-style: italic;
+  }
+  .ctx-text a { color: var(--teal-lite); text-decoration:none; border-bottom:1px solid rgba(13,157,176,.3); }
+
+  /* ══════════════════════════════════════════════════════════════
+     PARTNER NETWORK — interactive card wall
+  ══════════════════════════════════════════════════════════════ */
+  .network-section {
+    background: var(--teal-deep);
+    padding: 7rem 8%;
+  }
+  .network-header {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 4rem;
+    align-items: end;
+    margin-bottom: 5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .network-header h2 {
+    font-family: var(--ff-d);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: .95;
+    letter-spacing: -.02em;
+  }
+  .network-header h2 em { font-style:italic; color:var(--gold); }
+  .network-header-right {
+    font-family: var(--ff-d);
+    font-size: 1rem;
+    color: rgba(255,255,255,.5);
+    line-height: 1.85;
+    font-style: italic;
+    border-left: 3px solid rgba(200,151,58,.3);
+    padding-left: 1.2rem;
+  }
+
+  /* Partner cards grid — asymmetric */
+  .partner-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .partner-card {
+    background: var(--teal-deep);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity .7s var(--ease), transform .7s var(--ease);
+  }
+  .partner-card.vis { opacity:1; transform:translateY(0); }
+
+  /* Inner layout */
+  .pc-inner {
+    padding: 2.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: background .4s;
+    min-height: 280px;
+  }
+  .partner-card:hover .pc-inner { background: rgba(4,71,78,.45); }
+
+  /* Gold bar on hover */
+  .pc-inner::after {
+    content:'';
+    position:absolute;
+    bottom:0;left:0;right:0;
+    height:2px;
+    background:var(--gold);
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform .45s var(--ease);
+  }
+  .partner-card:hover .pc-inner::after { transform:scaleX(1); }
+
+  /* Logo area */
+  .pc-logo {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.1);
+    margin-bottom: 1.5rem;
+    flex-shrink: 0;
+    background: rgba(255,255,255,.04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color .3s;
+  }
+  .partner-card:hover .pc-logo { border-color: rgba(200,151,58,.4); }
+  .pc-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .pc-org {
+    font-family: var(--ff-ui);
+    font-size: .5rem;
+    font-weight: 700;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: .5rem;
+  }
+  .pc-title {
+    font-family: var(--ff-d);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.25;
+    margin-bottom: .8rem;
+    flex: 1;
+  }
+  .pc-preview {
+    font-family: var(--ff-d);
+    font-size: .88rem;
+    font-style: italic;
+    color: rgba(255,255,255,.35);
+    line-height: 1.6;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+  }
+  .pc-cta {
+    font-family: var(--ff-ui);
+    font-size: .5rem;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.2);
+    margin-top: 1.2rem;
+    transition: color .3s;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+  }
+  .partner-card:hover .pc-cta { color: var(--gold); }
+
+  /* Featured card — spans 2 columns */
+  .partner-card.featured .pc-inner { min-height: 320px; }
+
+  /* ── PARTNER DETAIL PANEL ─────────────────────────────────── */
+  .partner-detail {
+    background: var(--teal);
+    border-top: 1px solid var(--border);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .65s var(--ease);
+  }
+  .partner-detail.open { max-height: 600px; }
+  .pd-inner {
+    padding: 4rem 8%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .pd-org-tag {
+    font-family: var(--ff-ui);
+    font-size: .52rem;
+    font-weight: 700;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+  }
+  .pd-org-tag::before { content:''; display:block; width:18px; height:1px; background:var(--gold); }
+  .pd-title {
+    font-family: var(--ff-d);
+    font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.15;
+    letter-spacing: -.01em;
+    margin-bottom: 1.5rem;
+  }
+  .pd-body {
+    font-family: var(--ff-d);
+    font-size: 1rem;
+    line-height: 1.9;
+    color: rgba(255,255,255,.6);
+    font-style: italic;
+  }
+
+  .pd-image {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    border-radius: 3px;
+    display: block;
+    filter: brightness(.75) saturate(.8);
+  }
+  .pd-close {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    margin-top: 2rem;
+    font-family: var(--ff-ui);
+    font-size: .55rem;
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.3);
+    background: none;
+    border: 1px solid rgba(255,255,255,.1);
+    padding: .6rem 1.2rem;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all .3s;
+  }
+  .pd-close:hover { color: var(--gold); border-color: rgba(200,151,58,.4); }
+
+  /* ══════════════════════════════════════════════════════════════
+     FOCUS AREAS — horizontal scroll ticker + expandable rows
+  ══════════════════════════════════════════════════════════════ */
+  .focus-section {
+    background: var(--teal-deep);
+    padding: 7rem 8%;
+  }
+  .focus-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 4rem;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  .focus-header h2 {
+    font-family: var(--ff-d);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.05;
+    letter-spacing: -.01em;
+  }
+  .focus-header h2 em { font-style:italic; color:var(--gold); }
+  .focus-count {
+    font-family: var(--ff-d);
+    font-size: 5rem;
+    font-weight: 700;
+    color: rgba(255,255,255,.05);
+    line-height: 1;
+  }
+
+  /* Each focus area — full-width expandable row */
+  .focus-row {
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    transform: translateX(-12px);
+    transition: opacity .7s var(--ease), transform .7s var(--ease);
+  }
+  .focus-row:last-of-type { border-bottom: 1px solid var(--border); }
+  .focus-row.vis { opacity:1; transform:translateX(0); }
+
+  .focus-trigger {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 1.8rem 0;
+    display: grid;
+    grid-template-columns: 3.5rem 1fr auto auto;
+    gap: 2rem;
+    align-items: center;
+    text-align: left;
+    transition: background .3s;
+  }
+  .focus-trigger:hover { background: rgba(4,71,78,.2); padding-left: 1rem; padding-right: 1rem; margin: 0 -1rem; width: calc(100% + 2rem); }
+
+  .fr-num {
+    font-family: var(--ff-d);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: rgba(255,255,255,.1);
+  }
+  .fr-title {
+    font-family: var(--ff-d);
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    font-weight: 600;
+    color: rgba(255,255,255,.7);
+    transition: color .3s;
+  }
+  .focus-row.open .fr-title { color: #fff; }
+  .focus-row.open .fr-num { color: var(--gold); }
+
+  .fr-tag {
+    font-family: var(--ff-ui);
+    font-size: .48rem;
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.2);
+    padding: .3rem .8rem;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 100px;
+    white-space: nowrap;
+    transition: all .3s;
+  }
+  .focus-row.open .fr-tag { color: var(--gold); border-color: rgba(200,151,58,.3); }
+
+  .fr-chev {
+    font-size: .7rem;
+    color: rgba(255,255,255,.2);
+    transition: transform .35s var(--ease), color .3s;
+    flex-shrink: 0;
+  }
+  .focus-row.open .fr-chev { transform:rotate(90deg); color:var(--gold); }
+
+  .focus-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .55s var(--ease);
+    padding-left: calc(3.5rem + 2rem);
+  }
+  .focus-row.open .focus-body { max-height: 300px; }
+  .focus-body p {
+    font-family: var(--ff-d);
+    font-size: 1rem;
+    line-height: 1.9;
+    color: rgba(255,255,255,.5);
+    padding-bottom: 2rem;
+    max-width: 680px;
+    font-style: italic;
+  }
+  .focus-body a { color: var(--teal-lite); text-decoration:none; border-bottom:1px solid rgba(13,157,176,.3); }
+
+  /* ══════════════════════════════════════════════════════════════
+     CERTIFICATE / RECOGNITION — horizontal feature card
+  ══════════════════════════════════════════════════════════════ */
+  .recognition-section {
+    background: var(--teal);
+    padding: 6rem 8%;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 5rem;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,.06);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+
+  .rec-label {
+    font-family: var(--ff-ui);
+    font-size: .54rem;
+    font-weight: 700;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin-bottom: 1.2rem;
+  }
+  .rec-label::before { content:''; display:block; width:20px; height:1px; background:var(--gold); }
+  .rec-left h2 {
+    font-family: var(--ff-d);
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.1;
+    letter-spacing: -.01em;
+    margin-bottom: 1rem;
+  }
+  .rec-left h2 em { font-style:italic; color:var(--gold); }
+  .rec-left p {
+    font-family: var(--ff-d);
+    font-size: 1rem;
+    line-height: 1.85;
+    color: rgba(255,255,255,.5);
+    font-style: italic;
+    margin-bottom: 1.2rem;
+  }
+  .rec-right {
+    position: relative;
+  }
+  .rec-image-wrap {
+    position: relative;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .rec-image-wrap img {
+    width: 100%;
+    display: block;
+    filter: brightness(.8) saturate(.7);
+    transition: filter .5s, transform .8s var(--ease);
+  }
+  .rec-image-wrap:hover img { filter:brightness(.95) saturate(.9); transform:scale(1.02); }
+  /* Gold frame accent */
+  .rec-image-wrap::before {
+    content:'';
+    position:absolute;
+    top:-8px;left:-8px;right:8px;bottom:8px;
+    border:1px solid rgba(200,151,58,.25);
+    border-radius:3px;
+    pointer-events:none;
+    z-index:1;
+  }
+  .rec-caption {
+    font-family: var(--ff-ui);
+    font-size: .5rem;
+    font-weight: 600;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.25);
+    margin-top: 1rem;
+    text-align: center;
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     READING LINKS — editorial list
+  ══════════════════════════════════════════════════════════════ */
+  .reading-section {
+    background: var(--cream);
+    color: var(--ink);
+    padding: 6rem 8%;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 6rem;
+    align-items: start;
+  }
+  .reading-left h2 {
+    font-family: var(--ff-d);
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    font-weight: 700;
+    color: var(--teal);
+    line-height: 1.1;
+    letter-spacing: -.02em;
+    margin-bottom: .8rem;
+  }
+  .reading-left h2 em { font-style:italic; color:var(--gold); }
+  .reading-left p {
+    font-family: var(--ff-d);
+    font-size: 1rem;
+    line-height: 1.85;
+    color: #3a4a4b;
+  }
+  .reading-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--border-d);
+  }
+  .reading-item {
+    background: #fff;
+    padding: 1.8rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    text-decoration: none;
+    color: var(--teal);
+    transition: all .35s;
+    border-left: 3px solid transparent;
+    opacity: 0;
+    transform: translateX(12px);
+    transition: opacity .6s var(--ease), transform .6s var(--ease), border-color .3s, background .3s;
+  }
+  .reading-item.vis { opacity:1; transform:translateX(0); }
+  .reading-item:hover { border-left-color: var(--gold); background: #f8faf8; }
+  .ri-num {
+    font-family: var(--ff-d);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: rgba(4,71,78,.12);
+    flex-shrink: 0;
+    min-width: 2rem;
+  }
+  .ri-title {
+    font-family: var(--ff-d);
+    font-size: .95rem;
+    font-weight: 500;
+    color: var(--teal);
+    line-height: 1.35;
+    flex: 1;
+    transition: color .3s;
+  }
+  .reading-item:hover .ri-title { color: var(--ink); }
+  .ri-arrow {
+    font-family: var(--ff-ui);
+    font-size: .6rem;
+    color: rgba(4,71,78,.25);
+    flex-shrink: 0;
+    transition: color .3s, transform .3s;
+  }
+  .reading-item:hover .ri-arrow { color: var(--gold); transform: translateX(4px); }
+
+  /* CONTACT */
+  .contact-section { background:var(--teal-deep); display:grid; grid-template-columns:1fr 1fr; }
+  .contact-left { padding:6rem 5% 6rem 8%; border-right:1px solid rgba(255,255,255,.05); }
+  .contact-left h2 { font-family:var(--ff-d);font-size:2.5rem;font-weight:700;color:#fff;margin-bottom:.4rem;letter-spacing:-.01em; }
+  .contact-left .sub { font-family:var(--ff-d);font-style:italic;font-size:.95rem;color:rgba(255,255,255,.3);margin-bottom:2.5rem; }
+  .ff { margin-bottom:1.4rem; }
+  .ff input,.ff textarea { width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.12);padding:.7rem 0;color:#fff;font-family:var(--ff-d);font-size:1rem;font-weight:400;outline:none;transition:border-color .3s; }
+  .ff input::placeholder,.ff textarea::placeholder { color:rgba(255,255,255,.2); }
+  .ff input:focus,.ff textarea:focus { border-bottom-color:var(--gold); }
+  .ff textarea { resize:none;min-height:90px; }
+  .ff-row { display:grid;grid-template-columns:1fr 1fr;gap:1.2rem; }
+  .send-btn { background:var(--gold);color:var(--teal-deep);border:none;padding:.85rem 2.2rem;cursor:pointer;font-family:var(--ff-ui);font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;border-radius:2px;transition:all .3s; }
+  .send-btn:hover { background:var(--gold-lt);transform:translateY(-2px);box-shadow:0 8px 20px rgba(200,151,58,.3); }
+  .contact-right { padding:6rem 8% 6rem 5%;display:flex;flex-direction:column;justify-content:center; }
+  .contact-right h3 { font-family:var(--ff-d);font-style:italic;font-size:1.1rem;color:rgba(255,255,255,.3);margin-bottom:1.8rem; }
+  .socials { display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:2.5rem; }
+  .sc { display:flex;align-items:center;justify-content:center;height:46px;border:1px solid rgba(255,255,255,.08);border-radius:3px;color:rgba(255,255,255,.4);text-decoration:none;font-size:.8rem;font-weight:500;transition:all .3s; }
+  .sc:hover { border-color:var(--gold);color:var(--gold);background:rgba(200,151,58,.07); }
+  .footer-bar { background:#000;padding:1.2rem 8%;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.04); }
+  .footer-bar p { font-family:var(--ff-ui);font-size:.58rem;color:rgba(255,255,255,.15);letter-spacing:.05em; }
+
+  .rv { opacity:0;transform:translateY(24px);transition:opacity .85s var(--ease),transform .85s var(--ease); }
+  .rv.vis { opacity:1;transform:translateY(0); }
+  .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+  /* RESPONSIVE */
+  @media(max-width:1100px){
+    .context-section{grid-template-columns:1fr 1fr}
+    .network-header{grid-template-columns:1fr;gap:2rem}
+    .partner-grid{grid-template-columns:1fr 1fr}
+    .recognition-section{grid-template-columns:1fr;gap:3rem}
+    .reading-section{grid-template-columns:1fr;gap:3rem}
+    .contact-section{grid-template-columns:1fr}
+    .contact-right{padding:3rem 5%}
+    .contact-left{border-right:none;padding:5rem 5%}
+    .ff-row{grid-template-columns:1fr}
+    .pd-inner{grid-template-columns:1fr;gap:2rem}
+  }
+  @media(max-width:700px){
+    #header{padding:1.2rem 5%}
+    .hero-ring{display:none}
+    .context-section{grid-template-columns:1fr}
+    .partner-grid{grid-template-columns:1fr}
+    .focus-trigger{grid-template-columns:2.5rem 1fr auto}
+    .fr-tag{display:none}
+    .focus-body{padding-left:0}
+    .hero-stats{gap:1.5rem}
+  }
+  </style>
+</head>
+<body>
+
+<div id="prog"></div>
+<div id="mo"></div>
+<nav id="menu">
+  <button id="mc">✕</button>
+  <h2>Navigation</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="http://esvarj.wordpress.com">Health Articles</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+<header id="header">
+  <nav><ul><li><a href="#" id="mt">Menu</a></li></ul></nav>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     HERO — diagonal split with orbit ring
+═══════════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-mask"></div>
+
+  <!-- Decorative orbit ring (right side) -->
+  <div class="hero-ring" aria-hidden="true">
+    <div class="orbit-dot" style="top:10%;left:50%;transform:translate(-50%,-50%)"></div>
+    <div class="orbit-dot" style="top:50%;right:8%;transform:translateY(-50%)"></div>
+    <div class="orbit-dot" style="bottom:12%;left:50%;transform:translate(-50%,50%)"></div>
+    <div class="orbit-dot" style="top:50%;left:8%;transform:translateY(-50%)"></div>
+    <div class="orbit-dot" style="top:25%;right:18%;"></div>
+    <div class="orbit-dot" style="bottom:25%;right:18%;"></div>
+    <div class="orbit-dot" style="top:25%;left:18%;"></div>
+    <div class="orbit-dot" style="bottom:25%;left:18%;"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-label">Partnerships · Stakeholder Engagement</div>
+    <h1 class="hero-title">
+      Building<br>
+      <em>Together.</em>
+    </h1>
+    <p class="hero-intro">
+      No health system is strengthened alone. Every meaningful outcome is the product of trust built, relationships sustained, and partners aligned toward a shared purpose.
+    </p>
+    <div class="hero-stats">
+      <div class="hstat">
+        <div class="hstat-val">8</div>
+        <div class="hstat-label">Active Partners</div>
+      </div>
+      <div class="hstat-divider"></div>
+      <div class="hstat">
+        <div class="hstat-val">70%</div>
+        <div class="hstat-label">Interventions via<br>multi-sector partnerships</div>
+      </div>
+      <div class="hstat-divider"></div>
+      <div class="hstat">
+        <div class="hstat-val">+30%</div>
+        <div class="hstat-label">Coverage in hard-to-reach<br>populations</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTEXT MANIFESTO — 3 columns ════════════════════════════ -->
+<div class="context-section">
+  <div class="ctx-block" style="transition-delay:.05s">
+    <div class="ctx-num" aria-hidden="true">01</div>
+    <div class="ctx-stat-num">70%</div>
+    <div class="ctx-title">Multi-sector success rate</div>
+    <div class="ctx-text">
+      In 2023, over 70% of successful large-scale health interventions globally relied on multi-sectoral partnerships to align strategies, mobilize resources, and ensure accountability — <a href="https://ghsagenda.org/" target="_blank" rel="noopener">GHSA</a>.
+    </div>
+  </div>
+  <div class="ctx-block" style="transition-delay:.12s">
+    <div class="ctx-num" aria-hidden="true">02</div>
+    <div class="ctx-stat-num">+20–30%</div>
+    <div class="ctx-title">Immunization coverage gain</div>
+    <div class="ctx-text">
+      In Sub-Saharan Africa, immunization campaigns that leveraged local health committees and volunteer networks achieved 20–30% higher coverage in hard-to-reach populations — <a href="https://www.unicef.org/reports/state-of-the-worlds-children-2023" target="_blank" rel="noopener">UNICEF</a>.
+    </div>
+  </div>
+  <div class="ctx-block" style="transition-delay:.2s">
+    <div class="ctx-num" aria-hidden="true">03</div>
+    <div class="ctx-stat-num">Co-creation</div>
+    <div class="ctx-title">The partnership principle</div>
+    <div class="ctx-text">
+      Programs with strong stakeholder networks respond more effectively to outbreaks and emergencies, reducing morbidity and mortality — because trust, built before a crisis, cannot be improvised during one.
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PARTNER NETWORK — interactive card wall ═══════════════════ -->
+<section id="partners" class="network-section">
+  <div class="network-header rv">
+    <h2>The Partner<br><em>Network</em></h2>
+    <div class="network-header-right">
+      Collaborations are not transactional. Each partner below represents a sustained relationship — shared planning, joint implementation, and mutual accountability toward health outcomes that neither party could achieve alone. Select any partner to read the full story.
+    </div>
+  </div>
+
+  <!-- Partner grid -->
+  <div class="partner-grid" id="partner-grid">
+
+    <!-- WHO -->
+    <div class="partner-card featured" style="transition-delay:.05s"
+         data-org="WHO"
+         data-title="WHO Polio Campaign Support"
+         data-body="Partnered with the World Health Organization and local health authorities to implement mass polio vaccination campaigns in Trans-Nzoia County. Supported MEAL processes, post-campaign coverage surveys, and community engagement activities, contributing to high-quality reporting, improved accountability, and increased vaccination uptake in priority communities."
+         data-image="https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=800&q=70">
+      <div class="pc-inner">
+        <div class="pc-logo">
+          <img src="images/who.webp" alt="WHO logo" onerror="this.style.display='none'">
+        </div>
+        <div class="pc-org">World Health Organization</div>
+        <div class="pc-title">Polio Vaccination Campaign Support — Trans-Nzoia County</div>
+        <div class="pc-preview">MEAL processes, coverage surveys, and community engagement delivering measurable uptake gains.</div>
+        <div class="pc-cta">Read more →</div>
+      </div>
+    </div>
+
+    <!-- Kenya Red Cross -->
+    <div class="partner-card" style="transition-delay:.1s"
+         data-org="Kenya Red Cross"
+         data-title="Kenya Red Cross Community Campaigns"
+         data-body="Coordinated community health education and first aid awareness programs with the Kenya Red Cross Society. Sessions reached diverse community groups across priority areas, building basic health literacy and emergency response awareness at the grassroots level."
+         data-image="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=800&q=70">
+      <div class="pc-inner">
+        <div class="pc-logo">
+          <img src="images/KRCS.webp" alt="KRCS logo" onerror="this.style.display='none'">
+        </div>
+        <div class="pc-org">Kenya Red Cross</div>
+        <div class="pc-title">Community Health Education &amp; First Aid Awareness</div>
+        <div class="pc-preview">Grassroots sessions building health literacy and emergency awareness across priority communities.</div>
+        <div class="pc-cta">Read more →</div>
+      </div>
+    </div>
+
+    <!-- MOH -->
+    <div class="partner-card" style="transition-delay:.15s"
+         data-org="Ministry of Health"
+         data-title="MOH Policy Engagement"
+         data-body="Worked with the Ministry of Health to co-create policies on community-linked health systems, contributing to policy alignment with ground realities. Engagement included joint planning sessions, feedback loops from community-level implementation, and documentation of evidence for policy adaptation."
+         data-image="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=70">
+      <div class="pc-inner">
+        <div class="pc-logo">
+          <img src="images/Moh.webp" alt="MOH logo" onerror="this.style.display='none'">
+        </div>
+        <div class="pc-org">Ministry of Health · Kenya</div>
+        <div class="pc-title">Community-Linked Health Systems Policy Co-creation</div>
+        <div class="pc-preview">Joint planning and ground-level feedback informing national policy design.</div>
+        <div class="pc-cta">Read more →</div>
+      </div>
+    </div>
+
+    <!-- St Martha -->
+    <div class="partner-card" style="transition-delay:.2s"
+         data-org="St. Martha Hospital"
+         data-title="St. Martha Hospital Outreach"
+         data-body="Partnered with St. Martha Hospital to design and implement a community outreach and awareness campaign aimed at increasing public understanding of the hospital's services among hard-to-reach communities in Trans-Nzoia County. Produced weekly monitoring updates that tracked outreach reach, engagement trends, and visibility gaps, informing hospital management decisions and improving coordination, which reduced duplication of outreach activities by 15 percent."
+         data-image="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=70">
+      <div class="pc-inner">
+        <div class="pc-logo">
+          <img src="images/st.martha.webp" alt="St Martha logo" onerror="this.style.display='none'">
+        </div>
+        <div class="pc-org">St. Martha Hospital</div>
+        <div class="pc-title">Community Outreach &amp; Visibility Campaign — Trans-Nzoia</div>
+        <div class="pc-preview">Weekly monitoring reduced outreach duplication by 15% and improved reach into hard-to-reach populations.</div>
+        <div class="pc-cta">Read more →</div>
+      </div>
+    </div>
+
+    <!-- UNDP -->
+    <div class="partner-card" style="transition-delay:.25s"
+         data-org="UNDP"
+         data-title="UNDP Myanmar — Nutrition & Community Health"
+         data-body="Partnered to enhance child nutrition and community health awareness initiatives across rural districts, contributing to programme design support and knowledge exchange on community-centred approaches aligned with UNDP's development mandate."
+         data-image="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&q=70">
+      <div class="pc-inner">
+        <div class="pc-logo">
+          <img src="images/UNDP.webp" alt="UNDP logo" onerror="this.style.display='none'">
+        </div>
+        <div class="pc-org">UNDP</div>
+        <div class="pc-title">Child Nutrition &amp; Community Health Awareness</div>
+        <div class="pc-preview">Community-centred programme support across rural districts.</div>
+        <div class="pc-cta">Read more →</div>
+      </div>
+    </div>
+
+    <!-- Miale ya Tumaini -->
+    <div class="partner-card" style="transition-delay:.3s"
+         data-org="Miale Ya Tumaini"
+         data-title="Local NGO Child Health Campaign"
+         data-body="Worked in partnership with Miale Ya Tumaini on a child health awareness campaign, supporting outreach activities and basic monitoring to assess reach, identify engagement gaps, and strengthen program effectiveness. The collaboration demonstrated how local NGO partnerships can extend reach into communities that larger organizations struggle to access."
+         data-image="https://images.unsplash.com/photo-1531983412531-1f49a365ffed?w=800&q=70">
+      <div class="pc-inner">
+        <div class="pc-logo">
+          <img src="images/Mialeyatumaini.webp" alt="Miale ya Tumaini logo" onerror="this.style.display='none'">
+        </div>
+        <div class="pc-org">Miale Ya Tumaini</div>
+        <div class="pc-title">Child Health Awareness Campaign</div>
+        <div class="pc-preview">Local NGO partnership extending reach into communities larger organisations struggle to access.</div>
+        <div class="pc-cta">Read more →</div>
+      </div>
+    </div>
+
+    <!-- BWAB -->
+    <div class="partner-card" style="transition-delay:.35s"
+         data-org="Fikisha BWABKenya"
+         data-title="Fikisha BWABKenya — Youth Health"
+         data-body="Youth-focused health programs promoting mental health, sexual and reproductive health, hygiene awareness and drug awareness among young people. The collaboration centred on peer-led education, community dialogues, and digital health content reaching youth across multiple counties."
+         data-image="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=70">
+      <div class="pc-inner">
+        <div class="pc-logo">
+          <img src="images/bwab.webp" alt="BWABKenya logo" onerror="this.style.display='none'">
+        </div>
+        <div class="pc-org">Fikisha BWABKenya</div>
+        <div class="pc-title">Youth Mental, Sexual &amp; Reproductive Health Programs</div>
+        <div class="pc-preview">Peer-led education and digital health content reaching youth across multiple counties.</div>
+        <div class="pc-cta">Read more →</div>
+      </div>
+    </div>
+
+    <!-- UNV -->
+    <div class="partner-card featured" style="transition-delay:.4s"
+         data-org="UNV"
+         data-title="UNV Visibility & Social Media Campaign"
+         data-body="Supported the UNV Regional Office for West and Central Africa by contributing to the 2nd UNV Visibility Campaign, developing and amplifying SDG-aligned digital content to strengthen volunteer impact storytelling, youth engagement, and regional visibility. The collaboration resulted in broader digital reach and stronger framing of volunteer contributions to the SDGs."
+         data-image="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=70">
+      <div class="pc-inner">
+        <div class="pc-logo">
+          <img src="images/UNV.webp" alt="UNV logo" onerror="this.style.display='none'">
+        </div>
+        <div class="pc-org">United Nations Volunteers</div>
+        <div class="pc-title">2nd UNV Visibility Campaign — SDG Digital Storytelling</div>
+        <div class="pc-preview">SDG-aligned content amplification strengthening volunteer impact storytelling and regional digital reach.</div>
+        <div class="pc-cta">Read more →</div>
+      </div>
+    </div>
+
+  </div><!-- /partner-grid -->
+
+  <!-- Detail expansion panel -->
+  <div class="partner-detail" id="partner-detail">
+    <div class="pd-inner">
+      <div class="pd-left">
+        <div class="pd-org-tag" id="pd-org"></div>
+        <div class="pd-title" id="pd-title"></div>
+        <div class="pd-body" id="pd-body"></div>
+        <button class="pd-close" id="pd-close">✕ Close</button>
+      </div>
+      <div class="pd-right">
+        <img class="pd-image" id="pd-image" src="" alt="Partnership image">
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══ FOCUS AREAS — expandable rows ════════════════════════════ -->
+<section id="focus" class="focus-section">
+  <div class="focus-header rv">
+    <div>
+      <div style="font-family:var(--ff-ui);font-size:.54rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;"><span style="display:block;width:20px;height:1px;background:var(--gold)"></span>Core Approaches</div>
+      <h2>How We <em>Engage</em></h2>
+    </div>
+    <div class="focus-count" aria-hidden="true">05</div>
+  </div>
+
+  <!-- Row 1 -->
+  <div class="focus-row" style="transition-delay:.05s">
+    <button class="focus-trigger">
+      <span class="fr-num">01</span>
+      <span class="fr-title">Multi-sectoral Collaboration</span>
+      <span class="fr-tag">Cross-sector</span>
+      <span class="fr-chev">›</span>
+    </button>
+    <div class="focus-body">
+      <p>Successful health programs rely on <a href="https://www.who.int/teams/health-systems-governance/multi-sectoral-collaboration" target="_blank" rel="noopener">cross-sector collaboration</a> to achieve broader impact. By building relationships across government, private sector, NGOs, and academia, programs align objectives, pool resources, and leverage complementary expertise. Evidence shows that multi-sectoral approaches improve program sustainability and amplify outcomes across communities that no single organization could reach alone.</p>
+    </div>
+  </div>
+
+  <!-- Row 2 -->
+  <div class="focus-row" style="transition-delay:.1s">
+    <button class="focus-trigger">
+      <span class="fr-num">02</span>
+      <span class="fr-title">Community &amp; Institutional Partnerships</span>
+      <span class="fr-tag">Ground-level</span>
+      <span class="fr-chev">›</span>
+    </button>
+    <div class="focus-body">
+      <p>Engaging local communities and institutions is critical to program reach and acceptance. By partnering with schools, religious institutions, community-based organizations, and local leaders, programs ensure interventions are culturally appropriate and widely supported. Studies show that <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6469129/" target="_blank" rel="noopener">community-driven approaches</a> experience higher uptake and longer-term behavioral change — because local trust cannot be imported from outside.</p>
+    </div>
+  </div>
+
+  <!-- Row 3 -->
+  <div class="focus-row" style="transition-delay:.15s">
+    <button class="focus-trigger">
+      <span class="fr-num">03</span>
+      <span class="fr-title">Strategic Alignment &amp; Coordination</span>
+      <span class="fr-tag">Governance</span>
+      <span class="fr-chev">›</span>
+    </button>
+    <div class="focus-body">
+      <p>Effective partnerships require clear alignment of goals, priorities, and operational plans. Coordination mechanisms — joint steering committees, regular inter-agency meetings — ensure resources are efficiently allocated and duplication minimized. Research demonstrates that coordinated multi-partner programs enhance coverage and create coherent frameworks for health service delivery (<a href="https://www.who.int/publications/i/item/9789241510190" target="_blank" rel="noopener">WHO Guidance on Coordination</a>).</p>
+    </div>
+  </div>
+
+  <!-- Row 4 -->
+  <div class="focus-row" style="transition-delay:.2s">
+    <button class="focus-trigger">
+      <span class="fr-num">04</span>
+      <span class="fr-title">Advocacy &amp; Networking</span>
+      <span class="fr-tag">Policy influence</span>
+      <span class="fr-chev">›</span>
+    </button>
+    <div class="focus-body">
+      <p>Building strong networks and advocating for program priorities with stakeholders is essential for resource mobilization and policy influence. Effective advocacy highlights program needs, demonstrates impact, and strengthens relationships with donors, policy-makers, and partners. By engaging networks strategically, programs gain visibility, secure funding, and shape enabling environments that support sustained outcomes (<a href="https://www.unicef.org/partnerships" target="_blank" rel="noopener">UNICEF Partnerships</a>).</p>
+    </div>
+  </div>
+
+  <!-- Row 5 -->
+  <div class="focus-row" style="transition-delay:.25s">
+    <button class="focus-trigger">
+      <span class="fr-num">05</span>
+      <span class="fr-title">Joint Program Implementation</span>
+      <span class="fr-tag">Co-delivery</span>
+      <span class="fr-chev">›</span>
+    </button>
+    <div class="focus-body">
+      <p>Collaborating on program design and delivery maximizes efficiency and outcome achievement. Joint implementation allows partners to share technical expertise, coordinate logistics, and monitor performance collectively. Case studies in immunization, community health campaigns, and health system strengthening show that shared implementation responsibilities consistently improve reach, quality, and accountability (<a href="https://www.usaid.gov/health" target="_blank" rel="noopener">USAID Health Programs</a>).</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══ RECOGNITION ═══════════════════════════════════════════════ -->
+<section class="recognition-section rv">
+  <div class="rec-left">
+    <div class="rec-label">Recognition</div>
+    <h2>UNDP Certificate<br>of <em>Recognition</em></h2>
+    <p>
+      Recognition from the United Nations Development Programme for contributions to the visibility campaign and SDG-aligned digital content work across the West and Central Africa regional portfolio.
+    </p>
+    <p>
+      Partnership work is not measured solely in coverage numbers — it is also reflected in the trust that organisations like UNDP place in collaborators to represent their mission with integrity and creativity.
+    </p>
+  </div>
+  <div class="rec-right rv d2">
+    <div class="rec-image-wrap">
+      <img src="images/save.webp"
+           alt="UNDP Certificate of Recognition"
+           onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=70'">
+    </div>
+    <div class="rec-caption">Certificate of Recognition — UNDP · 2023</div>
+  </div>
+</section>
+
+<!-- ═══ READING LINKS ═══════════════════════════════════════════ -->
+<section class="reading-section">
+  <div class="reading-left rv">
+    <div style="font-family:var(--ff-ui);font-size:.54rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--teal);display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;"><span style="display:block;width:20px;height:2px;background:var(--gold)"></span>Go Deeper</div>
+    <h2>Related<br><em>Insights</em></h2>
+    <p>Explore the thinking behind the partnerships — essays on multi-sector collaboration, community trust, coordination, advocacy, and what makes health partnerships work in practice across East Africa.</p>
+  </div>
+  <ul class="reading-list" style="align-self:stretch">
+    <a class="reading-item" href="https://esvarj.wordpress.com/2025/12/30/the-power-of-multi-sectoral-collaboration-in-health/" target="_blank" rel="noopener" style="transition-delay:.05s">
+      <div class="ri-num">01</div>
+      <div class="ri-title">The Power of Multi-sectoral Collaboration in Health</div>
+      <div class="ri-arrow">→</div>
+    </a>
+    <a class="reading-item" href="https://open.substack.com/pub/escopy/p/community-partnerships-for-sustainable?r=73zqs0&utm_campaign=post&utm_medium=web" target="_blank" rel="noopener" style="transition-delay:.1s">
+      <div class="ri-num">02</div>
+      <div class="ri-title">Community Partnerships for Sustainable Health Programs</div>
+      <div class="ri-arrow">→</div>
+    </a>
+    <a class="reading-item" href="https://esvarj.wordpress.com/2025/12/30/strategic-coordination-across-health-stakeholders/" target="_blank" rel="noopener" style="transition-delay:.15s">
+      <div class="ri-num">03</div>
+      <div class="ri-title">Strategic Coordination Across Health Stakeholders</div>
+      <div class="ri-arrow">→</div>
+    </a>
+    <a class="reading-item" href="https://open.substack.com/pub/escopy/p/effective-advocacy-and-networking?r=73zqs0&utm_campaign=post&utm_medium=web" target="_blank" rel="noopener" style="transition-delay:.2s">
+      <div class="ri-num">04</div>
+      <div class="ri-title">Effective Advocacy and Networking for Health Outcomes</div>
+      <div class="ri-arrow">→</div>
+    </a>
+  </ul>
+</section>
+
+<!-- ═══ CONTACT ═══════════════════════════════════════════════════ -->
+<div class="contact-section">
+  <div class="contact-left">
+    <div class="rv" style="font-family:var(--ff-ui);font-size:.58rem;font-weight:600;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;"><span style="display:block;width:24px;height:1px;background:var(--gold)"></span>Get in Touch</div>
+    <h2 class="rv d1">Partnership Enquiries</h2>
+    <p class="sub rv d2">Open to new partnerships, collaboration proposals, and joint programme design.</p>
+    <form method="POST" action="https://formspree.io/f/xwvpkvzl" class="rv d2">
+      <div class="ff-row ff"><div><input type="text" name="name" placeholder="Name" required></div><div><input type="email" name="email" placeholder="Email" required></div></div>
+      <div class="ff"><textarea name="message" placeholder="Describe your partnership idea or proposal…" rows="4"></textarea></div>
+      <button type="submit" class="send-btn">Send Message →</button>
+    </form>
+  </div>
+  <div class="contact-right rv">
+    <h3>Connect &amp; follow the work</h3>
+    <div class="socials">
+      <a class="sc" href="https://x.com/humanistories" target="_blank">𝕏</a>
+      <a class="sc" href="https://web.facebook.com/humanitarian.stories/" target="_blank">f</a>
+      <a class="sc" href="https://www.instagram.com/humanitarian_stories/" target="_blank">◎</a>
+      <a class="sc" href="https://www.linkedin.com/in/josemariaescriva/" target="_blank">in</a>
+      <a class="sc" href="https://github.com/escrivajosemaria" target="_blank">⌥</a>
+      <a class="sc" href="https://escrivajosemaria.github.io/escopy.io/" target="_blank">⊕</a>
+      <a class="sc" href="https://www.youtube.com/@escrivahealthcollective" target="_blank">▶</a>
+      <a class="sc" href="http://esvarj.wordpress.com" target="_blank">W</a>
+    </div>
+  </div>
+</div>
+
+<div class="footer-bar">
+  <p>&copy; Escriva Josemaria 2024</p>
+  <p>Design: escriva.https</p>
+</div>
+
+<script>
+(function(){
+  /* PROGRESS */
+  const pb = document.getElementById('prog');
+  window.addEventListener('scroll', () => {
+    const s = document.documentElement;
+    pb.style.width = (window.scrollY / (s.scrollHeight - window.innerHeight) * 100) + '%';
+  }, { passive:true });
+
+  /* HEADER */
+  const hdr = document.getElementById('header');
+  window.addEventListener('scroll', () => hdr.classList.toggle('solid', window.scrollY > 60), { passive:true });
+
+  /* MENU */
+  const menuEl = document.getElementById('menu'), ov = document.getElementById('mo');
+  document.getElementById('mt').addEventListener('click', e => { e.preventDefault(); menuEl.classList.add('on'); ov.classList.add('on'); });
+  document.getElementById('mc').addEventListener('click', () => { menuEl.classList.remove('on'); ov.classList.remove('on'); });
+  ov.addEventListener('click', () => { menuEl.classList.remove('on'); ov.classList.remove('on'); });
+
+  /* REVEAL */
+  const rvObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); rvObs.unobserve(e.target); } });
+  }, { threshold:.08, rootMargin:'0px 0px -40px 0px' });
+  document.querySelectorAll('.rv, .ctx-block, .partner-card, .focus-row, .reading-item').forEach(el => rvObs.observe(el));
+
+  /* PARTNER CARDS — click to expand detail panel */
+  const detail   = document.getElementById('partner-detail');
+  const pdOrg    = document.getElementById('pd-org');
+  const pdTitle  = document.getElementById('pd-title');
+  const pdBody   = document.getElementById('pd-body');
+  const pdImage  = document.getElementById('pd-image');
+  const pdClose  = document.getElementById('pd-close');
+  let   activeCard = null;
+
+  document.querySelectorAll('.partner-card').forEach(card => {
+    card.addEventListener('click', () => {
+      if (activeCard === card && detail.classList.contains('open')) {
+        detail.classList.remove('open');
+        activeCard = null;
+        return;
+      }
+      pdOrg.textContent   = card.dataset.org;
+      pdTitle.textContent = card.dataset.title;
+      pdBody.textContent  = card.dataset.body;
+      pdImage.src         = card.dataset.image;
+      detail.classList.add('open');
+      activeCard = card;
+      setTimeout(() => detail.scrollIntoView({ behavior:'smooth', block:'nearest' }), 100);
+    });
+  });
+
+  pdClose.addEventListener('click', () => {
+    detail.classList.remove('open');
+    activeCard = null;
+  });
+
+  /* FOCUS ROWS accordion */
+  document.querySelectorAll('.focus-row').forEach(row => {
+    row.querySelector('.focus-trigger').addEventListener('click', () => {
+      const isOpen = row.classList.contains('open');
+      document.querySelectorAll('.focus-row').forEach(r => r.classList.remove('open'));
+      if (!isOpen) row.classList.add('open');
+    });
+  });
+})();
+</script>
+</body>
+</html>

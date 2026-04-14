@@ -1,0 +1,797 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Communications & Knowledge Translation</title>
+  <link rel="shortcut icon" href="images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+  :root {
+    --teal:      #04474e;
+    --teal-deep: #020d0e;
+    --teal-mid:  #075f6a;
+    --teal-lite: #0d9db0;
+    --gold:      #c8973a;
+    --gold-lt:   #e8b65a;
+    --cream:     #faf8f4;
+    --ink:       #0d1a1b;
+    --border:    rgba(255,255,255,.07);
+    --ff-d:      'Bebas Neue', sans-serif;
+    --ff-b:      'Libre Baskerville', serif;
+    --ff-ui:     'DM Sans', sans-serif;
+    --ff-menu:   'EB Garamond', Georgia, serif;   /* ← menu font, matches contact.html */
+    --ease:      cubic-bezier(0.4,0,0.2,1);
+  }
+
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { font-family:var(--ff-b); background:var(--teal-deep); color:#fff; overflow-x:hidden; }
+
+  ::-webkit-scrollbar { width:3px; }
+  ::-webkit-scrollbar-track { background:var(--teal-deep); }
+  ::-webkit-scrollbar-thumb { background:var(--gold); }
+
+  /* PROGRESS */
+  #prog { position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--teal-lite),var(--gold));z-index:9000;width:0;transition:width .08s linear; }
+
+  /* HEADER */
+  #header { position:fixed;top:0;left:0;right:0;z-index:800;padding:1.2rem 4rem;display:flex;justify-content:flex-end;transition:background .4s; }
+  #header.solid { background:rgba(2,13,14,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border); }
+  #header nav ul { list-style:none;display:flex; }
+  #header nav ul li a { font-family:var(--ff-ui);font-size:.65rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);text-decoration:none;padding:.5rem 1rem;border:1px solid rgba(255,255,255,.15);border-radius:2px;transition:all .3s; }
+  #header nav ul li a:hover { color:var(--gold);border-color:var(--gold);background:rgba(200,151,58,.08); }
+
+  /* SIDE MENU */
+  #mo { display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1999;backdrop-filter:blur(4px); }
+  #mo.on { display:block; }
+  #menu { position:fixed;top:0;right:-380px;width:380px;height:100vh;background:var(--teal);z-index:2000;padding:5rem 3.5rem 3rem;transition:right .45s cubic-bezier(.77,0,.18,1); }
+  #menu.on { right:0; }
+  #mc { position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:rgba(255,255,255,.6);font-size:1.4rem;cursor:pointer;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s; }
+  #mc:hover { background:rgba(255,255,255,.1);color:#fff; }
+  #menu h2 { font-family:var(--ff-ui);font-size:.58rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:2.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,.1); }
+  #menu ul { list-style:none; }
+  #menu ul li { margin-bottom:.1rem;opacity:0;transform:translateX(24px);transition:all .35s; }
+  #menu.on ul li { opacity:1;transform:translateX(0); }
+  #menu.on ul li:nth-child(1){transition-delay:.08s} #menu.on ul li:nth-child(2){transition-delay:.14s}
+  #menu.on ul li:nth-child(3){transition-delay:.2s}  #menu.on ul li:nth-child(4){transition-delay:.26s}
+
+  /* ↓ THE FIX — matches contact.html exactly */
+  #menu ul li a {
+    display:block;
+    font-family:var(--ff-menu);          /* EB Garamond, not Bebas Neue */
+    font-size:1.5rem;                    /* same as contact.html */
+    font-weight:400;
+    color:rgba(255,255,255,.82);
+    text-decoration:none;
+    padding:.65rem 0;
+    border-bottom:1px solid rgba(255,255,255,.07);
+    transition:color .3s, padding-left .3s;
+    letter-spacing:0;                    /* reset Bebas letter-spacing */
+  }
+  #menu ul li a:hover { color:var(--gold);padding-left:.5rem; }
+
+  /* SPLIT HERO */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 58% 42%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    background: var(--teal-deep);
+    padding: 10rem 6% 5rem 8%;
+    display: flex; flex-direction:column; justify-content:flex-end;
+    position: relative; z-index:2;
+  }
+  .hero-left::before {
+    content:'';
+    position:absolute; top:0; left:8%; right:6%;
+    height:1px; background:var(--gold); opacity:.3;
+  }
+
+  .broadcast-tag {
+    font-family:var(--ff-ui); font-size:.62rem; font-weight:600;
+    letter-spacing:.35em; text-transform:uppercase; color:var(--gold);
+    display:flex; align-items:center; gap:.7rem; margin-bottom:1.5rem;
+    opacity:0; animation:rise .8s var(--ease) .3s forwards;
+  }
+  .broadcast-tag::before { content:''; display:block; width:30px; height:1px; background:var(--gold); }
+  .live-dot {
+    width:6px;height:6px;border-radius:50%;background:#e55;
+    animation:blink 1.4s ease-in-out infinite;
+    box-shadow:0 0 6px rgba(229,85,85,.8);
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+  .hero-title {
+    font-family:var(--ff-d);
+    font-size: clamp(4rem, 9vw, 9rem);
+    line-height: .9; letter-spacing:.02em;
+    color: #fff; margin-bottom: 1.5rem;
+    opacity:0; animation:rise 1s var(--ease) .5s forwards;
+  }
+  .hero-title .gold { color:var(--gold); }
+  .hero-title .stroke {
+    -webkit-text-stroke: 1.5px rgba(255,255,255,.4);
+    color: transparent;
+  }
+
+  .hero-deck {
+    font-family:var(--ff-b); font-size:1rem; font-style:italic;
+    font-weight:400; color:rgba(255,255,255,.55);
+    max-width:480px; line-height:1.75; margin-bottom:2.5rem;
+    opacity:0; animation:rise .9s var(--ease) .8s forwards;
+  }
+
+  .hero-rule {
+    display:flex; align-items:center; gap:1rem;
+    opacity:0; animation:rise .7s var(--ease) 1s forwards;
+  }
+  .hero-rule span { display:block; height:1px; flex:1; background:rgba(255,255,255,.1); }
+  .hero-rule em {
+    font-family:var(--ff-ui); font-size:.6rem; font-weight:500;
+    letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.3);
+    white-space:nowrap; font-style:normal;
+  }
+
+  .hero-right {
+    background: var(--teal);
+    position: relative; overflow:hidden;
+    display:flex; flex-direction:column;
+  }
+
+  .ticker-header {
+    padding: 7rem 2rem 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .ticker-label {
+    font-family:var(--ff-ui); font-size:.6rem; font-weight:700;
+    letter-spacing:.3em; text-transform:uppercase; color:rgba(255,255,255,.5);
+  }
+  .ticker-live {
+    display:flex; align-items:center; gap:.5rem;
+    font-family:var(--ff-ui); font-size:.58rem; font-weight:700;
+    letter-spacing:.2em; text-transform:uppercase; color:#e55;
+  }
+  .ticker-live::before { content:''; display:block; width:6px; height:6px; border-radius:50%; background:#e55; animation:blink 1.4s ease-in-out infinite; }
+
+  .ticker-feed {
+    flex:1; overflow:hidden; position:relative;
+    padding: 0 2rem;
+  }
+  .ticker-feed::before, .ticker-feed::after {
+    content:''; position:absolute; left:0; right:0; height:60px; z-index:2; pointer-events:none;
+  }
+  .ticker-feed::before { top:0; background:linear-gradient(var(--teal),transparent); }
+  .ticker-feed::after  { bottom:0; background:linear-gradient(transparent,var(--teal)); }
+
+  .ticker-scroll {
+    animation: tickerScroll 28s linear infinite;
+    padding:2rem 0;
+  }
+  @keyframes tickerScroll { 0%{transform:translateY(0)} 100%{transform:translateY(-50%)} }
+  .ticker-scroll:hover { animation-play-state:paused; }
+
+  .ticker-item {
+    padding:1.2rem 0; border-bottom:1px solid rgba(255,255,255,.07);
+  }
+  .ticker-crisis {
+    font-family:var(--ff-ui); font-size:.55rem; font-weight:700;
+    letter-spacing:.15em; text-transform:uppercase; color:var(--gold);
+    margin-bottom:.3rem; display:flex; align-items:center; gap:.4rem;
+  }
+  .ticker-crisis::before { content:'●'; font-size:.4rem; }
+  .ticker-headline {
+    font-family:var(--ff-b); font-size:.88rem; font-weight:700;
+    color:rgba(255,255,255,.85); line-height:1.3;
+  }
+
+  @keyframes rise { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+
+  /* STATS BAND */
+  .stats-band {
+    display:grid; grid-template-columns:repeat(4,1fr);
+    background:var(--gold);
+  }
+  .stat-cell {
+    padding:2.2rem 2rem; text-align:center;
+    border-right:1px solid rgba(0,0,0,.1);
+    transition:background .3s;
+  }
+  .stat-cell:last-child{border-right:none;}
+  .stat-cell:hover{background:var(--gold-lt);}
+  .stat-val {
+    font-family:var(--ff-d); font-size:3rem; letter-spacing:.04em;
+    color:var(--teal-deep); line-height:1; margin-bottom:.2rem;
+  }
+  .stat-desc {
+    font-family:var(--ff-ui); font-size:.65rem; font-weight:500;
+    text-transform:uppercase; letter-spacing:.1em;
+    color:rgba(2,13,14,.5); line-height:1.4;
+  }
+
+  /* BROADSHEET */
+  .broadsheet {
+    background:var(--cream); color:var(--ink);
+    padding:7rem 8%;
+    position:relative;
+  }
+  .broadsheet::before {
+    content:''; position:absolute;
+    left:50%; top:7rem; bottom:7rem;
+    width:1px; background:rgba(4,71,78,.1);
+  }
+
+  .broadsheet-header {
+    display:grid; grid-template-columns:1fr 1fr; gap:6rem;
+    margin-bottom:4rem; padding-bottom:3rem;
+    border-bottom:2px solid var(--teal);
+  }
+  .broadsheet-header h2 {
+    font-family:var(--ff-d); font-size:clamp(3rem,6vw,5.5rem);
+    letter-spacing:.03em; color:var(--teal); line-height:.92;
+  }
+  .broadsheet-header .sub-col {
+    display:flex; flex-direction:column; justify-content:flex-end;
+  }
+  .bs-eyebrow {
+    font-family:var(--ff-ui); font-size:.58rem; font-weight:600;
+    letter-spacing:.35em; text-transform:uppercase; color:var(--gold);
+    margin-bottom:.8rem; display:flex; align-items:center; gap:.6rem;
+  }
+  .bs-eyebrow::before { content:''; display:block; width:24px; height:2px; background:var(--gold); }
+  .broadsheet-header p {
+    font-family:var(--ff-b); font-size:.95rem; line-height:1.85;
+    color:#3a4a4b; font-weight:400;
+  }
+
+  .broadsheet-body {
+    display:grid; grid-template-columns:1fr 1fr; gap:5rem;
+  }
+  .bs-col p {
+    font-family:var(--ff-b); font-size:.95rem; line-height:1.9;
+    color:#2d3a3b; margin-bottom:1.2rem; font-weight:400;
+  }
+  .bs-col p:first-of-type::first-letter {
+    font-family:var(--ff-d); font-size:4.5rem; letter-spacing:.02em;
+    color:var(--teal); float:left; line-height:.82; margin:.04em .1em 0 0;
+  }
+
+  .pull-quote-banner {
+    grid-column:1/-1; margin:3rem 0;
+    padding:2.5rem 3rem; background:var(--teal); border-radius:3px;
+    position:relative; overflow:hidden;
+  }
+  .pull-quote-banner::before {
+    content:'"'; font-family:var(--ff-d); font-size:12rem; letter-spacing:0;
+    color:rgba(255,255,255,.06); position:absolute; top:-2rem; left:1rem; line-height:1;
+  }
+  .pull-quote-banner p {
+    font-family:var(--ff-b); font-size:1.35rem; font-style:italic;
+    color:#fff; line-height:1.5; position:relative; z-index:1; max-width:780px;
+  }
+  .pull-quote-banner cite {
+    display:block; margin-top:.8rem;
+    font-family:var(--ff-ui); font-size:.62rem; font-weight:600;
+    letter-spacing:.2em; text-transform:uppercase; color:var(--gold);
+    font-style:normal;
+  }
+
+  /* CAMPAIGNS MOSAIC */
+  .campaigns-section { background:var(--teal-deep); padding:6rem 0 0; }
+  .campaigns-header {
+    padding:0 8% 3rem;
+    display:flex; align-items:flex-end; justify-content:space-between;
+    border-bottom:1px solid var(--border);
+  }
+  .campaigns-header h2 {
+    font-family:var(--ff-d); font-size:clamp(3rem,6vw,5rem); letter-spacing:.04em; color:#fff;
+  }
+  .campaigns-header h2 em { color:var(--gold); font-style:normal; }
+  .campaigns-header p {
+    font-family:var(--ff-b); font-style:italic; font-size:.9rem;
+    color:rgba(255,255,255,.4); max-width:360px; text-align:right; line-height:1.6;
+  }
+
+  .mosaic {
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    grid-auto-rows:200px;
+  }
+  .mosaic-item {
+    position:relative; overflow:hidden; cursor:pointer;
+    outline:1px solid rgba(2,13,14,.3);
+  }
+  .mosaic-item.span-2c { grid-column:span 2; }
+  .mosaic-item.span-3c { grid-column:span 3; }
+  .mosaic-item.span-2r { grid-row:span 2; }
+  .mosaic-item.span-3c.span-2r { grid-column:span 3; grid-row:span 2; }
+
+  .mosaic-bg {
+    position:absolute; inset:0;
+    background-size:cover; background-position:center;
+    transition:transform .8s var(--ease), filter .5s;
+    filter:brightness(.38) saturate(.7);
+  }
+  .mosaic-item:nth-child(1)  .mosaic-bg { background-color:#1a3040; }
+  .mosaic-item:nth-child(2)  .mosaic-bg { background-color:#2d1a10; }
+  .mosaic-item:nth-child(3)  .mosaic-bg { background-color:#102a1a; }
+  .mosaic-item:nth-child(4)  .mosaic-bg { background-color:#2a1a30; }
+  .mosaic-item:nth-child(5)  .mosaic-bg { background-color:#30201a; }
+  .mosaic-item:nth-child(6)  .mosaic-bg { background-color:#1a2030; }
+  .mosaic-item:nth-child(7)  .mosaic-bg { background-color:#0d2020; }
+  .mosaic-item:nth-child(8)  .mosaic-bg { background-color:#302030; }
+  .mosaic-item:nth-child(9)  .mosaic-bg { background-color:#202830; }
+  .mosaic-item:hover .mosaic-bg { transform:scale(1.08); filter:brightness(.55) saturate(.9); }
+
+  .mosaic-overlay { position:absolute; inset:0; opacity:0; transition:opacity .5s; }
+  .mosaic-item:nth-child(1) .mosaic-overlay { background:rgba(200,151,58,.35); }
+  .mosaic-item:nth-child(2) .mosaic-overlay { background:rgba(200,151,58,.3); }
+  .mosaic-item:nth-child(3) .mosaic-overlay { background:rgba(13,157,176,.25); }
+  .mosaic-item:nth-child(4) .mosaic-overlay { background:rgba(200,151,58,.3); }
+  .mosaic-item:nth-child(5) .mosaic-overlay { background:rgba(13,157,176,.25); }
+  .mosaic-item:nth-child(6) .mosaic-overlay { background:rgba(200,151,58,.28); }
+  .mosaic-item:nth-child(7) .mosaic-overlay { background:rgba(4,71,78,.5); }
+  .mosaic-item:nth-child(8) .mosaic-overlay { background:rgba(200,151,58,.3); }
+  .mosaic-item:nth-child(9) .mosaic-overlay { background:rgba(13,157,176,.25); }
+  .mosaic-item:hover .mosaic-overlay { opacity:1; }
+
+  .mosaic-item::after {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(to top, rgba(2,13,14,.9) 0%, transparent 55%);
+  }
+
+  .mosaic-text {
+    position:absolute; bottom:0; left:0; right:0;
+    padding:1.5rem; z-index:2;
+    transform:translateY(8px); transition:transform .4s var(--ease);
+  }
+  .mosaic-item:hover .mosaic-text { transform:translateY(0); }
+
+  .mosaic-region {
+    font-family:var(--ff-ui); font-size:.52rem; font-weight:700;
+    letter-spacing:.22em; text-transform:uppercase; color:var(--gold);
+    margin-bottom:.35rem; display:flex; align-items:center; gap:.4rem;
+  }
+  .mosaic-region::before { content:'▶'; font-size:.3rem; opacity:.7; }
+  .mosaic-title {
+    font-family:var(--ff-d); font-size:1.35rem; letter-spacing:.04em;
+    color:#fff; line-height:1.15;
+  }
+  .mosaic-detail {
+    font-family:var(--ff-b); font-size:.78rem; color:rgba(255,255,255,.7);
+    line-height:1.5; margin-top:.5rem; font-style:italic;
+    max-height:0; overflow:hidden; transition:max-height .4s var(--ease), opacity .4s;
+    opacity:0;
+  }
+  .mosaic-item:hover .mosaic-detail { max-height:100px; opacity:1; }
+
+  /* SUDAN BANNER */
+  .sudan-banner {
+    position:relative; min-height:60vh;
+    display:flex; align-items:center;
+    overflow:hidden;
+    background:linear-gradient(135deg, #0a1520, #04474e);
+  }
+  .sudan-banner-bg {
+    position:absolute; inset:0;
+    background-image:url('images/sudan.webp');
+    background-size:cover; background-position:center;
+    filter:brightness(.25) saturate(.5);
+    transition:transform 10s var(--ease);
+  }
+  .sudan-banner:hover .sudan-banner-bg { transform:scale(1.04); }
+  .sudan-banner::after {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(90deg, rgba(2,13,14,.95) 40%, transparent);
+  }
+  .sudan-inner { position:relative; z-index:2; padding:5rem 8%; max-width:780px; }
+  .sudan-tag {
+    font-family:var(--ff-ui); font-size:.58rem; font-weight:700;
+    letter-spacing:.35em; text-transform:uppercase; color:#e55;
+    display:flex; align-items:center; gap:.6rem; margin-bottom:1.5rem;
+  }
+  .sudan-tag::before { content:''; display:block; width:6px; height:6px; border-radius:50%; background:#e55; animation:blink 1.4s ease-in-out infinite; }
+  .sudan-banner h2 {
+    font-family:var(--ff-d); font-size:clamp(3rem,6vw,5.5rem);
+    letter-spacing:.04em; color:#fff; line-height:.9; margin-bottom:1.5rem;
+  }
+  .sudan-banner h2 .gold { color:var(--gold); }
+  .sudan-banner p {
+    font-family:var(--ff-b); font-size:1rem; font-style:italic;
+    color:rgba(255,255,255,.65); line-height:1.8; max-width:580px; margin-bottom:2rem;
+  }
+  .sudan-links { display:flex; gap:1rem; flex-wrap:wrap; }
+  .sudan-link {
+    font-family:var(--ff-ui); font-size:.65rem; font-weight:600;
+    letter-spacing:.15em; text-transform:uppercase;
+    color:rgba(255,255,255,.6); text-decoration:none;
+    padding:.6rem 1.2rem; border:1px solid rgba(255,255,255,.2);
+    border-radius:2px; transition:all .3s;
+  }
+  .sudan-link:hover { color:var(--gold); border-color:var(--gold); background:rgba(200,151,58,.08); }
+
+  /* PLATFORM MARQUEE */
+  .platform-strip {
+    background:var(--teal); padding:1.5rem 0;
+    overflow:hidden; white-space:nowrap;
+    border-top:1px solid rgba(255,255,255,.06);
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .platform-track { display:inline-flex; gap:3.5rem; animation:marq 20s linear infinite; }
+  .platform-track:hover { animation-play-state:paused; }
+  .p-item {
+    font-family:var(--ff-d); font-size:1.1rem; letter-spacing:.12em;
+    color:rgba(255,255,255,.3); transition:color .3s; cursor:default;
+    display:flex; align-items:center; gap:.6rem;
+  }
+  .p-item:hover { color:var(--gold); }
+  .p-sep { color:rgba(200,151,58,.3); }
+  @keyframes marq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  /* APPROACH */
+  .approach-section {
+    background:var(--teal-deep); padding:7rem 8%;
+    display:grid; grid-template-columns:1fr 1fr; gap:6rem; align-items:start;
+  }
+  .approach-left h2 {
+    font-family:var(--ff-d); font-size:clamp(2.5rem,5vw,4.5rem);
+    letter-spacing:.04em; color:#fff; line-height:.92; margin-bottom:1.5rem;
+  }
+  .approach-left h2 em { color:var(--gold); font-style:normal; }
+  .approach-left p {
+    font-family:var(--ff-b); font-size:.95rem; line-height:1.85;
+    color:rgba(255,255,255,.55); font-weight:400; margin-bottom:1rem;
+  }
+  .approach-left a { color:var(--gold); text-decoration:none; border-bottom:1px solid rgba(200,151,58,.3); transition:border-color .3s; }
+  .approach-left a:hover { border-color:var(--gold); }
+  .approach-right { position:sticky; top:120px; }
+
+  .principle-list { display:flex; flex-direction:column; gap:0; }
+  .principle {
+    padding:1.5rem 0; border-bottom:1px solid var(--border);
+    display:grid; grid-template-columns:60px 1fr;
+    gap:1rem; cursor:default;
+    transition:padding-left .35s var(--ease);
+  }
+  .principle:first-child { border-top:1px solid var(--border); }
+  .principle:hover { padding-left:.5rem; }
+  .p-num {
+    font-family:var(--ff-d); font-size:2rem; letter-spacing:.04em;
+    color:rgba(255,255,255,.08); line-height:1; padding-top:.15rem;
+    transition:color .35s;
+  }
+  .principle:hover .p-num { color:var(--gold); }
+  .p-body h4 {
+    font-family:var(--ff-d); font-size:1.05rem; letter-spacing:.06em;
+    color:rgba(255,255,255,.55); margin-bottom:.35rem;
+    transition:color .35s;
+  }
+  .principle:hover .p-body h4 { color:#fff; }
+  .p-body p { font-size:.82rem; color:rgba(255,255,255,.35); line-height:1.65; font-family:var(--ff-b); }
+
+  /* CONTACT */
+  .contact-section { background:#000; display:grid; grid-template-columns:1fr 1fr; }
+  .contact-left { padding:6rem 5% 6rem 8%; border-right:1px solid rgba(255,255,255,.05); }
+  .contact-left h2 { font-family:var(--ff-d);font-size:2.8rem;letter-spacing:.04em;color:#fff;margin-bottom:.4rem; }
+  .contact-left .sub { font-family:var(--ff-b);font-style:italic;font-size:.9rem;color:rgba(255,255,255,.3);margin-bottom:2.5rem; }
+  .ff { margin-bottom:1.4rem; }
+  .ff input,.ff textarea { width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.12);padding:.7rem 0;color:#fff;font-family:var(--ff-b);font-size:.95rem;font-weight:400;outline:none;transition:border-color .3s; }
+  .ff input::placeholder,.ff textarea::placeholder { color:rgba(255,255,255,.2); }
+  .ff input:focus,.ff textarea:focus { border-bottom-color:var(--gold); }
+  .ff textarea { resize:none;min-height:90px; }
+  .ff-row { display:grid;grid-template-columns:1fr 1fr;gap:1.2rem; }
+  .send-btn { background:var(--gold);color:var(--teal-deep);border:none;padding:.85rem 2.2rem;cursor:pointer;font-family:var(--ff-d);font-size:.9rem;letter-spacing:.12em;border-radius:2px;transition:all .3s; }
+  .send-btn:hover { background:var(--gold-lt);transform:translateY(-2px);box-shadow:0 8px 20px rgba(200,151,58,.3); }
+  .contact-right { padding:6rem 8% 6rem 5%;display:flex;flex-direction:column;justify-content:center; }
+  .contact-right h3 { font-family:var(--ff-d);font-size:1.4rem;letter-spacing:.08em;color:rgba(255,255,255,.25);margin-bottom:1.8rem; }
+  .socials { display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:2.5rem; }
+  .sc { display:flex;align-items:center;justify-content:center;height:48px;border:1px solid rgba(255,255,255,.08);border-radius:3px;color:rgba(255,255,255,.4);text-decoration:none;font-size:.8rem;font-weight:500;transition:all .3s; }
+  .sc:hover { border-color:var(--gold);color:var(--gold);background:rgba(200,151,58,.07); }
+  .footer-bar { background:#000;padding:1.2rem 8%;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.04); }
+  .footer-bar p { font-family:var(--ff-ui);font-size:.6rem;color:rgba(255,255,255,.15);letter-spacing:.05em; }
+
+  /* REVEAL */
+  .rv { opacity:0;transform:translateY(28px);transition:opacity .85s var(--ease),transform .85s var(--ease); }
+  .rv.vis { opacity:1;transform:translateY(0); }
+  .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+  .mosaic-item.tx { opacity:0;filter:blur(4px) brightness(0);transform:scale(.97); transition:opacity .7s var(--ease),filter .7s var(--ease),transform .7s var(--ease); }
+  .mosaic-item.tx.vis { opacity:1;filter:blur(0) brightness(1);transform:scale(1); }
+  .mosaic-item.tx:nth-child(1){transition-delay:.05s}.mosaic-item.tx:nth-child(2){transition-delay:.1s}
+  .mosaic-item.tx:nth-child(3){transition-delay:.15s}.mosaic-item.tx:nth-child(4){transition-delay:.2s}
+  .mosaic-item.tx:nth-child(5){transition-delay:.25s}.mosaic-item.tx:nth-child(6){transition-delay:.3s}
+  .mosaic-item.tx:nth-child(7){transition-delay:.35s}.mosaic-item.tx:nth-child(8){transition-delay:.4s}
+  .mosaic-item.tx:nth-child(9){transition-delay:.45s}
+
+  /* RESPONSIVE */
+  @media(max-width:1100px){
+    #hero{grid-template-columns:1fr}
+    .hero-right{display:none}
+    .broadsheet::before{display:none}
+    .broadsheet-header,.broadsheet-body{grid-template-columns:1fr;gap:2rem}
+    .mosaic{grid-template-columns:repeat(3,1fr)}
+    .mosaic-item.span-3c,.mosaic-item.span-2c{grid-column:span 2}
+    .approach-section{grid-template-columns:1fr;gap:3rem}
+    .approach-right{position:static}
+    .contact-section{grid-template-columns:1fr}
+    .contact-right{border-top:1px solid rgba(255,255,255,.05);padding:3rem 5%}
+    .contact-left{border-right:none;padding:5rem 5%}
+    .stats-band{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(max-width:700px){
+    #header{padding:1.2rem 5%}
+    .mosaic{grid-template-columns:1fr}
+    .mosaic-item.span-3c,.mosaic-item.span-2c,.mosaic-item.span-2r,.mosaic-item.span-3c.span-2r{grid-column:span 1;grid-row:span 1}
+    .ff-row{grid-template-columns:1fr}
+    .stats-band{grid-template-columns:1fr}
+    .broadsheet{padding:4rem 5%}
+    .campaigns-header{flex-direction:column;align-items:flex-start;gap:1rem;padding:0 5% 2rem}
+    .campaigns-header p{text-align:left}
+    .sudan-inner{padding:4rem 5%}
+    .approach-section{padding:5rem 5%}
+  }
+  </style>
+</head>
+<body>
+
+<div id="prog"></div>
+<div id="mo"></div>
+<nav id="menu">
+  <button id="mc">✕</button>
+  <h2>Navigation</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="http://esvarj.wordpress.com">Health Articles</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<header id="header">
+  <nav><ul><li><a href="#" id="mt">Menu</a></li></ul></nav>
+</header>
+
+<!-- ═══ SPLIT HERO ════════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="broadcast-tag">
+      <div class="live-dot"></div>
+      Global Health Communications
+    </div>
+    <h1 class="hero-title">
+      KNOW<br>
+      <span class="gold">LEDGE</span><br>
+      <span class="stroke">TRANS</span><br>
+      LATION
+    </h1>
+    <p class="hero-deck">Turning evidence into action, and data into human understanding. A strategic approach to communications for public health and humanitarian response.</p>
+    <div class="hero-rule">
+      <span></span>
+      <em>Communications · Storytelling · Campaigns · Advocacy</em>
+      <span></span>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="ticker-header">
+      <span class="ticker-label">Crisis Dispatch</span>
+      <span class="ticker-live">Transmitting</span>
+    </div>
+    <div class="ticker-feed">
+      <div class="ticker-scroll" id="ticker">
+        <div class="ticker-item"><div class="ticker-crisis">Sudan</div><div class="ticker-headline">Millions displaced as conflict deepens — hospitals overwhelmed and aid corridors blocked</div></div>
+        <div class="ticker-item"><div class="ticker-crisis">DR Congo — Ebola</div><div class="ticker-headline">Outbreak response scaled up as community trust remains critical barrier to containment</div></div>
+        <div class="ticker-item"><div class="ticker-crisis">Nigeria — Northeast</div><div class="ticker-headline">Hunger crisis worsens as displacement from Lake Chad Basin accelerates</div></div>
+        <div class="ticker-item"><div class="ticker-crisis">Afghanistan</div><div class="ticker-headline">Deepening food insecurity and healthcare collapse require urgent international communication</div></div>
+        <div class="ticker-item"><div class="ticker-crisis">Yemen</div><div class="ticker-headline">Protracted emergency — eight years of conflict have left health systems in collapse</div></div>
+        <div class="ticker-item"><div class="ticker-crisis">DR Congo — Minerals</div><div class="ticker-headline">The world's digital economy runs on cobalt — communities pay in health and displacement</div></div>
+        <div class="ticker-item"><div class="ticker-crisis">Haiti</div><div class="ticker-headline">Gang violence compounds hunger and political vacuum — messaging reaches fractured audiences</div></div>
+        <div class="ticker-item"><div class="ticker-crisis">Myanmar</div><div class="ticker-headline">Earthquake recovery complicated by ongoing civil conflict and communications blackouts</div></div>
+        <div class="ticker-item"><div class="ticker-crisis">Global</div><div class="ticker-headline">Women's empowerment campaigns show measurable community health outcomes when locally led</div></div>
+        <div class="ticker-item"><div class="ticker-crisis">Sudan</div><div class="ticker-headline">Millions displaced as conflict deepens — hospitals overwhelmed and aid corridors blocked</div></div>
+        <div class="ticker-item"><div class="ticker-crisis">DR Congo — Ebola</div><div class="ticker-headline">Outbreak response scaled up as community trust remains critical barrier to containment</div></div>
+        <div class="ticker-item"><div class="ticker-crisis">Nigeria — Northeast</div><div class="ticker-headline">Hunger crisis worsens as displacement from Lake Chad Basin accelerates</div></div>
+        <div class="ticker-item"><div class="ticker-crisis">Afghanistan</div><div class="ticker-headline">Deepening food insecurity and healthcare collapse require urgent international communication</div></div>
+        <div class="ticker-item"><div class="ticker-crisis">Yemen</div><div class="ticker-headline">Protracted emergency — eight years of conflict have left health systems in collapse</div></div>
+        <div class="ticker-item"><div class="ticker-crisis">DR Congo — Minerals</div><div class="ticker-headline">The world's digital economy runs on cobalt — communities pay in health and displacement</div></div>
+        <div class="ticker-item"><div class="ticker-crisis">Haiti</div><div class="ticker-headline">Gang violence compounds hunger and political vacuum — messaging reaches fractured audiences</div></div>
+        <div class="ticker-item"><div class="ticker-crisis">Myanmar</div><div class="ticker-headline">Earthquake recovery complicated by ongoing civil conflict and communications blackouts</div></div>
+        <div class="ticker-item"><div class="ticker-crisis">Global</div><div class="ticker-headline">Women's empowerment campaigns show measurable community health outcomes when locally led</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATS BAND ═════════════════════════════════════════════════════ -->
+<div class="stats-band">
+  <div class="stat-cell">
+    <div class="stat-val"><span class="ctr" data-target="9">0</span></div>
+    <div class="stat-desc">Crisis campaigns produced</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-val"><span class="ctr" data-target="40">0</span>K+</div>
+    <div class="stat-desc">Estimated online impressions</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-val"><span class="ctr" data-target="5">0</span></div>
+    <div class="stat-desc">Platforms and channels</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-val"><span class="ctr" data-target="72">0</span>hrs</div>
+    <div class="stat-desc">Rapid response deployment</div>
+  </div>
+</div>
+
+<!-- ═══ PHILOSOPHY BROADSHEET ═════════════════════════════════════════ -->
+<div class="broadsheet rv">
+  <div class="broadsheet-header rv">
+    <h2>THE ETHICS<br>OF CLARITY</h2>
+    <div class="sub-col">
+      <div class="bs-eyebrow">Philosophy</div>
+      <p>In the high-stakes environments of public health and humanitarian crisis, information is only as powerful as its ability to be understood, felt, and acted upon. Data alone doesn't save lives. Evidence doesn't build clinics. Communication does.</p>
+    </div>
+  </div>
+  <div class="broadsheet-body">
+    <div class="bs-col rv d1">
+      <p>My work exists at the intersection of rigorous research and human-centered storytelling. I believe that knowledge translation is an ethical responsibility — the process of ensuring that complex insights from the field and the lab don't remain trapped in silos, but instead flow into the hands of community leaders, frontline workers, and decision-makers who need them most.</p>
+      <p>Communications and knowledge translation are essential components of effective public health programming. Health systems generate vast amounts of data, research, and guidance, yet impact depends on whether this information is understood, trusted, and acted upon by communities, practitioners, and the people making decisions about resource allocation.</p>
+    </div>
+    <div class="bs-col rv d2">
+      <p>Clear and targeted communication ensures that evidence moves beyond reports and policies into real-world practice. This work focuses on translating complex health information into accessible, actionable insights that support awareness, informed decision-making, and behavior change at every level of the system.</p>
+      <p>Communication is treated as a core intervention within health programs — shaping how people perceive risks, services, and opportunities for prevention and care. When we communicate with clarity, we move from top-down instruction to inside-out implementation.</p>
+    </div>
+    <div class="pull-quote-banner rv">
+      <p>"When we communicate with clarity, we move from top-down instruction to inside-out implementation — ensuring that every piece of data serves the dignity and safety of the people at the heart of our programs."</p>
+      <cite>— Communications Philosophy</cite>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FEATURED SUDAN ════════════════════════════════════════════════ -->
+<div class="sudan-banner">
+  <div class="sudan-banner-bg"></div>
+  <div class="sudan-inner rv">
+    <div class="sudan-tag">Featured Campaign</div>
+    <h2><span class="gold">SUDAN</span><br>IS BLEEDING</h2>
+    <p>Violence tearing through neighbourhoods. Families running with nothing. Children growing up to the sound of gunfire instead of school bells. Hospitals overwhelmed or destroyed. Food a luxury. Clean water a gamble. Millions trapped between armed forces, forgotten borders, and a world that has moved on. Sudan is bleeding because help is slow, attention is scarce, and silence is deadly.</p>
+    <div class="sudan-links">
+      <a href="https://x.com/humanistories" class="sudan-link" target="_blank">Share on 𝕏</a>
+      <a href="https://web.facebook.com/humanitarian.stories/" class="sudan-link" target="_blank">Share on Facebook</a>
+      <a href="https://www.linkedin.com/in/josemariaescriva/" class="sudan-link" target="_blank">LinkedIn</a>
+      <a href="https://www.instagram.com/humanitarian_stories/" class="sudan-link" target="_blank">Instagram</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CAMPAIGNS MOSAIC ══════════════════════════════════════════════ -->
+<div class="campaigns-section">
+  <div class="campaigns-header rv">
+    <div>
+      <div style="font-family:var(--ff-ui);font-size:.58rem;font-weight:600;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem;"><span style="display:block;width:24px;height:1px;background:var(--gold)"></span>Humanitarian Campaigns</div>
+      <h2>CRISIS<br><em>DISPATCH</em></h2>
+    </div>
+    <p>Nine awareness campaigns translating humanitarian emergency into human understanding — across Africa, Asia, and the Middle East.</p>
+  </div>
+  <div class="mosaic">
+    <div class="mosaic-item span-2c span-2r tx"><div class="mosaic-bg" style="background-image:url('images/ebola.webp')"></div><div class="mosaic-overlay"></div><div class="mosaic-text"><div class="mosaic-region">DR Congo</div><div class="mosaic-title">EBOLA OUTBREAK</div><div class="mosaic-detail">Community trust remains the most critical and most fragile barrier to outbreak containment.</div></div></div>
+    <div class="mosaic-item span-2c tx"><div class="mosaic-bg" style="background-image:url('images/nigeriahungercrisis.webp')"></div><div class="mosaic-overlay"></div><div class="mosaic-text"><div class="mosaic-region">Nigeria — Northeast</div><div class="mosaic-title">HUNGER & DISPLACEMENT</div><div class="mosaic-detail">Lake Chad Basin crisis — millions displaced with limited access to food, water, and health services.</div></div></div>
+    <div class="mosaic-item span-2c tx"><div class="mosaic-bg" style="background-image:url('images/afghanistan.webp')"></div><div class="mosaic-overlay"></div><div class="mosaic-text"><div class="mosaic-region">Afghanistan</div><div class="mosaic-title">DEEPENING HUNGER</div><div class="mosaic-detail">Healthcare collapse and food insecurity require urgent, culturally grounded communication strategies.</div></div></div>
+    <div class="mosaic-item span-2c tx"><div class="mosaic-bg" style="background-image:url('images/yemen.webp')"></div><div class="mosaic-overlay"></div><div class="mosaic-text"><div class="mosaic-region">Yemen</div><div class="mosaic-title">PROTRACTED EMERGENCY</div><div class="mosaic-detail">Eight years of conflict. A health system in collapse. Messaging must cut through fatigue.</div></div></div>
+    <div class="mosaic-item span-2c tx"><div class="mosaic-bg" style="background-image:url('images/congo.webp')"></div><div class="mosaic-overlay"></div><div class="mosaic-text"><div class="mosaic-region">DR Congo</div><div class="mosaic-title">CONGO PAYS FOR PROGRESS</div><div class="mosaic-detail">The world's digital economy runs on cobalt. Communities pay in health, displacement, and silence.</div></div></div>
+    <div class="mosaic-item span-2c tx"><div class="mosaic-bg" style="background-image:url('images/haiti.webp')"></div><div class="mosaic-overlay"></div><div class="mosaic-text"><div class="mosaic-region">Haiti</div><div class="mosaic-title">WHAT'S HAPPENING IN HAITI</div><div class="mosaic-detail">Gang violence, hunger, and political vacuum — messaging must reach fractured, fearful audiences.</div></div></div>
+    <div class="mosaic-item span-2c tx"><div class="mosaic-bg" style="background-image:url('images/myanmar.webp')"></div><div class="mosaic-overlay"></div><div class="mosaic-text"><div class="mosaic-region">Myanmar</div><div class="mosaic-title">EARTHQUAKE + CRISIS</div><div class="mosaic-detail">Recovery communications complicated by civil conflict, blackouts, and broken institutional trust.</div></div></div>
+    <div class="mosaic-item span-2c tx"><div class="mosaic-bg" style="background-image:url('images/empowerwomen.webp')"></div><div class="mosaic-overlay"></div><div class="mosaic-text"><div class="mosaic-region">Global</div><div class="mosaic-title">EMPOWER WOMEN</div><div class="mosaic-detail">Locally-led women's empowerment campaigns show measurable community health outcomes.</div></div></div>
+    <div class="mosaic-item span-2c tx"><div class="mosaic-bg" style="background-image:url('images/everychild.webp')"></div><div class="mosaic-overlay"></div><div class="mosaic-text"><div class="mosaic-region">Global</div><div class="mosaic-title">EVERY CHILD</div><div class="mosaic-detail">Every child deserves a safe home. A campaign grounding child protection in dignity, not pity.</div></div></div>
+  </div>
+</div>
+
+<!-- ═══ PLATFORM MARQUEE ══════════════════════════════════════════════ -->
+<div class="platform-strip">
+  <div class="platform-track" aria-hidden="true">
+    <span class="p-item">𝕏 Twitter</span><span class="p-sep">·</span>
+    <span class="p-item">Facebook</span><span class="p-sep">·</span>
+    <span class="p-item">Instagram</span><span class="p-sep">·</span>
+    <span class="p-item">LinkedIn</span><span class="p-sep">·</span>
+    <span class="p-item">YouTube</span><span class="p-sep">·</span>
+    <span class="p-item">Substack</span><span class="p-sep">·</span>
+    <span class="p-item">Medium</span><span class="p-sep">·</span>
+    <span class="p-item">WordPress</span><span class="p-sep">·</span>
+    <span class="p-item">UNDP Campaigns</span><span class="p-sep">·</span>
+    <span class="p-item">𝕏 Twitter</span><span class="p-sep">·</span>
+    <span class="p-item">Facebook</span><span class="p-sep">·</span>
+    <span class="p-item">Instagram</span><span class="p-sep">·</span>
+    <span class="p-item">LinkedIn</span><span class="p-sep">·</span>
+    <span class="p-item">YouTube</span><span class="p-sep">·</span>
+    <span class="p-item">Substack</span><span class="p-sep">·</span>
+    <span class="p-item">Medium</span><span class="p-sep">·</span>
+    <span class="p-item">WordPress</span><span class="p-sep">·</span>
+    <span class="p-item">UNDP Campaigns</span><span class="p-sep">·</span>
+  </div>
+</div>
+
+<!-- ═══ APPROACH ══════════════════════════════════════════════════════ -->
+<div class="approach-section">
+  <div class="approach-left rv">
+    <div style="font-family:var(--ff-ui);font-size:.58rem;font-weight:600;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;"><span style="display:block;width:24px;height:1px;background:var(--gold)"></span>Approach</div>
+    <h2>SIGNAL<br>NOT<br><em>NOISE</em></h2>
+    <p>This work focuses on translating complex health information into accessible, actionable insights that support awareness, informed decision-making, and behavior change. Communication is treated as a core intervention — not a supplement to programming but an essential part of it.</p>
+    <p>Campaigns addressing humanitarian emergencies must balance urgency with accuracy, emotion with evidence, and global reach with local relevance. Every message is designed with the end user in mind: the community leader in the field, the donor reading a brief, the young person encountering a crisis on social media for the first time.</p>
+  </div>
+  <div class="approach-right rv d2">
+    <div class="principle-list">
+      <div class="principle"><div class="p-num">01</div><div class="p-body"><h4>CLARITY FIRST</h4><p>Simplicity is not dumbing down. It is the hard work of removing everything that distracts from what matters most for the audience in front of you.</p></div></div>
+      <div class="principle"><div class="p-num">02</div><div class="p-body"><h4>EVIDENCE-ROOTED</h4><p>Every communication product is grounded in field reality, verified data, and peer-reviewed evidence — not assumption or advocacy overreach.</p></div></div>
+      <div class="principle"><div class="p-num">03</div><div class="p-body"><h4>AUDIENCE-CENTERED</h4><p>Communities, frontline workers, policymakers, and donors each require different messages, formats, and trust signals. One size reaches no one.</p></div></div>
+      <div class="principle"><div class="p-num">04</div><div class="p-body"><h4>DIGNIFIED STORYTELLING</h4><p>People in crisis are not case studies. Communications protect the dignity of those whose stories are being told, rejecting trauma-porn aesthetics.</p></div></div>
+      <div class="principle"><div class="p-num">05</div><div class="p-body"><h4>RAPID RESPONSE</h4><p>In humanitarian contexts, the window for effective communication is short. Messaging frameworks are built to deploy within 72 hours of a triggering event.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONTACT ════════════════════════════════════════════════════════ -->
+<div class="contact-section">
+  <div class="contact-left">
+    <div class="rv" style="font-family:var(--ff-ui);font-size:.58rem;font-weight:600;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;"><span style="display:block;width:24px;height:1px;background:var(--gold)"></span>Get in Touch</div>
+    <h2 class="rv d1">LET'S BROADCAST</h2>
+    <p class="sub rv d2">Interested in communications strategy, health storytelling, or campaign collaboration?</p>
+    <form method="POST" action="https://formspree.io/f/xwvpkvzl" class="rv d2">
+      <div class="ff-row ff"><div><input type="text" name="name" placeholder="Name" required></div><div><input type="email" name="email" placeholder="Email" required></div></div>
+      <div class="ff"><textarea name="message" placeholder="Your message…" rows="4"></textarea></div>
+      <button type="submit" class="send-btn">TRANSMIT →</button>
+    </form>
+  </div>
+  <div class="contact-right rv">
+    <h3>FOLLOW THE SIGNAL</h3>
+    <div class="socials">
+      <a class="sc" href="https://x.com/humanistories" target="_blank">𝕏</a>
+      <a class="sc" href="https://web.facebook.com/humanitarian.stories/" target="_blank">f</a>
+      <a class="sc" href="https://www.instagram.com/humanitarian_stories/" target="_blank">◎</a>
+      <a class="sc" href="https://www.linkedin.com/in/josemariaescriva/" target="_blank">in</a>
+      <a class="sc" href="https://github.com/escrivajosemaria" target="_blank">⌥</a>
+      <a class="sc" href="https://escrivajosemaria.github.io/escopy.io/" target="_blank">⊕</a>
+      <a class="sc" href="https://www.youtube.com/@escrivahealthcollective" target="_blank">▶</a>
+      <a class="sc" href="http://esvarj.wordpress.com" target="_blank">W</a>
+    </div>
+  </div>
+</div>
+
+<div class="footer-bar">
+  <p>&copy; Escriva Josemaria 2024</p>
+  <p>Design: escriva.https</p>
+</div>
+
+<script>
+(function(){
+  const pb=document.getElementById('prog');
+  window.addEventListener('scroll',()=>{ const s=document.documentElement; pb.style.width=(window.scrollY/(s.scrollHeight-window.innerHeight)*100)+'%'; },{passive:true});
+
+  const hdr=document.getElementById('header');
+  window.addEventListener('scroll',()=>hdr.classList.toggle('solid',window.scrollY>60),{passive:true});
+
+  const menuEl=document.getElementById('menu'),ov=document.getElementById('mo');
+  document.getElementById('mt').addEventListener('click',e=>{e.preventDefault();menuEl.classList.add('on');ov.classList.add('on');});
+  document.getElementById('mc').addEventListener('click',()=>{menuEl.classList.remove('on');ov.classList.remove('on');});
+  ov.addEventListener('click',()=>{menuEl.classList.remove('on');ov.classList.remove('on');});
+
+  const rvObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('vis');rvObs.unobserve(e.target);} });
+  },{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.rv,.tx').forEach(el=>rvObs.observe(el));
+
+  function animCount(el,target,dur=1400){
+    let start=null;
+    const step=ts=>{ if(!start)start=ts; const p=Math.min((ts-start)/dur,1); const e2=1-Math.pow(1-p,3); el.textContent=Math.floor(e2*target); if(p<1)requestAnimationFrame(step); else el.textContent=target; };
+    requestAnimationFrame(step);
+  }
+  const cObs=new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting){animCount(e.target,parseInt(e.target.dataset.target));cObs.unobserve(e.target);} }); },{threshold:.6});
+  document.querySelectorAll('.ctr').forEach(el=>cObs.observe(el));
+})();
+</script>
+</body>
+</html>

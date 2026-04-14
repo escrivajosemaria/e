@@ -1,0 +1,1452 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Vaccination & Disease Prevention</title>
+  <link rel="shortcut icon" href="images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── RESET & VARIABLES ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal:       #04474e;
+      --teal-light: #075f6a;
+      --teal-pale:  #e8f4f5;
+      --gold:       #c8973a;
+      --gold-light: #e8b65a;
+      --cream:      #faf8f4;
+      --ink:        #1a1a1a;
+      --muted:      #6b6b6b;
+      --border:     #d8d2c8;
+      --white:      #ffffff;
+      --shadow-sm:  0 2px 8px rgba(4,71,78,0.08);
+      --shadow-md:  0 8px 32px rgba(4,71,78,0.12);
+      --shadow-lg:  0 20px 60px rgba(4,71,78,0.18);
+      --ff-display: 'Playfair Display', Georgia, serif;
+      --ff-body:    'Source Serif 4', Georgia, serif;
+      --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--ff-body);
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ─── SCROLLBAR ─────────────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--cream); }
+    ::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 3px; }
+
+    /* ─── WRAPPER ───────────────────────────────────────────────────── */
+    #wrapper { position: relative; }
+
+    /* ─── HEADER / NAV ──────────────────────────────────────────────── */
+    #header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 0;
+      transition: background var(--transition), box-shadow var(--transition);
+    }
+
+    #header.scrolled {
+      background: rgba(4, 71, 78, 0.97);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.25);
+      backdrop-filter: blur(10px);
+    }
+
+    #header .inner {
+      display: flex;
+      justify-content: flex-end;
+      padding: 1.2rem 2.5rem;
+    }
+
+    #header nav ul {
+      list-style: none;
+      display: flex;
+    }
+
+    #header nav ul li a {
+      font-family: var(--ff-body);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      text-decoration: none;
+      padding: 0.6rem 1.2rem;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 2px;
+      transition: all var(--transition);
+    }
+
+    #header nav ul li a:hover {
+      background: var(--white);
+      color: var(--teal);
+      border-color: var(--white);
+    }
+
+    /* ─── SIDE MENU ─────────────────────────────────────────────────── */
+    #menu {
+      position: fixed;
+      top: 0; right: -340px;
+      width: 340px; height: 100vh;
+      background: var(--teal);
+      z-index: 2000;
+      padding: 5rem 3rem 3rem;
+      transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: -4px 0 40px rgba(0,0,0,0.3);
+    }
+
+    #menu.open { right: 0; }
+
+    #menu-close {
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      background: none; border: none;
+      color: rgba(255,255,255,0.7);
+      font-size: 1.5rem;
+      cursor: pointer;
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      transition: all var(--transition);
+    }
+    #menu-close:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+    #menu h2 {
+      font-family: var(--ff-display);
+      color: var(--gold);
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    #menu ul { list-style: none; }
+
+    #menu ul li {
+      margin-bottom: 0.2rem;
+      opacity: 0;
+      transform: translateX(20px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    #menu.open ul li {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    #menu.open ul li:nth-child(1) { transition-delay: 0.1s; }
+    #menu.open ul li:nth-child(2) { transition-delay: 0.15s; }
+    #menu.open ul li:nth-child(3) { transition-delay: 0.2s; }
+    #menu.open ul li:nth-child(4) { transition-delay: 0.25s; }
+
+    #menu ul li a {
+      display: block;
+      font-family: var(--ff-display);
+      font-size: 1.5rem;
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      transition: color var(--transition), padding-left var(--transition);
+    }
+    #menu ul li a:hover { color: var(--gold); padding-left: 0.5rem; }
+
+    #menu-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1999;
+      backdrop-filter: blur(3px);
+    }
+    #menu-overlay.visible { display: block; }
+
+    /* ─── HERO ──────────────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+      background: var(--teal);
+    }
+
+    #hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, #02292d 0%, #04474e 40%, #075f6a 70%, #0a7a8a 100%);
+    }
+
+    /* Animated geometric shapes */
+    #hero-bg::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,151,58,0.12) 0%, transparent 70%);
+      top: -100px; right: -100px;
+      animation: float1 12s ease-in-out infinite;
+    }
+    #hero-bg::after {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+      bottom: 100px; left: 5%;
+      animation: float2 15s ease-in-out infinite;
+    }
+
+    @keyframes float1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-30px, 40px) scale(1.1); }
+    }
+    @keyframes float2 {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(20px, -30px); }
+    }
+
+    /* Grid overlay */
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      padding: 0 6% 8rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s ease 0.3s forwards;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 40px; height: 1px;
+      background: var(--gold);
+    }
+
+    .hero-title {
+      font-family: var(--ff-display);
+      font-size: clamp(3rem, 7vw, 6.5rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.0;
+      margin-bottom: 1.8rem;
+      max-width: 900px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 0.9s ease 0.5s forwards;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.7);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.9s ease 0.7s forwards;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.9rem 2rem;
+      background: var(--gold);
+      color: var(--teal);
+      font-family: var(--ff-body);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: all var(--transition);
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.9s forwards;
+    }
+    .hero-cta:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(200,151,58,0.4);
+    }
+    .hero-cta svg { width: 16px; transition: transform var(--transition); }
+    .hero-cta:hover svg { transform: translateX(4px); }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── STATS BAR ─────────────────────────────────────────────────── */
+    #stats-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 6%;
+    }
+
+    .stats-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 1.5rem;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+
+    .stat-number {
+      font-family: var(--ff-display);
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--teal);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      line-height: 1.4;
+      text-transform: uppercase;
+      font-family: var(--ff-body);
+    }
+
+    .stat-accent {
+      display: block;
+      width: 30px; height: 2px;
+      background: var(--gold);
+      margin: 0.8rem auto 0;
+    }
+
+    /* ─── MAIN CONTENT ──────────────────────────────────────────────── */
+    #main {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 6rem 6%;
+    }
+
+    /* ─── SECTION LABELS ────────────────────────────────────────────── */
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 1.2rem;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 30px; height: 2px;
+      background: var(--gold);
+    }
+
+    /* ─── INTRO SECTION ─────────────────────────────────────────────── */
+    .intro-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+      margin-bottom: 6rem;
+      padding-bottom: 6rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .intro-text p {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: #2c2c2c;
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+    }
+    .intro-text p:first-of-type::first-letter {
+      font-family: var(--ff-display);
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: var(--teal);
+      float: left;
+      line-height: 0.85;
+      margin: 0.05em 0.08em 0 0;
+    }
+
+    .intro-text a {
+      color: var(--teal);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gold);
+      transition: border-color var(--transition), color var(--transition);
+    }
+    .intro-text a:hover { color: var(--gold); border-color: transparent; }
+
+    .intro-visual {
+      position: sticky;
+      top: 100px;
+    }
+
+    .intro-visual-card {
+      background: var(--teal);
+      color: var(--white);
+      padding: 3rem;
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .intro-visual-card::before {
+      content: '';
+      position: absolute;
+      bottom: -40px; right: -40px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(200,151,58,0.15);
+    }
+
+    .intro-visual-card blockquote {
+      font-family: var(--ff-display);
+      font-size: 1.35rem;
+      font-style: italic;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .intro-visual-card blockquote::before {
+      content: '"';
+      font-size: 5rem;
+      color: var(--gold);
+      line-height: 0;
+      position: absolute;
+      top: 1.5rem; left: -0.5rem;
+      opacity: 0.4;
+    }
+
+    .intro-visual-card cite {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-style: normal;
+    }
+
+    /* ─── WHAT I DO ─────────────────────────────────────────────────── */
+    .what-i-do {
+      margin-bottom: 6rem;
+      padding-bottom: 6rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .what-i-do h2 {
+      font-family: var(--ff-display);
+      font-size: 2.4rem;
+      color: var(--teal);
+      margin-bottom: 1rem;
+    }
+
+    .what-i-do .intro-para {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #3a3a3a;
+      max-width: 700px;
+      margin-bottom: 3rem;
+      font-weight: 300;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      background: var(--border);
+      border: 1.5px solid var(--border);
+    }
+
+    .service-card {
+      background: var(--white);
+      padding: 2.2rem 2rem;
+      position: relative;
+      transition: background var(--transition);
+      overflow: hidden;
+    }
+    .service-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 3px;
+      background: var(--gold);
+      transition: width 0.5s ease;
+    }
+    .service-card:hover { background: var(--teal-pale); }
+    .service-card:hover::after { width: 100%; }
+
+    .service-num {
+      font-family: var(--ff-display);
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: rgba(4,71,78,0.08);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .service-card h3 {
+      font-family: var(--ff-display);
+      font-size: 1.05rem;
+      color: var(--teal);
+      margin-bottom: 0.75rem;
+      line-height: 1.3;
+    }
+
+    .service-card p {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    /* ─── FOCUS AREAS ───────────────────────────────────────────────── */
+    .focus-areas {
+      margin-bottom: 6rem;
+      padding-bottom: 6rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .focus-areas h2 {
+      font-family: var(--ff-display);
+      font-size: 2.4rem;
+      color: var(--teal);
+      margin-bottom: 3rem;
+    }
+
+    .focus-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+
+    .focus-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1.5rem;
+      padding: 2rem;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      transition: all var(--transition);
+    }
+    .focus-item:hover {
+      border-color: var(--teal);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-4px);
+    }
+
+    .focus-icon {
+      width: 48px; height: 48px;
+      background: var(--teal);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 0.2rem;
+    }
+    .focus-icon svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 1.5; }
+
+    .focus-item h3 {
+      font-family: var(--ff-display);
+      font-size: 1.1rem;
+      color: var(--teal);
+      margin-bottom: 0.6rem;
+    }
+
+    .focus-item p {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: #444;
+      font-weight: 300;
+    }
+    .focus-item a {
+      color: var(--teal);
+      border-bottom: 1px solid var(--gold);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    .focus-item a:hover { color: var(--gold); }
+
+    /* ─── GALLERY ───────────────────────────────────────────────────── */
+    .gallery-section {
+      margin-bottom: 6rem;
+      padding-bottom: 6rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .gallery-section h2 {
+      font-family: var(--ff-display);
+      font-size: 2.4rem;
+      color: var(--teal);
+      margin-bottom: 2rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 320px;
+      gap: 10px;
+    }
+
+    /* Make first and last items wider for visual variety without height distortion */
+    .gallery-item:nth-child(1) { grid-column: span 2; }
+    .gallery-item:nth-child(6) { grid-column: span 2; }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 3px;
+      background: var(--teal);
+      cursor: pointer;
+    }
+
+    .gallery-item-bg {
+      width: 100%; height: 100%;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    /* Background tints visible around contained images */
+    .gallery-item:nth-child(1)  { background: #02292d; }
+    .gallery-item:nth-child(2)  { background: #04474e; }
+    .gallery-item:nth-child(3)  { background: #03373d; }
+    .gallery-item:nth-child(4)  { background: #02292d; }
+    .gallery-item:nth-child(5)  { background: #1a3a20; }
+    .gallery-item:nth-child(6)  { background: #04474e; }
+    .gallery-item:nth-child(7)  { background: #0a2020; }
+    .gallery-item:nth-child(8)  { background: #03373d; }
+    .gallery-item:nth-child(9)  { background: #02292d; }
+    .gallery-item:nth-child(10) { background: #04474e; }
+
+    /* Use actual images if they exist */
+    .gallery-item:nth-child(1) .gallery-item-bg { background-image: url('images/vac1.webp'); }
+    .gallery-item:nth-child(2) .gallery-item-bg { background-image: url('images/vac2.webp'); }
+    .gallery-item:nth-child(3) .gallery-item-bg { background-image: url('images/vac3.webp'); }
+    .gallery-item:nth-child(4) .gallery-item-bg { background-image: url('images/vac4.webp'); }
+    .gallery-item:nth-child(5) .gallery-item-bg { background-image: url('images/vac5.webp'); }
+    .gallery-item:nth-child(6) .gallery-item-bg { background-image: url('images/vac6.webp'); }
+    .gallery-item:nth-child(7) .gallery-item-bg { background-image: url('images/vac7.webp'); }
+    .gallery-item:nth-child(8) .gallery-item-bg { background-image: url('images/vac8.webp'); }
+    .gallery-item:nth-child(9) .gallery-item-bg { background-image: url('images/immunization.webp'); }
+    .gallery-item:nth-child(10) .gallery-item-bg { background-image: url('images/vac10.webp'); }
+
+    .gallery-item:hover .gallery-item-bg { transform: scale(1.04); }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(4, 71, 78, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .gallery-overlay svg { width: 28px; stroke: #fff; fill: none; stroke-width: 1.5; }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+    /* ─── ARTICLES ──────────────────────────────────────────────────── */
+    .articles-section {
+      margin-bottom: 6rem;
+    }
+
+    .articles-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+      gap: 1rem;
+    }
+
+    .articles-header h2 {
+      font-family: var(--ff-display);
+      font-size: 2.4rem;
+      color: var(--teal);
+    }
+
+    .articles-header p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      max-width: 380px;
+      text-align: right;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .article-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 2rem 1.8rem;
+      text-decoration: none;
+      display: block;
+      position: relative;
+      overflow: hidden;
+      transition: all var(--transition);
+    }
+    .article-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 0;
+      background: var(--gold);
+      transition: height 0.4s ease;
+    }
+    .article-card:hover {
+      border-color: var(--teal);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-5px);
+    }
+    .article-card:hover::before { height: 100%; }
+
+    .article-tag {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.9rem;
+    }
+
+    .article-title {
+      font-family: var(--ff-display);
+      font-size: 1rem;
+      color: var(--ink);
+      line-height: 1.45;
+      margin-bottom: 1rem;
+      transition: color var(--transition);
+    }
+    .article-card:hover .article-title { color: var(--teal); }
+
+    .article-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      transition: gap var(--transition);
+    }
+    .article-card:hover .article-arrow { gap: 0.7rem; }
+
+    .article-card.hidden { display: none; }
+
+    .articles-footer {
+      margin-top: 2.5rem;
+      text-align: center;
+    }
+
+    #toggle-articles {
+      background: none;
+      border: 2px solid var(--teal);
+      color: var(--teal);
+      font-family: var(--ff-body);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.8rem 2.2rem;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all var(--transition);
+    }
+    #toggle-articles:hover {
+      background: var(--teal);
+      color: var(--white);
+    }
+
+    /* ─── CONTACT CTA ───────────────────────────────────────────────── */
+    .contact-cta {
+      background: var(--teal);
+      color: var(--white);
+      padding: 5rem 6%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-cta::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,151,58,0.1), transparent 70%);
+      top: -150px; right: -150px;
+    }
+
+    .contact-cta h2 {
+      font-family: var(--ff-display);
+      font-size: 2.2rem;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+
+    .contact-cta p {
+      color: rgba(255,255,255,0.65);
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 300;
+    }
+
+    /* ─── FOOTER ────────────────────────────────────────────────────── */
+    #footer {
+      background: #0d0d0d;
+      color: rgba(255,255,255,0.6);
+      padding: 4rem 6%;
+    }
+
+    #footer .inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    #footer h2 {
+      font-family: var(--ff-display);
+      font-size: 1.4rem;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+
+    #footer .fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+
+    #footer .field { margin: 0; }
+    #footer .field.full { grid-column: 1 / -1; }
+
+    #footer input[type="text"],
+    #footer input[type="email"],
+    #footer textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--white);
+      font-family: var(--ff-body);
+      font-size: 0.85rem;
+      border-radius: 2px;
+      transition: border-color var(--transition);
+      outline: none;
+    }
+    #footer input::placeholder,
+    #footer textarea::placeholder { color: rgba(255,255,255,0.35); }
+    #footer input:focus,
+    #footer textarea:focus { border-color: var(--gold); }
+    #footer textarea { resize: vertical; min-height: 100px; }
+
+    #footer input[type="submit"] {
+      background: var(--gold);
+      color: var(--teal);
+      border: none;
+      padding: 0.75rem 2rem;
+      font-family: var(--ff-body);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all var(--transition);
+      margin-top: 0.5rem;
+    }
+    #footer input[type="submit"]:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
+    }
+
+    .footer-follow h2 { margin-bottom: 1.5rem; }
+
+    .social-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px; height: 40px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50%;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all var(--transition);
+    }
+    .social-links a:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: rgba(200,151,58,0.1);
+    }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 2rem;
+      margin-top: 2rem;
+      grid-column: 1 / -1;
+    }
+
+    /* ─── SCROLL REVEAL ─────────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* ─── RESPONSIVE ────────────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .intro-section { grid-template-columns: 1fr; gap: 2.5rem; }
+      .intro-visual { position: static; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .focus-list { grid-template-columns: 1fr; }
+      .articles-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 240px; }
+      .gallery-item:nth-child(1), .gallery-item:nth-child(6) { grid-column: span 1; }
+    }
+
+    @media (max-width: 768px) {
+      #main { padding: 4rem 5%; }
+      .hero-content { padding: 0 5% 6rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .articles-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; grid-auto-rows: 280px; }
+      .gallery-item:nth-child(1), .gallery-item:nth-child(6) { grid-column: span 1; }
+      #footer .inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .articles-header { flex-direction: column; align-items: flex-start; }
+      .articles-header p { text-align: left; }
+      .stats-inner { grid-template-columns: 1fr; }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .stat-item:last-child { border-bottom: none; }
+    }
+  </style>
+</head>
+<body class="is-preload">
+
+  <!-- Menu overlay -->
+  <div id="menu-overlay"></div>
+
+  <!-- ═══ SIDE MENU ══════════════════════════════════════════════════ -->
+  <nav id="menu" role="navigation" aria-label="Site menu">
+    <button id="menu-close" aria-label="Close menu">✕</button>
+    <h2>Navigation</h2>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="elements.html">Elements</a></li>
+      <li><a href="http://esvarj.wordpress.com">Health Articles</a></li>
+    </ul>
+  </nav>
+
+  <div id="wrapper">
+
+    <!-- ═══ HEADER (fixed, overlays hero) ═════════════════════════════ -->
+    <header id="header">
+      <div class="inner">
+        <nav>
+          <ul>
+            <li><a href="#" id="menu-trigger" aria-haspopup="true">Menu</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ═══ HERO ═══════════════════════════════════════════════════════ -->
+    <section id="hero" aria-label="Hero section">
+      <div id="hero-bg"></div>
+      <div class="hero-grid"></div>
+      <div class="hero-content">
+        <div class="hero-eyebrow">Global Public Health</div>
+        <h1 class="hero-title">
+          Vaccination &amp;<br>
+          <em>Disease Prevention</em>
+        </h1>
+        <p class="hero-desc">
+          Strengthening immunization systems, bridging equity gaps, and building lasting health resilience across communities and borders.
+        </p>
+        <a href="#main" class="hero-cta">
+          Explore the work
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" fill="none" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- ═══ STATS BAR ═══════════════════════════════════════════════════ -->
+    <div id="stats-bar">
+      <div class="stats-inner">
+        <div class="stat-item reveal">
+          <div class="stat-number"><span class="counter" data-target="154">0</span>M+</div>
+          <div class="stat-label">Lives saved over the past 50 years</div>
+          <span class="stat-accent"></span>
+        </div>
+        <div class="stat-item reveal reveal-delay-2">
+          <div class="stat-number"><span class="counter" data-target="5">0</span>M+</div>
+          <div class="stat-label">Deaths prevented every year</div>
+          <span class="stat-accent"></span>
+        </div>
+        <div class="stat-item reveal reveal-delay-3">
+          <div class="stat-number"><span class="counter" data-target="30">0</span>+</div>
+          <div class="stat-label">Life-threatening diseases with vaccines</div>
+          <span class="stat-accent"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ MAIN ════════════════════════════════════════════════════════ -->
+    <div id="main">
+
+      <!-- Intro -->
+      <section class="intro-section">
+        <div class="intro-text reveal">
+          <div class="section-label">Overview</div>
+          <p>
+            Vaccination and immunization are among the most effective public health interventions ever developed. Vaccines work by training the immune system to recognize and fight diseases before they cause serious illness or death. Today, vaccines exist for more than 30 life-threatening diseases, including diphtheria, tetanus, pertussis, measles, polio, hepatitis B, yellow fever, meningitis, and human papillomavirus (HPV). Immunization currently prevents an estimated 3.5 to 5 million deaths every year and has saved at least 154 million lives over the past 50 years, the majority of them infants.
+            <a href="https://www.who.int/health-topics/vaccines-and-immunization" target="_blank" rel="noopener noreferrer">World Health Organization ↗</a>
+          </p>
+          <p>
+            Despite these monumental successes, global immunization coverage remains uneven. In 2024, around 14.3 million children worldwide did not receive even a single basic vaccine — commonly referred to as zero-dose children — highlighting persistent access and equity gaps.
+            <a href="https://www.who.int/en/news-room/fact-sheets/detail/immunization-coverage" target="_blank" rel="noopener noreferrer">World Health Organization ↗</a>
+            Routine coverage for key vaccines such as DTP3 hovered around 85 percent globally, while coverage for yellow fever in at-risk countries was only about 52 percent. Continued investment and strategic action are essential to achieve the goals of the
+            <a href="https://www.who.int/teams/immunization-vaccines-and-biologicals/strategies/ia2030" target="_blank" rel="noopener noreferrer">Immunization Agenda 2030 ↗</a>.
+          </p>
+        </div>
+        <div class="intro-visual reveal reveal-delay-3">
+          <div class="intro-visual-card">
+            <blockquote>
+              Prevention is one of the most powerful tools in protecting population health.
+            </blockquote>
+            <cite>— Dr. Anthony Fauci</cite>
+          </div>
+        </div>
+      </section>
+
+      <!-- What I Do -->
+      <section class="what-i-do reveal">
+        <div class="section-label">What I Do</div>
+        <h2>Areas of Practice</h2>
+        <p class="intro-para">
+          Combining technical planning, data-informed decision-making, and community engagement to improve coverage, reduce preventable disease risk, and ensure immunization services reach underserved populations.
+        </p>
+        <div class="services-grid">
+          <div class="service-card reveal">
+            <div class="service-num">01</div>
+            <h3>Routine Immunization Programs</h3>
+            <p>Strengthening planning, delivery, and integration of routine immunization services to improve consistency, equity, and system performance across facilities and communities.</p>
+          </div>
+          <div class="service-card reveal reveal-delay-1">
+            <div class="service-num">02</div>
+            <h3>Coverage Surveys & Assessments</h3>
+            <p>Supporting the design and use of coverage assessments to identify immunization gaps, understand missed populations, and inform targeted, data-driven interventions.</p>
+          </div>
+          <div class="service-card reveal reveal-delay-2">
+            <div class="service-num">03</div>
+            <h3>Disease Prevention Strategy</h3>
+            <p>Contributing to evidence-informed prevention strategies that align immunization efforts with broader public health priorities and epidemiological trends.</p>
+          </div>
+          <div class="service-card reveal reveal-delay-3">
+            <div class="service-num">04</div>
+            <h3>Community Engagement & Demand</h3>
+            <p>Promoting approaches that build trust, address vaccine hesitancy, and strengthen community participation to improve uptake and sustained use of immunization services.</p>
+          </div>
+          <div class="service-card reveal reveal-delay-4">
+            <div class="service-num">05</div>
+            <h3>Health System Coordination</h3>
+            <p>Working with government bodies, partners, and community structures to support aligned planning, efficient implementation, and sustainable disease prevention outcomes.</p>
+          </div>
+          <div class="service-card reveal reveal-delay-5">
+            <div class="service-num">06</div>
+            <h3>Capacity Building</h3>
+            <p>Building technical and operational capacity across health system levels to sustain high-quality immunization delivery and disease prevention programming.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Focus Areas -->
+      <section class="focus-areas">
+        <div class="section-label reveal">Core Focus</div>
+        <h2 class="reveal">Focus Areas</h2>
+        <div class="focus-list">
+
+          <div class="focus-item reveal">
+            <div class="focus-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <h3>Routine Immunization</h3>
+              <p>Supporting the planning, coordination, and delivery of routine vaccination services within primary health care systems to ensure continuity, equity, and quality of care. The <a href="https://www.who.int/teams/immunization-vaccines-and-biologicals" target="_blank" rel="noopener noreferrer">World Health Organization</a> recognizes routine immunization as the most effective and equitable way to protect populations from vaccine-preventable diseases.</p>
+            </div>
+          </div>
+
+          <div class="focus-item reveal reveal-delay-1">
+            <div class="focus-icon">
+              <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+            </div>
+            <div>
+              <h3>Coverage Surveys & Monitoring</h3>
+              <p>Designing and supporting vaccination coverage assessments and monitoring systems to identify underserved populations and geographic gaps. Reliable data is essential for informed decision-making and guides planning, resource targeting, and accountability. <a href="https://www.who.int/en/news-room/fact-sheets/detail/immunization-coverage" target="_blank" rel="noopener noreferrer">World Health Organization</a></p>
+            </div>
+          </div>
+
+          <div class="focus-item reveal reveal-delay-2">
+            <div class="focus-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <div>
+              <h3>Disease Prevention Strategies</h3>
+              <p>Contributing to the development and implementation of disease prevention strategies informed by epidemiological evidence and public health priorities to reduce the burden of vaccine-preventable diseases and protect community health.</p>
+            </div>
+          </div>
+
+          <div class="focus-item reveal reveal-delay-3">
+            <div class="focus-icon">
+              <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div>
+              <h3>Community Engagement & Demand</h3>
+              <p>Working with communities, local leaders, and frontline actors to strengthen trust in vaccination services. <a href="https://www.unicef.org/immunization" target="_blank" rel="noopener noreferrer">UNICEF</a> highlights the importance of listening to communities, addressing concerns, and ensuring services are culturally appropriate and responsive to local needs.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Gallery -->
+      <section class="gallery-section reveal">
+        <div class="section-label">Fieldwork</div>
+        <h2>Gallery</h2>
+        <div class="gallery-grid">
+          <div class="gallery-item"><div class="gallery-item-bg"></div><div class="gallery-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div></div>
+          <div class="gallery-item"><div class="gallery-item-bg"></div><div class="gallery-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div></div>
+          <div class="gallery-item"><div class="gallery-item-bg"></div><div class="gallery-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div></div>
+          <div class="gallery-item"><div class="gallery-item-bg"></div><div class="gallery-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div></div>
+          <div class="gallery-item"><div class="gallery-item-bg"></div><div class="gallery-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div></div>
+          <div class="gallery-item"><div class="gallery-item-bg"></div><div class="gallery-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div></div>
+          <div class="gallery-item"><div class="gallery-item-bg"></div><div class="gallery-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div></div>
+          <div class="gallery-item"><div class="gallery-item-bg"></div><div class="gallery-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div></div>
+          <div class="gallery-item"><div class="gallery-item-bg"></div><div class="gallery-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div></div>
+          <div class="gallery-item"><div class="gallery-item-bg"></div><div class="gallery-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div></div>
+        </div>
+      </section>
+
+      <!-- Articles -->
+      <section class="articles-section">
+        <div class="articles-header reveal">
+          <div>
+            <div class="section-label">Writing</div>
+            <h2>Related Articles</h2>
+          </div>
+          <p>Writing on immunization systems, community health, and disease prevention across African and global contexts.</p>
+        </div>
+
+        <div class="articles-grid" id="articles-grid">
+
+          <!-- Visible by default -->
+          <a class="article-card reveal" href="https://open.substack.com/pub/escopy/p/structural-fragmentation-and-the?r=73zqs0&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true" target="_blank" rel="noopener noreferrer">
+            <span class="article-tag">Coverage &amp; Equity</span>
+            <div class="article-title">Why Coverage Gaps Persist Even When Vaccines Are Available</div>
+            <span class="article-arrow">Read article →</span>
+          </a>
+
+          <a class="article-card reveal reveal-delay-1" href="https://open.substack.com/pub/escopy/p/cold-chains-trust-and-the-last-mile?r=73zqs0&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true" target="_blank" rel="noopener noreferrer">
+            <span class="article-tag">Supply Chain</span>
+            <div class="article-title">Cold Chains, Trust, and the Last Mile of Immunization</div>
+            <span class="article-arrow">Read article →</span>
+          </a>
+
+          <a class="article-card reveal reveal-delay-2" href="https://open.substack.com/pub/escopy/p/routine-immunization-vs-campaigns?r=73zqs0&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true" target="_blank" rel="noopener noreferrer">
+            <span class="article-tag">Systems</span>
+            <div class="article-title">Routine Immunization vs Campaigns: What Actually Works Long Term</div>
+            <span class="article-arrow">Read article →</span>
+          </a>
+
+          <a class="article-card reveal reveal-delay-3" href="https://esvarj.wordpress.com/2025/12/30/vaccination-in-informal-settlements-constraints-the-data-does-not-show/" target="_blank" rel="noopener noreferrer">
+            <span class="article-tag">Urban Health</span>
+            <div class="article-title">Vaccination in Informal Settlements: Constraints the Data Doesn't Show</div>
+            <span class="article-arrow">Read article →</span>
+          </a>
+
+          <a class="article-card reveal reveal-delay-4" href="https://esvarj.wordpress.com/2025/12/30/kenyas-immunization-landscape-progress-gaps-and-pressure-points/" target="_blank" rel="noopener noreferrer">
+            <span class="article-tag">Kenya</span>
+            <div class="article-title">Kenya's Immunization Landscape: Progress, Gaps, and Pressure Points</div>
+            <span class="article-arrow">Read article →</span>
+          </a>
+
+          <a class="article-card reveal reveal-delay-5" href="https://esvarj.wordpress.com/2025/12/30/reaching-zero-dose-children-in-rural-and-pastoralist-communities/" target="_blank" rel="noopener noreferrer">
+            <span class="article-tag">Zero-Dose</span>
+            <div class="article-title">Reaching Zero-Dose Children in Rural and Pastoralist Communities</div>
+            <span class="article-arrow">Read article →</span>
+          </a>
+
+          <!-- Hidden initially -->
+          <a class="article-card hidden" href="https://esvarj.wordpress.com/2025/12/30/vaccine-hesitancy-is-not-ignorance-a-community-health-perspective/" target="_blank" rel="noopener noreferrer">
+            <span class="article-tag">Community Health</span>
+            <div class="article-title">Vaccine Hesitancy Is Not Ignorance: A Community Health Perspective</div>
+            <span class="article-arrow">Read article →</span>
+          </a>
+
+          <a class="article-card hidden" href="https://esvarj.wordpress.com/2025/12/30/when-outreach-fails-lessons-from-community-mobilization-efforts/" target="_blank" rel="noopener noreferrer">
+            <span class="article-tag">Outreach</span>
+            <div class="article-title">When Outreach Fails: Lessons from Community Mobilization Efforts</div>
+            <span class="article-arrow">Read article →</span>
+          </a>
+
+          <a class="article-card hidden" href="https://esvarj.wordpress.com/2025/12/30/the-role-of-community-health-workers-in-disease-prevention/" target="_blank" rel="noopener noreferrer">
+            <span class="article-tag">Workforce</span>
+            <div class="article-title">The Role of Community Health Workers in Disease Prevention</div>
+            <span class="article-arrow">Read article →</span>
+          </a>
+
+          <a class="article-card hidden" href="https://esvarj.wordpress.com/2025/12/30/what-frontline-health-workers-need-beyond-training/" target="_blank" rel="noopener noreferrer">
+            <span class="article-tag">Capacity</span>
+            <div class="article-title">What Frontline Health Workers Need Beyond Training</div>
+            <span class="article-arrow">Read article →</span>
+          </a>
+
+          <a class="article-card hidden" href="https://esvarj.wordpress.com/2025/12/30/data-quality-in-immunization-programs-why-it-breaks-down/" target="_blank" rel="noopener noreferrer">
+            <span class="article-tag">Data Quality</span>
+            <div class="article-title">Data Quality in Immunization Programs: Why It Breaks Down</div>
+            <span class="article-arrow">Read article →</span>
+          </a>
+
+          <a class="article-card hidden" href="https://esvarj.wordpress.com/2025/12/30/supervision-burnout-and-performance-in-vaccination-programs/" target="_blank" rel="noopener noreferrer">
+            <span class="article-tag">Performance</span>
+            <div class="article-title">Supervision, Burnout, and Performance in Vaccination Programs</div>
+            <span class="article-arrow">Read article →</span>
+          </a>
+
+          <a class="article-card hidden" href="https://esvarj.wordpress.com/2025/12/30/disease-prevention-beyond-vaccines-where-public-health-falls-short/" target="_blank" rel="noopener noreferrer">
+            <span class="article-tag">Prevention</span>
+            <div class="article-title">Disease Prevention Beyond Vaccines: Where Public Health Falls Short</div>
+            <span class="article-arrow">Read article →</span>
+          </a>
+
+        </div>
+
+        <div class="articles-footer">
+          <button id="toggle-articles">See more articles →</button>
+        </div>
+      </section>
+
+      <!-- Contact CTA -->
+      <section class="contact-cta reveal">
+        <h2>Interested in collaboration?</h2>
+        <p>Reach out to discuss vaccination programs, disease prevention work, or partnership opportunities.</p>
+      </section>
+
+    </div><!-- /#main -->
+
+    <!-- ═══ FOOTER ═══════════════════════════════════════════════════════ -->
+    <footer id="footer">
+      <div class="inner">
+        <div class="footer-contact">
+          <h2>Get in touch</h2>
+          <form method="POST" action="https://formspree.io/f/xwvpkvzl">
+            <div class="fields">
+              <div class="field">
+                <input type="text" name="name" id="name" placeholder="Name" />
+              </div>
+              <div class="field">
+                <input type="email" name="email" id="email" placeholder="Email" />
+              </div>
+              <div class="field full">
+                <textarea name="message" id="message" placeholder="Message" rows="4"></textarea>
+              </div>
+            </div>
+            <input type="submit" value="Send Message" />
+          </form>
+        </div>
+
+        <div class="footer-follow">
+          <h2>Follow</h2>
+          <div class="social-links">
+            <a href="https://x.com/humanistories" aria-label="X / Twitter">𝕏</a>
+            <a href="https://web.facebook.com/humanitarian.stories/" aria-label="Facebook">f</a>
+            <a href="https://www.instagram.com/humanitarian_stories/" aria-label="Instagram">◎</a>
+            <a href="https://www.linkedin.com/in/josemariaescriva/" aria-label="LinkedIn">in</a>
+            <a href="https://github.com/escrivajosemaria" aria-label="GitHub">⌥</a>
+            <a href="https://escrivajosemaria.github.io/escopy.io/" aria-label="Escopy">⊕</a>
+            <a href="https://www.youtube.com/@escrivahealthcollective" aria-label="YouTube">▶</a>
+          </div>
+        </div>
+
+        <div class="footer-copy">
+          &copy; Escriva Josemaria 2024 &nbsp;·&nbsp; Design: escriva.https
+        </div>
+      </div>
+    </footer>
+
+  </div><!-- /#wrapper -->
+
+  <script>
+    /* ─── MENU TOGGLE ───────────────────────────────────────────────── */
+    const menuTrigger  = document.getElementById('menu-trigger');
+    const menuEl       = document.getElementById('menu');
+    const menuClose    = document.getElementById('menu-close');
+    const menuOverlay  = document.getElementById('menu-overlay');
+
+    function openMenu() {
+      menuEl.classList.add('open');
+      menuOverlay.classList.add('visible');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMenu() {
+      menuEl.classList.remove('open');
+      menuOverlay.classList.remove('visible');
+      document.body.style.overflow = '';
+    }
+
+    menuTrigger.addEventListener('click', e => { e.preventDefault(); openMenu(); });
+    menuClose.addEventListener('click', closeMenu);
+    menuOverlay.addEventListener('click', closeMenu);
+
+    /* ─── NAV SCROLL EFFECT ─────────────────────────────────────────── */
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 80);
+    }, { passive: true });
+
+    /* ─── SCROLL REVEAL ─────────────────────────────────────────────── */
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+    revealEls.forEach(el => revealObs.observe(el));
+
+    /* ─── STAT COUNTERS ─────────────────────────────────────────────── */
+    function animateCounter(el, target, duration = 1800) {
+      let start = 0;
+      const step = (timestamp) => {
+        if (!start) start = timestamp;
+        const progress = Math.min((timestamp - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.floor(eased * target);
+        if (progress < 1) requestAnimationFrame(step);
+        else el.textContent = target;
+      };
+      requestAnimationFrame(step);
+    }
+
+    const counterObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const target = parseInt(entry.target.dataset.target);
+          animateCounter(entry.target, target);
+          counterObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.counter').forEach(el => counterObs.observe(el));
+
+    /* ─── ARTICLES TOGGLE ───────────────────────────────────────────── */
+    const toggleBtn     = document.getElementById('toggle-articles');
+    const hiddenCards   = document.querySelectorAll('.article-card.hidden');
+    let   expanded      = false;
+
+    toggleBtn.addEventListener('click', () => {
+      expanded = !expanded;
+      hiddenCards.forEach(card => {
+        card.classList.toggle('hidden', !expanded);
+        if (expanded) {
+          card.classList.add('reveal');
+          // Trigger re-observation for reveal animation
+          setTimeout(() => revealObs.observe(card), 10);
+        }
+      });
+      toggleBtn.textContent = expanded ? '← Show fewer articles' : 'See more articles →';
+    });
+
+    /* ─── SMOOTH SCROLL FOR HERO CTA ───────────────────────────────── */
+    document.querySelector('.hero-cta').addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById('main').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
+
+</body>
+</html>
