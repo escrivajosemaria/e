@@ -1,764 +1,585 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Digital Health & Innovation</title>
-  <link rel="shortcut icon" href="images/favicon.ico">
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-  <style>
-  :root {
-    --teal:      #04474e;
-    --teal-deep: #020d0e;
-    --teal-mid:  #075f6a;
-    --teal-lite: #0d9db0;
-    --gold:      #c8973a;
-    --gold-lt:   #e8b65a;
-    --cream:     #faf8f4;
-    --ink:       #0d1a1b;
-    --border:    rgba(255,255,255,.07);
-    --border-d:  rgba(4,71,78,.15);
-    --ff-d:      'EB Garamond', Georgia, serif;
-    --ff-ui:     'Josefin Sans', sans-serif;
-    --ease:      cubic-bezier(0.4,0,0.2,1);
-  }
-  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
-  html { scroll-behavior:smooth; }
-  body { font-family:var(--ff-d); background:var(--teal-deep); color:#fff; overflow-x:hidden; }
-  ::-webkit-scrollbar { width:3px; }
-  ::-webkit-scrollbar-track { background:var(--teal-deep); }
-  ::-webkit-scrollbar-thumb { background:var(--gold); }
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Digital Health &amp; Innovation: Escriva Josemaria</title>
+<link rel="shortcut icon" href="images/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+<style>
 
-  /* PROGRESS */
-  #prog { position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--teal-lite),var(--gold));z-index:9000;width:0;transition:width .08s linear; }
+:root{
+  --ink:#16181a;
+  --ink-soft:#26292b;
+  --paper:#f1efe7;
+  --paper-dim:#e7e4d8;
+  --stone:#8d897e;
+  --line:rgba(22,24,26,.14);
+  --line-on-ink:rgba(241,239,231,.16);
+  --clay:#7a3320;
+  --clay-soft:#a85a3f;
+  --signal:#4c5a63;
+  --serif:'Instrument Serif', Georgia, serif;
+  --sans:'Inter', -apple-system, sans-serif;
+  --ease:cubic-bezier(.22,.7,.2,1);
+}
 
-  /* HEADER */
-  #header { position:fixed;top:0;left:0;right:0;z-index:800;padding:1.2rem 4rem;display:flex;justify-content:flex-end;transition:background .4s; }
-  #header.solid { background:rgba(2,13,14,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border); }
-  #header nav ul { list-style:none;display:flex; }
-  #header nav ul li a { font-family:var(--ff-ui);font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);text-decoration:none;padding:.5rem 1rem;border:1px solid rgba(255,255,255,.15);border-radius:2px;transition:all .3s; }
-  #header nav ul li a:hover { color:var(--gold);border-color:var(--gold);background:rgba(200,151,58,.08); }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--sans);
+  background:var(--paper);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%;}
+a{color:inherit;}
+.container{width:100%;padding-left:6.5%;padding-right:6.5%;}
 
-  /* SIDE MENU */
-  #mo { display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1999;backdrop-filter:blur(4px); }
-  #mo.on { display:block; }
-  #menu { position:fixed;top:0;right:-380px;width:380px;height:100vh;background:var(--teal);z-index:2000;padding:5rem 3.5rem 3rem;transition:right .45s cubic-bezier(.77,0,.18,1); }
-  #menu.on { right:0; }
-  #mc { position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:rgba(255,255,255,.6);font-size:1.4rem;cursor:pointer;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s; }
-  #mc:hover { background:rgba(255,255,255,.1);color:#fff; }
-  #menu h2 { font-family:var(--ff-ui);font-size:.58rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:2.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,.1); }
-  #menu ul { list-style:none; }
-  #menu ul li { margin-bottom:.1rem;opacity:0;transform:translateX(24px);transition:all .35s; }
-  #menu.on ul li { opacity:1;transform:translateX(0); }
-  #menu.on ul li:nth-child(1){transition-delay:.08s} #menu.on ul li:nth-child(2){transition-delay:.14s}
-  #menu.on ul li:nth-child(3){transition-delay:.2s}  #menu.on ul li:nth-child(4){transition-delay:.26s}
-  #menu ul li a { display:block;font-family:var(--ff-d);font-size:1.5rem;color:rgba(255,255,255,.82);text-decoration:none;padding:.65rem 0;border-bottom:1px solid rgba(255,255,255,.07);transition:color .3s,padding-left .3s; }
-  #menu ul li a:hover { color:var(--gold);padding-left:.5rem; }
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important;}
+}
 
-  /* ═══ MAGAZINE HERO — SPLIT SCREEN ═══ */
-  .mag-hero {
-    display:grid; grid-template-columns:1fr 1fr;
-    min-height:100vh; padding-top:80px;
-    position:relative; overflow:hidden;
-  }
+/* progress rule */
+#prog{position:fixed;top:0;left:0;height:1px;background:var(--ink);z-index:900;width:0;}
+body.on-dark #prog{background:var(--paper);}
 
-  /* Left sticky panel */
-  .mag-hero-left {
-    position:sticky; top:80px; height:calc(100vh - 80px);
-    background:var(--teal); display:flex; flex-direction:column;
-    justify-content:space-between; padding:4rem 5%;
-    border-right:1px solid rgba(255,255,255,.06);
-    overflow:hidden;
-  }
+/* header (matches index.html) */
+#header{
+  position:fixed;top:0;left:0;right:0;z-index:700;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.6rem 6.5%;
+  color:var(--paper);
+  transition:color .4s var(--ease), background .4s var(--ease), border-color .4s var(--ease);
+  border-bottom:1px solid transparent;
+}
+#header.solid{
+  background:rgba(241,239,231,.92);
+  backdrop-filter:blur(10px);
+  color:var(--ink);
+  border-bottom-color:var(--line);
+}
+.h-logo{display:inline-flex;align-items:center;line-height:0;}
+.h-logo img{height:34px;width:auto;display:block;transition:opacity .25s;}
+.h-logo:hover img{opacity:.72;}
+#header nav a{
+  font-family:var(--sans);font-size:.82rem;font-weight:500;
+  text-decoration:none;letter-spacing:.01em;
+  border-bottom:1px solid currentColor;padding-bottom:.15rem;
+  opacity:.9;transition:opacity .25s;
+}
+#header nav a:hover{opacity:.55;}
 
-  /* Vertical text watermark */
-  .mag-hero-left::before {
-    content:'DIGITAL';
-    position:absolute; right:-2rem; top:50%; transform:translateY(-50%) rotate(90deg);
-    font-family:var(--ff-ui); font-size:5rem; font-weight:700; letter-spacing:.3em;
-    color:rgba(255,255,255,.025); pointer-events:none; white-space:nowrap;
-  }
+/* menu overlay (matches index.html) */
+#menu{
+  position:fixed;inset:0;background:var(--paper);z-index:1000;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:6% 8%;
+  clip-path:inset(0 0 100% 0);
+  transition:clip-path .55s var(--ease);
+}
+#menu.on{clip-path:inset(0 0 0 0);}
+#mc{
+  position:absolute;top:1.6rem;right:6.5%;background:none;border:none;
+  font-family:var(--sans);font-size:.85rem;color:var(--ink);cursor:pointer;
+}
+#menu ul{list-style:none;}
+#menu ul li a{
+  display:block;font-family:var(--serif);font-size:clamp(2.4rem,7vw,4.2rem);
+  font-style:italic;color:var(--ink);text-decoration:none;
+  padding:.25rem 0;line-height:1.15;
+  border-bottom:1px solid var(--line);
+  transition:padding-left .3s var(--ease), color .3s;
+}
+#menu ul li:last-child a{border-bottom:none;}
+#menu ul li a:hover{padding-left:.6rem;color:var(--clay);}
+#menu .menu-foot{margin-top:2.5rem;font-size:.78rem;color:var(--stone);}
 
-  .mag-tag {
-    font-family:var(--ff-ui); font-size:.56rem; font-weight:700;
-    letter-spacing:.35em; text-transform:uppercase; color:var(--gold);
-    display:flex; align-items:center; gap:.7rem;
-    opacity:0; animation:rise .8s var(--ease) .2s forwards;
-  }
-  .mag-tag::before { content:''; display:block; width:28px; height:1px; background:var(--gold); }
+/* shared editorial rhythm */
+.section{max-width:1180px;margin:0 auto;padding:6.5rem 6.5%;}
+.section-tight{padding-top:5.5rem;padding-bottom:5.5rem;}
+.eyebrow{font-family:var(--sans);font-size:.78rem;color:var(--stone);margin-bottom:1rem;}
+.head h2{font-family:var(--serif);font-weight:400;font-size:clamp(2.1rem,4.4vw,3.4rem);line-height:1.06;letter-spacing:-.01em;max-width:16ch;}
+.head h2 i{font-style:italic;color:var(--clay);}
+.rule-top{border-top:1px solid var(--line);}
+.rule-bottom{border-bottom:1px solid var(--line);}
 
-  .mag-hero-title {
-    font-family:var(--ff-d); font-weight:700;
-    font-size:clamp(3rem,5.5vw,5.5rem); line-height:.9;
-    letter-spacing:-.02em; color:#fff;
-    opacity:0; animation:rise 1s var(--ease) .4s forwards;
-  }
-  .mag-hero-title em { font-style:italic; color:var(--gold); display:block; }
+/* hero */
+#hero{
+  position:relative;min-height:92vh;display:flex;align-items:flex-end;
+  background:var(--ink);color:var(--paper);overflow:hidden;
+}
+.hero-inner{position:relative;z-index:2;width:100%;max-width:1180px;margin:0 auto;padding:9rem 6.5% 5rem;}
+.hero-kicker{
+  font-family:var(--sans);font-size:.85rem;color:rgba(241,239,231,.65);margin-bottom:1.6rem;
+  opacity:0;transform:translateY(14px);animation:rise .8s var(--ease) .15s forwards;
+}
+.hero-name{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(2.1rem,5.4vw,4.6rem);line-height:1.02;letter-spacing:-.01em;max-width:15ch;
+  opacity:0;transform:translateY(20px);animation:rise .9s var(--ease) .3s forwards;
+}
+.hero-sub{
+  margin-top:1.8rem;font-family:var(--sans);font-size:1.05rem;line-height:1.75;
+  color:rgba(241,239,231,.75);max-width:46ch;
+  opacity:0;transform:translateY(18px);animation:rise .8s var(--ease) .48s forwards;
+}
+.hero-lower{
+  margin-top:2.6rem;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:2rem;
+  border-top:1px solid var(--line-on-ink);padding-top:1.6rem;
+  opacity:0;transform:translateY(16px);animation:rise .8s var(--ease) .64s forwards;
+}
+.hero-links{display:flex;gap:2rem;}
+.hero-links a{
+  font-family:var(--sans);font-size:.82rem;font-weight:500;color:var(--paper);
+  text-decoration:none;border-bottom:1px solid var(--line-on-ink);padding-bottom:.2rem;
+  transition:border-color .3s,color .3s;
+}
+.hero-links a:hover{border-color:var(--clay-soft);color:var(--clay-soft);}
+.hero-flow{font-family:var(--sans);font-size:.78rem;color:rgba(241,239,231,.5);}
+@keyframes rise{to{opacity:1;transform:translateY(0);}}
 
-  .mag-hero-desc {
-    font-family:var(--ff-d); font-style:italic; font-size:1rem;
-    color:rgba(255,255,255,.5); line-height:1.8; max-width:400px;
-    border-left:2px solid rgba(200,151,58,.4); padding-left:1rem;
-    opacity:0; animation:rise .9s var(--ease) .7s forwards;
-  }
+/* statement / approach (matches index.html pattern) */
+.statement{
+  padding:6.5rem 6.5%;
+  max-width:1180px;margin:0 auto;
+  display:grid;grid-template-columns:.9fr 1.6fr;gap:3rem;
+  border-bottom:1px solid var(--line);
+}
+.statement-label{font-family:var(--sans);font-size:.78rem;font-weight:500;color:var(--stone);align-self:start;padding-top:.4rem;}
+.statement-text{
+  font-family:var(--serif);font-weight:400;font-style:italic;
+  font-size:clamp(1.4rem,2.8vw,2.1rem);line-height:1.35;
+  border-left:1px solid var(--ink);padding-left:2rem;
+}
+.statement-text b{font-style:normal;font-weight:400;color:var(--clay);}
+.statement-figures{margin-top:2.6rem;padding-left:2rem;display:flex;gap:3rem;flex-wrap:wrap;}
+.fig-num{font-family:var(--serif);font-size:2rem;color:var(--ink);}
+.fig-lbl{font-family:var(--sans);font-size:.75rem;color:var(--stone);margin-top:.1rem;max-width:22ch;}
 
-  /* Scroll indicator */
-  .scroll-hint {
-    display:flex; align-items:center; gap:.6rem;
-    font-family:var(--ff-ui); font-size:.52rem; font-weight:600;
-    letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.2);
-    opacity:0; animation:rise .8s var(--ease) 1s forwards;
-  }
-  .scroll-hint .line { width:32px; height:1px; background:rgba(255,255,255,.15); }
+/* information flow */
+.flow{padding:6.5rem 6.5%;max-width:1180px;margin:0 auto;border-bottom:1px solid var(--line);}
+.flow-head{margin-bottom:3rem;max-width:60ch;}
+.flow-head p{font-family:var(--sans);font-size:.98rem;color:var(--stone);line-height:1.7;margin-top:.9rem;max-width:52ch;}
+.flow-list{border-top:1px solid var(--line);}
+.flow-row{display:grid;grid-template-columns:5rem 1fr;gap:1.6rem;padding:1.5rem 0;border-bottom:1px solid var(--line);}
+.flow-index{font-family:var(--serif);font-size:1.4rem;color:var(--stone);}
+.flow-term{font-family:var(--serif);font-size:1.3rem;color:var(--ink);margin-bottom:.35rem;}
+.flow-body{font-family:var(--sans);font-size:.92rem;line-height:1.65;color:var(--ink-soft);max-width:58ch;}
 
-  /* Right scrolling content */
-  .mag-hero-right {
-    background:var(--teal-deep);
-    padding:4rem 5%;
-    display:flex; flex-direction:column; gap:3rem;
-  }
+/* toolkit rail */
+.toolkit{padding:6.5rem 6.5%;max-width:1180px;margin:0 auto;border-bottom:1px solid var(--line);}
+.tool-rail{border-top:1px solid var(--line);display:flex;flex-wrap:wrap;}
+.tool-item{
+  flex:1 1 260px;padding:1.8rem 1.8rem 1.8rem 0;border-bottom:1px solid var(--line);
+}
+.tool-name{font-family:var(--serif);font-size:1.5rem;color:var(--ink);margin-bottom:.4rem;}
+.tool-desc{font-family:var(--sans);font-size:.85rem;color:var(--stone);line-height:1.55;max-width:26ch;}
 
-  /* Definition card — large opening statement */
-  .def-card {
-    background:rgba(255,255,255,.03); border:1px solid var(--border);
-    border-radius:4px; padding:2.5rem; position:relative; overflow:hidden;
-    opacity:0; animation:rise .9s var(--ease) .5s forwards;
-  }
-  .def-card::before {
-    content:'"';
-    position:absolute; top:-1rem; left:1rem;
-    font-family:var(--ff-d); font-size:8rem; font-weight:700;
-    color:rgba(200,151,58,.08); line-height:1; pointer-events:none;
-  }
-  .def-card p {
-    font-family:var(--ff-d); font-size:1.12rem; line-height:1.85;
-    color:rgba(255,255,255,.75);
-  }
-  .def-card p + p { margin-top:1rem; }
-  .def-card p a { color:var(--teal-lite); text-decoration:none; border-bottom:1px solid rgba(13,157,176,.3); }
-  .def-card p a:hover { color:var(--gold); border-color:rgba(200,151,58,.4); }
+/* data in the field */
+.field-section{background:var(--ink);color:var(--paper);padding:6.5rem 6.5%;}
+.field-inner{max-width:1180px;margin:0 auto;}
+.field-inner .eyebrow{color:rgba(241,239,231,.55);}
+.field-inner h2{color:var(--paper);}
+.field-process{
+  display:flex;flex-wrap:wrap;gap:.6rem 1.4rem;align-items:baseline;
+  margin:2.2rem 0 2.4rem;padding-top:2rem;border-top:1px solid var(--line-on-ink);
+}
+.field-process span{font-family:var(--serif);font-size:1.3rem;font-style:italic;color:rgba(241,239,231,.9);}
+.field-process i{font-family:var(--sans);font-size:.85rem;color:rgba(241,239,231,.4);font-style:normal;}
+.field-copy{font-family:var(--sans);font-size:1rem;line-height:1.8;color:rgba(241,239,231,.75);max-width:64ch;}
+.field-copy b{font-weight:500;color:var(--paper);}
 
-  /* Section label */
-  .sec-label {
-    font-family:var(--ff-ui); font-size:.52rem; font-weight:700;
-    letter-spacing:.3em; text-transform:uppercase; color:rgba(255,255,255,.25);
-    display:flex; align-items:center; gap:.7rem;
-    margin-bottom:1.5rem;
-  }
-  .sec-label::after { content:''; flex:1; height:1px; background:rgba(255,255,255,.06); }
+/* case studies */
+.cases{padding:6.5rem 6.5%;max-width:1180px;margin:0 auto;border-bottom:1px solid var(--line);}
+.case-list{border-top:1px solid var(--line);}
+.case{padding:3rem 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:11rem 1fr;gap:2.4rem;}
+.case-num{font-family:var(--sans);font-size:.78rem;color:var(--stone);}
+.case-title{font-family:var(--serif);font-size:clamp(1.5rem,2.4vw,1.9rem);color:var(--ink);margin-top:.5rem;line-height:1.1;}
+.case-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem 2.4rem;}
+.case-field{}
+.case-field h4{font-family:var(--sans);font-size:.72rem;font-weight:600;color:var(--stone);margin-bottom:.4rem;}
+.case-field p{font-family:var(--sans);font-size:.92rem;line-height:1.6;color:var(--ink-soft);}
 
-  /* ═══ BENTO GRID — PILLARS ═══ */
-  .bento-section { padding:6rem 5%; background:var(--teal-deep); }
+/* what I actually do */
+.capability{padding:6.5rem 6.5%;max-width:1180px;margin:0 auto;border-bottom:1px solid var(--line);}
+.cap-grid{border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;}
+.cap-item{padding:2.1rem 2.2rem 2.1rem 0;border-bottom:1px solid var(--line);}
+.cap-item:nth-child(odd){border-right:1px solid var(--line);padding-right:2.2rem;}
+.cap-item:nth-child(even){padding-left:2.2rem;}
+.cap-item h3{font-family:var(--serif);font-size:1.25rem;color:var(--ink);margin-bottom:.5rem;}
+.cap-item p{font-family:var(--sans);font-size:.88rem;line-height:1.65;color:var(--stone);max-width:36ch;}
 
-  .bento-grid {
-    display:grid;
-    grid-template-columns:repeat(12, 1fr);
-    grid-template-rows:auto;
-    gap:1px;
-    background:var(--border);
-    border:1px solid var(--border);
-    border-radius:6px; overflow:hidden;
-  }
+/* trust checklist */
+.trust{padding:6.5rem 6.5%;max-width:1180px;margin:0 auto;border-bottom:1px solid var(--line);}
+.trust-inner{display:grid;grid-template-columns:.9fr 1.1fr;gap:3rem;}
+.trust-copy p{font-family:var(--sans);font-size:.95rem;line-height:1.75;color:var(--stone);max-width:36ch;}
+.trust-list{list-style:none;}
+.trust-list li{
+  display:flex;gap:1.2rem;padding:1.1rem 0;border-bottom:1px solid var(--line);
+  opacity:0;transform:translateY(10px);transition:opacity .6s var(--ease),transform .6s var(--ease);
+}
+.trust-list li:first-child{border-top:1px solid var(--line);}
+.trust-list li.vis{opacity:1;transform:translateY(0);}
+.trust-list .t-num{font-family:var(--serif);font-size:1.2rem;color:var(--stone);flex:0 0 2rem;}
+.trust-list .t-q{font-family:var(--serif);font-size:1.15rem;color:var(--ink);}
 
-  .bento-cell {
-    background:var(--teal-deep);
-    padding:2rem 2rem 2.5rem;
-    position:relative; overflow:hidden;
-    opacity:0; transform:translateY(20px);
-    transition:opacity .7s var(--ease), transform .7s var(--ease), background .3s;
-  }
-  .bento-cell.vis { opacity:1; transform:translateY(0); }
-  .bento-cell:hover { background:rgba(4,71,78,.5); }
+/* people & systems */
+.connect{padding:5rem 6.5%;max-width:1180px;margin:0 auto;border-bottom:1px solid var(--line);}
+.connect-flow{
+  font-family:var(--serif);font-size:clamp(1.2rem,2.6vw,1.7rem);font-style:italic;
+  color:var(--ink);line-height:1.5;max-width:70ch;
+}
+.connect-flow b{font-style:normal;font-weight:400;color:var(--clay);}
+.connect-note{font-family:var(--sans);font-size:.88rem;color:var(--stone);margin-top:1.2rem;max-width:52ch;}
 
-  /* Span classes */
-  .span-4  { grid-column:span 4; }
-  .span-6  { grid-column:span 6; }
-  .span-8  { grid-column:span 8; }
-  .span-12 { grid-column:span 12; }
-  .span-3  { grid-column:span 3; }
+/* youtube (matches index.html pattern) */
+.yt{padding:6.5rem 6.5%;max-width:1180px;margin:0 auto;border-bottom:1px solid var(--line);}
+.yt-inner{display:grid;grid-template-columns:1fr 1.3fr;gap:4rem;align-items:center;}
+.yt-left h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.9rem,3.4vw,2.7rem);margin-bottom:1.1rem;line-height:1.05;}
+.yt-left p{font-family:var(--sans);font-size:.95rem;color:var(--stone);line-height:1.7;margin-bottom:1.6rem;max-width:38ch;}
+.yt-link{font-family:var(--sans);font-size:.85rem;font-weight:500;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:.2rem;transition:color .3s,border-color .3s;}
+.yt-link:hover{color:var(--clay);border-color:var(--clay);}
+.yt-embed{position:relative;width:100%;padding-bottom:56.25%;overflow:hidden;background:var(--ink);}
+.yt-embed img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.8) brightness(.72);transition:transform .6s var(--ease), filter .6s var(--ease);}
+.yt-embed a:hover img{transform:scale(1.035);filter:saturate(1) brightness(.85);}
+.yt-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:58px;height:58px;border:1px solid var(--paper);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform .3s,background .3s;}
+.yt-embed a:hover .yt-play{transform:translate(-50%,-50%) scale(1.08);background:rgba(241,239,231,.12);}
+.yt-play svg{margin-left:3px;}
 
-  /* Number accent */
-  .bento-num {
-    font-family:var(--ff-d); font-size:4rem; font-weight:700;
-    color:rgba(200,151,58,.12); line-height:1;
-    position:absolute; top:.8rem; right:1.2rem;
-    letter-spacing:-.04em; pointer-events:none;
-  }
-  .bento-icon {
-    width:36px; height:36px; border-radius:50%;
-    background:rgba(200,151,58,.1); border:1px solid rgba(200,151,58,.2);
-    display:flex; align-items:center; justify-content:center;
-    font-size:.9rem; margin-bottom:1.2rem;
-  }
-  .bento-title {
-    font-family:var(--ff-d); font-size:1.2rem; font-weight:600;
-    color:#fff; line-height:1.2; margin-bottom:.7rem;
-  }
-  .bento-body {
-    font-family:var(--ff-d); font-size:.9rem; line-height:1.75;
-    color:rgba(255,255,255,.5); font-style:italic;
-  }
-  .bento-body a { color:var(--teal-lite); text-decoration:none; border-bottom:1px solid rgba(13,157,176,.25); }
+/* footer */
+footer{padding:4rem 6.5% 2.2rem;text-align:center;}
+.foot-socials{list-style:none;display:flex;justify-content:center;flex-wrap:wrap;gap:1.6rem;margin-bottom:1.6rem;}
+.foot-socials a{
+  display:inline-flex;align-items:center;justify-content:center;width:2.2rem;height:2.2rem;
+  color:var(--ink-soft);font-size:1rem;text-decoration:none;border:1px solid var(--line);border-radius:50%;
+  transition:color .3s,border-color .3s;
+}
+.foot-socials a:hover{color:var(--clay);border-color:var(--clay);}
+.foot-copy{font-family:var(--sans);font-size:.75rem;color:var(--stone);}
 
-  /* Gold accent cell */
-  .bento-cell.accent {
-    background:rgba(200,151,58,.08);
-    border:1px solid rgba(200,151,58,.15) !important;
-  }
-  .bento-cell.accent .bento-title { color:var(--gold); }
+/* reveal */
+.rv{opacity:0;transform:translateY(20px);}
 
-  /* Teal accent */
-  .bento-cell.teal-accent { background:rgba(4,71,78,.6); }
-
-  /* ═══ IMPACT SECTION — HORIZONTAL MARQUEE STATS ═══ */
-  .impact-bar {
-    background:var(--teal);
-    border-top:1px solid rgba(255,255,255,.06);
-    border-bottom:1px solid rgba(255,255,255,.06);
-    padding:0; overflow:hidden;
-    display:flex; position:relative;
-  }
-  .marquee-track {
-    display:flex; gap:0; white-space:nowrap;
-    animation:marquee 30s linear infinite;
-  }
-  .marquee-item {
-    display:flex; align-items:center; gap:3rem;
-    padding:2rem 4rem;
-    border-right:1px solid rgba(255,255,255,.06);
-    flex-shrink:0;
-  }
-  .marquee-num {
-    font-family:var(--ff-d); font-size:2.8rem; font-weight:700;
-    color:var(--gold); line-height:1;
-  }
-  .marquee-label {
-    font-family:var(--ff-ui); font-size:.55rem; font-weight:600;
-    letter-spacing:.18em; text-transform:uppercase;
-    color:rgba(255,255,255,.45); line-height:1.5; max-width:100px;
-  }
-  .marquee-div { font-size:2rem; color:rgba(255,255,255,.1); }
-  @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-
-  /* ═══ PROJECTS — COMING SOON ═══ */
-  .projects-section {
-    background:var(--cream); color:var(--ink);
-    padding:7rem 8%;
-  }
-  .projects-section .sec-heading {
-    font-family:var(--ff-d); font-size:clamp(2.5rem,5vw,5rem); font-weight:700;
-    color:var(--teal); line-height:.9; letter-spacing:-.02em;
-    margin-bottom:4rem;
-  }
-  .projects-section .sec-heading em { font-style:italic; color:var(--gold); }
-
-  .projects-grid {
-    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
-    background:var(--border-d); border:1px solid var(--border-d);
-    border-radius:6px; overflow:hidden;
-  }
-
-  .project-card {
-    background:#fff; padding:0;
-    position:relative; overflow:hidden;
-    display:flex; flex-direction:column;
-    opacity:0; transform:translateY(28px);
-    transition:opacity .8s var(--ease), transform .8s var(--ease);
-  }
-  .project-card.vis { opacity:1; transform:translateY(0); }
-
-  .project-img {
-    height:220px; overflow:hidden; position:relative;
-  }
-  .project-img img {
-    width:100%; height:100%; object-fit:cover;
-    display:block; transition:transform .6s var(--ease);
-  }
-  .project-card:hover .project-img img { transform:scale(1.04); }
-
-  /* Image overlay */
-  .project-img::after {
-    content:''; position:absolute; inset:0;
-    background:linear-gradient(to top, rgba(4,71,78,.55), transparent);
-    transition:opacity .4s;
-  }
-
-  /* Coming soon badge */
-  .cs-badge {
-    position:absolute; top:1rem; left:1rem; z-index:2;
-    font-family:var(--ff-ui); font-size:.5rem; font-weight:700;
-    letter-spacing:.2em; text-transform:uppercase;
-    padding:.3rem .8rem; border-radius:2px;
-    background:rgba(200,151,58,.9); color:var(--teal-deep);
-  }
-
-  .project-body { padding:1.8rem 1.8rem 2rem; flex:1; display:flex; flex-direction:column; }
-  .project-title {
-    font-family:var(--ff-d); font-size:1.3rem; font-weight:600;
-    color:var(--teal); line-height:1.2; margin-bottom:.7rem;
-  }
-  .project-desc {
-    font-family:var(--ff-d); font-style:italic; font-size:.9rem;
-    color:#5a6a6b; line-height:1.7; flex:1;
-  }
-  .project-footer {
-    display:flex; align-items:center; justify-content:space-between;
-    margin-top:1.2rem; padding-top:1rem; border-top:1px solid var(--border-d);
-  }
-  .project-tag {
-    font-family:var(--ff-ui); font-size:.5rem; font-weight:600;
-    letter-spacing:.14em; text-transform:uppercase;
-    color:var(--teal-lite); padding:.25rem .6rem;
-    border:1px solid rgba(13,157,176,.25); border-radius:100px;
-  }
-  .project-arrow {
-    font-family:var(--ff-ui); font-size:.55rem; font-weight:700;
-    letter-spacing:.15em; text-transform:uppercase;
-    color:rgba(4,71,78,.3);
-  }
-
-  /* ═══ CTA BLOCK — FULL BLEED ═══ */
-  .cta-block {
-    background:var(--teal); position:relative; overflow:hidden;
-    padding:8rem 8%; display:grid; grid-template-columns:1fr 1fr; gap:6rem; align-items:center;
-  }
-  /* Decorative diagonal stripe */
-  .cta-block::before {
-    content:''; position:absolute; top:0; right:0; bottom:0;
-    width:40%; background:rgba(255,255,255,.02);
-    clip-path:polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
-  }
-  .cta-block::after {
-    content:''; position:absolute; inset:0;
-    background:repeating-linear-gradient(
-      -45deg, transparent, transparent 48px,
-      rgba(255,255,255,.015) 49px, transparent 50px
-    );
-    pointer-events:none;
-  }
-  .cta-heading {
-    font-family:var(--ff-d); font-size:clamp(2.5rem,5vw,4.5rem);
-    font-weight:700; line-height:.92; letter-spacing:-.02em; color:#fff;
-    position:relative; z-index:1;
-  }
-  .cta-heading em { font-style:italic; color:var(--gold); display:block; }
-  .cta-right { position:relative; z-index:1; }
-  .cta-right p {
-    font-family:var(--ff-d); font-style:italic; font-size:1.05rem;
-    color:rgba(255,255,255,.55); line-height:1.8; margin-bottom:2rem;
-  }
-  .cta-link {
-    display:inline-flex; align-items:center; gap:.6rem;
-    font-family:var(--ff-ui); font-size:.65rem; font-weight:700;
-    letter-spacing:.2em; text-transform:uppercase;
-    color:var(--gold); text-decoration:none;
-    padding:.85rem 2rem; border:1px solid rgba(200,151,58,.4);
-    border-radius:2px; transition:all .35s;
-  }
-  .cta-link:hover { background:rgba(200,151,58,.12); border-color:var(--gold); transform:translateX(6px); }
-
-  /* ═══ CONTACT ═══ */
-  .contact-section { background:var(--teal-deep); display:grid; grid-template-columns:1fr 1fr; }
-  .contact-left { padding:6rem 5% 6rem 8%; border-right:1px solid rgba(255,255,255,.05); }
-  .contact-left h2 { font-family:var(--ff-d);font-size:2.5rem;font-weight:700;color:#fff;margin-bottom:.4rem;letter-spacing:-.01em; }
-  .contact-left .sub { font-family:var(--ff-d);font-style:italic;font-size:.95rem;color:rgba(255,255,255,.3);margin-bottom:2.5rem; }
-  .ff { margin-bottom:1.4rem; }
-  .ff input,.ff textarea { width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.12);padding:.7rem 0;color:#fff;font-family:var(--ff-d);font-size:1rem;font-weight:400;outline:none;transition:border-color .3s; }
-  .ff input::placeholder,.ff textarea::placeholder { color:rgba(255,255,255,.2); }
-  .ff input:focus,.ff textarea:focus { border-bottom-color:var(--gold); }
-  .ff textarea { resize:none;min-height:90px; }
-  .ff-row { display:grid;grid-template-columns:1fr 1fr;gap:1.2rem; }
-  .send-btn { background:var(--gold);color:var(--teal-deep);border:none;padding:.85rem 2.2rem;cursor:pointer;font-family:var(--ff-ui);font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;border-radius:2px;transition:all .3s; }
-  .send-btn:hover { background:var(--gold-lt);transform:translateY(-2px);box-shadow:0 8px 20px rgba(200,151,58,.3); }
-  .contact-right { padding:6rem 8% 6rem 5%;display:flex;flex-direction:column;justify-content:center; }
-  .contact-right h3 { font-family:var(--ff-d);font-style:italic;font-size:1.1rem;color:rgba(255,255,255,.3);margin-bottom:1.8rem; }
-  .socials { display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:2.5rem; }
-  .sc { display:flex;align-items:center;justify-content:center;height:46px;border:1px solid rgba(255,255,255,.08);border-radius:3px;color:rgba(255,255,255,.4);text-decoration:none;font-size:.8rem;font-weight:500;transition:all .3s; }
-  .sc:hover { border-color:var(--gold);color:var(--gold);background:rgba(200,151,58,.07); }
-  .footer-bar { background:#000;padding:1.2rem 8%;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.04); }
-  .footer-bar p { font-family:var(--ff-ui);font-size:.58rem;color:rgba(255,255,255,.15);letter-spacing:.05em; }
-
-  /* REVEAL */
-  .rv { opacity:0;transform:translateY(24px);transition:opacity .85s var(--ease),transform .85s var(--ease); }
-  .rv.vis { opacity:1;transform:translateY(0); }
-  .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
-
-  @keyframes rise { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
-
-  /* RESPONSIVE */
-  @media(max-width:1100px){
-    .mag-hero { grid-template-columns:1fr; }
-    .mag-hero-left { position:relative; height:auto; top:0; min-height:60vh; }
-    .bento-grid .span-4 { grid-column:span 6; }
-    .bento-grid .span-8 { grid-column:span 12; }
-    .bento-grid .span-3 { grid-column:span 6; }
-    .projects-grid { grid-template-columns:1fr; }
-    .cta-block { grid-template-columns:1fr; gap:2rem; }
-    .contact-section { grid-template-columns:1fr; }
-    .contact-right { border-top:1px solid rgba(255,255,255,.05); padding:3rem 5%; }
-    .contact-left { border-right:none; padding:5rem 5%; }
-    .ff-row { grid-template-columns:1fr; }
-  }
-  @media(max-width:700px){
-    .bento-grid .span-4, .bento-grid .span-6, .bento-grid .span-3 { grid-column:span 12; }
-    #header { padding:1.2rem 5%; }
-  }
-  </style>
+/* responsive */
+@media(max-width:900px){
+  .statement{grid-template-columns:1fr;padding:5rem 6.5%;}
+  .statement-label{padding-top:0;}
+  .flow-row{grid-template-columns:3.2rem 1fr;}
+  .case{grid-template-columns:1fr;gap:1rem;}
+  .case-grid{grid-template-columns:1fr;}
+  .cap-grid{grid-template-columns:1fr;}
+  .cap-item:nth-child(odd){border-right:none;padding-right:0;}
+  .cap-item:nth-child(even){padding-left:0;}
+  .trust-inner{grid-template-columns:1fr;gap:1.6rem;}
+  .yt-inner{grid-template-columns:1fr;gap:2rem;}
+}
+@media(max-width:640px){
+  .hero-inner{padding:7.5rem 6.5% 3.5rem;}
+  .hero-lower{flex-direction:column;align-items:flex-start;gap:1.2rem;}
+  .section,.statement,.flow,.toolkit,.cases,.capability,.trust,.connect,.yt{padding-left:5.5%;padding-right:5.5%;}
+  .h-logo img{height:26px;}
+  .tool-item{flex:1 1 100%;padding-right:0;}
+}
+</style>
 </head>
 <body>
 
 <div id="prog"></div>
-<div id="mo"></div>
-<nav id="menu">
-  <button id="mc">✕</button>
-  <h2>Navigation</h2>
+
+<nav id="menu" aria-hidden="true">
+  <button id="mc" aria-label="Close menu">Close</button>
   <ul>
     <li><a href="index.html">Home</a></li>
     <li><a href="about.html">About</a></li>
-    <li><a href="http://esvarj.wordpress.com">Health Articles</a></li>
+    <li><a href="https://gravatar.com/josemariaescriva82">Health Articles</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
+  <div class="menu-foot">Nairobi, Kenya, open to collaboration &amp; consulting</div>
 </nav>
 
 <header id="header">
-  <nav><ul><li><a href="#" id="mt">Menu</a></li></ul></nav>
+  <a class="h-logo" href="index.html" aria-label="Escriva Josemaria, homepage">
+    <img src="images/B.webp" alt="Escriva Josemaria">
+  </a>
+  <nav><a href="#" id="mt">Menu</a></nav>
 </header>
 
-<!-- ═══ MAGAZINE SPLIT HERO ═══ -->
-<section class="mag-hero">
-
-  <!-- STICKY LEFT PANEL -->
-  <div class="mag-hero-left">
-    <div class="mag-tag">Innovation Series · 2025</div>
-
-    <div>
-      <h1 class="mag-hero-title">
-        Digital<br>Health &amp;
-        <em>Innovation</em>
-      </h1>
-    </div>
-
-    <p class="mag-hero-desc">
-      Where technology meets the human body — a field reshaping how we prevent, diagnose, treat, and experience healthcare at every level of society.
-    </p>
-
-    <div class="scroll-hint">
-      <span class="line"></span>
-      Scroll to explore
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-kicker">Digital health and innovation</div>
+    <h1 class="hero-name">Turning health data into better decisions.</h1>
+    <p class="hero-sub">Programmes run on information before they run on software. My work sits at the point where community data becomes something a team can act on: cleaner numbers, clearer reporting, and systems that connect people to the decisions made about them.</p>
+    <div class="hero-lower">
+      <div class="hero-links">
+        <a href="#toolkit">The toolkit</a>
+        <a href="#cases">Case studies</a>
+      </div>
+      <div class="hero-flow">People &rarr; Data &rarr; Systems &rarr; Decisions</div>
     </div>
   </div>
+</section>
 
-  <!-- SCROLLING RIGHT PANEL -->
-  <div class="mag-hero-right">
+<section class="statement rv">
+  <div class="statement-label">Practice</div>
+  <div>
+    <p class="statement-text">A programme decision is only as good as the information behind it, so most of my work is spent closing the distance between a household <b>survey</b> and something a team can actually use to make a <b>decision</b>.</p>
+    <div class="statement-figures">
+      <div><div class="fig-num">800+</div><div class="fig-lbl">Community surveys collected</div></div>
+      <div><div class="fig-num">500+</div><div class="fig-lbl">Client feedback responses each year</div></div>
+      <div><div class="fig-num">25+</div><div class="fig-lbl">Outreach activities supported</div></div>
+    </div>
+  </div>
+</section>
 
-    <!-- Section heading -->
-    <div class="sec-label rv">Overview</div>
+<section class="flow rv">
+  <div class="flow-head">
+    <div class="eyebrow">How information moves</div>
+    <h2>From <i>community</i> to decision</h2>
+    <p>Seven stages carry a piece of health information from the point it is collected to the point it changes what a programme does next.</p>
+  </div>
+  <div class="flow-list">
+    <div class="flow-row">
+      <div class="flow-index">01</div>
+      <div><div class="flow-term">Community</div><p class="flow-body">Households and service users are where the questions start, and where the answers have to make sense.</p></div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-index">02</div>
+      <div><div class="flow-term">Data collection</div><p class="flow-body">Structured surveys and forms captured in the field through KoboToolbox and ODK.</p></div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-index">03</div>
+      <div><div class="flow-term">Health information</div><p class="flow-body">Records consolidated into DHIS2 and other programme reporting systems.</p></div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-index">04</div>
+      <div><div class="flow-term">Analysis</div><p class="flow-body">Cleaning, cross-checking, and summarizing in Excel and Power BI before anyone treats it as fact.</p></div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-index">05</div>
+      <div><div class="flow-term">Programme decision</div><p class="flow-body">Findings reviewed against targets and field context by the programme team.</p></div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-index">06</div>
+      <div><div class="flow-term">Field action</div><p class="flow-body">Outreach, staffing, or messaging adjusted based on what the data actually showed.</p></div>
+    </div>
+    <div class="flow-row" style="border-bottom:none;">
+      <div class="flow-index">07</div>
+      <div><div class="flow-term">Learning</div><p class="flow-body">Outcomes tracked and fed back into the next round of questions.</p></div>
+    </div>
+  </div>
+</section>
 
-    <!-- Large opening definition -->
-    <div class="def-card">
-      <p><strong style="color:#fff;">Digital Health &amp; Innovation</strong> refers to the strategic use of digital technologies, data science, and creative problem-solving to transform how health information is collected, accessed, analysed, and applied to improve health outcomes.</p>
-      <p>At its core, this field combines healthcare, information technology, and innovation science — enhancing service delivery, promoting patient-centred care, and driving system efficiencies across populations.</p>
+<section class="toolkit rv" id="toolkit">
+  <div class="flow-head">
+    <div class="eyebrow">Working tools</div>
+    <h2>The <i>toolkit</i></h2>
+  </div>
+  <div class="tool-rail">
+    <div class="tool-item"><div class="tool-name">DHIS2</div><p class="tool-desc">Health information and programme reporting.</p></div>
+    <div class="tool-item"><div class="tool-name">KoboToolbox</div><p class="tool-desc">Digital data collection and field surveys.</p></div>
+    <div class="tool-item"><div class="tool-name">ODK</div><p class="tool-desc">Structured mobile data collection.</p></div>
+    <div class="tool-item"><div class="tool-name">Excel</div><p class="tool-desc">Data cleaning, analysis, tracking, and operational reporting.</p></div>
+    <div class="tool-item"><div class="tool-name">Power BI</div><p class="tool-desc">Data visualization and programme intelligence.</p></div>
+  </div>
+</section>
+
+<section class="field-section">
+  <div class="field-inner rv">
+    <div class="eyebrow">Where it starts</div>
+    <h2>Data in the field</h2>
+    <div class="field-process">
+      <span>Ask</span><i>&rarr;</i><span>Collect</span><i>&rarr;</i><span>Check</span><i>&rarr;</i><span>Analyze</span><i>&rarr;</i><span>Interpret</span><i>&rarr;</i><span>Act</span>
+    </div>
+    <p class="field-copy">Digital health work rarely starts at a screen. It starts with a good question, a form a field team can actually complete, and a plan for checking what comes back before anyone treats it as fact. That discipline has produced <b>more than 800</b> household and service-user surveys, <b>over 500</b> client feedback responses collected each year, and support to <b>more than 25</b> outreach activities, mostly gathered through KoboToolbox and ODK and reported through DHIS2, Excel, and Power BI. Tightening that process on one programme cut reporting delays by roughly <b>30 percent</b>.</p>
+  </div>
+</section>
+
+<section class="cases rv" id="cases">
+  <div class="flow-head">
+    <div class="eyebrow">From field data to programme decisions</div>
+    <h2>Digital health <i>in practice</i></h2>
+  </div>
+  <div class="case-list">
+
+    <div class="case">
+      <div>
+        <div class="case-num">Case 01</div>
+        <div class="case-title">Community health data</div>
+      </div>
+      <div class="case-grid">
+        <div class="case-field"><h4>Context</h4><p>Community-level programming needed structured information from households and service users, not just anecdotal reports.</p></div>
+        <div class="case-field"><h4>Role</h4><p>Supported digital data collection and organized the resulting programme information.</p></div>
+        <div class="case-field"><h4>Tools</h4><p>KoboToolbox, ODK, Excel.</p></div>
+        <div class="case-field"><h4>Process</h4><p>Collect, clean, review, summarize, then feed findings back into programme planning.</p></div>
+        <div class="case-field"><h4>Evidence</h4><p>Over 800 surveys, more than 500 feedback responses a year, support to 25+ outreach activities.</p></div>
+      </div>
     </div>
 
-    <!-- Two para block -->
-    <div class="rv d1">
-      <div class="sec-label">Definition</div>
-      <p style="font-family:var(--ff-d);font-size:1rem;line-height:1.85;color:rgba(255,255,255,.6);margin-bottom:1rem;">
-        <strong style="color:rgba(255,255,255,.85);">Digital health</strong> is the application of information and communication technologies to medicine and public health. It encompasses smartphone apps, <a href="https://www.who.int/health-topics/digital-health" target="_blank" rel="noopener" style="color:var(--teal-lite);text-decoration:none;border-bottom:1px solid rgba(13,157,176,.3);">remote monitoring systems</a>, wearable devices, and telehealth platforms — designed to support disease prevention, treatment, health promotion, and wellness management.
-      </p>
-      <p style="font-family:var(--ff-d);font-size:1rem;line-height:1.85;color:rgba(255,255,255,.6);">
-        Innovation in this domain focuses on creating and integrating new solutions that improve traditional healthcare models — novel care delivery processes, data analytics, workflows, and policy frameworks that enhance equitable access and support sustainable health systems worldwide.
-      </p>
+    <div class="case">
+      <div>
+        <div class="case-num">Case 02</div>
+        <div class="case-title">Health programme reporting</div>
+      </div>
+      <div class="case-grid">
+        <div class="case-field"><h4>Context</h4><p>Reporting depended on manual steps that slowed down how quickly field activity reached a decision.</p></div>
+        <div class="case-field"><h4>Role</h4><p>Worked on the reporting flow connecting field data to the summaries used in MEAL reviews.</p></div>
+        <div class="case-field"><h4>Tools</h4><p>DHIS2, Excel, Power BI.</p></div>
+        <div class="case-field"><h4>Process</h4><p>Field activity, data capture, verification, analysis, reporting, decision.</p></div>
+        <div class="case-field"><h4>Evidence</h4><p>Reporting delays reduced by roughly 30 percent through improved MEAL and data practices.</p></div>
+      </div>
     </div>
 
-    <!-- Quick impact row -->
-    <div class="rv d2" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;">
-      <div style="background:var(--teal-deep);padding:1.4rem 1.2rem;">
-        <div style="font-family:var(--ff-d);font-size:2rem;font-weight:700;color:var(--gold);line-height:1;">7B+</div>
-        <div style="font-family:var(--ff-ui);font-size:.52rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:.3rem;line-height:1.4;">mobile health app downloads globally</div>
+    <div class="case" style="border-bottom:none;">
+      <div>
+        <div class="case-num">Case 03</div>
+        <div class="case-title">Immunization data &amp; MEAL</div>
       </div>
-      <div style="background:var(--teal-deep);padding:1.4rem 1.2rem;border-left:1px solid var(--border);border-right:1px solid var(--border);">
-        <div style="font-family:var(--ff-d);font-size:2rem;font-weight:700;color:var(--gold);line-height:1;">$659B</div>
-        <div style="font-family:var(--ff-ui);font-size:.52rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:.3rem;line-height:1.4;">global digital health market by 2025</div>
-      </div>
-      <div style="background:var(--teal-deep);padding:1.4rem 1.2rem;">
-        <div style="font-family:var(--ff-d);font-size:2rem;font-weight:700;color:var(--gold);line-height:1;">60%</div>
-        <div style="font-family:var(--ff-ui);font-size:.52rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:.3rem;line-height:1.4;">of physicians using AI tools in practice</div>
+      <div class="case-grid">
+        <div class="case-field"><h4>Context</h4><p>An immunization campaign in hard-to-reach communities needed accurate coverage figures and a way to track community response.</p></div>
+        <div class="case-field"><h4>Role</h4><p>Supported post-campaign coverage surveys, data verification, and monitoring and reporting.</p></div>
+        <div class="case-field"><h4>Tools</h4><p>Field coverage surveys, verification, MEAL reporting.</p></div>
+        <div class="case-field"><h4>Process</h4><p>Data verification alongside community response and campaign learning.</p></div>
+        <div class="case-field"><h4>Evidence</h4><p>More than 3,000 children reached, 98 percent coverage, and a 30 percent increase in vaccine acceptance and uptake.</p></div>
       </div>
     </div>
 
   </div>
 </section>
 
-<!-- ═══ MARQUEE STATS BAR ═══ -->
-<div class="impact-bar">
-  <div class="marquee-track" id="marquee">
-    <div class="marquee-item"><div class="marquee-num">AI</div><div class="marquee-label">Machine Learning in Diagnostics</div></div>
-    <div class="marquee-item"><span class="marquee-div">·</span></div>
-    <div class="marquee-item"><div class="marquee-num">EHR</div><div class="marquee-label">Electronic Health Records</div></div>
-    <div class="marquee-item"><span class="marquee-div">·</span></div>
-    <div class="marquee-item"><div class="marquee-num">IoMT</div><div class="marquee-label">Internet of Medical Things</div></div>
-    <div class="marquee-item"><span class="marquee-div">·</span></div>
-    <div class="marquee-item"><div class="marquee-num">mHealth</div><div class="marquee-label">Mobile Health Platforms</div></div>
-    <div class="marquee-item"><span class="marquee-div">·</span></div>
-    <div class="marquee-item"><div class="marquee-num">VW</div><div class="marquee-label">Virtual Wards &amp; Remote Care</div></div>
-    <div class="marquee-item"><span class="marquee-div">·</span></div>
-    <div class="marquee-item"><div class="marquee-num">AI</div><div class="marquee-label">Machine Learning in Diagnostics</div></div>
-    <div class="marquee-item"><span class="marquee-div">·</span></div>
-    <div class="marquee-item"><div class="marquee-num">EHR</div><div class="marquee-label">Electronic Health Records</div></div>
-    <div class="marquee-item"><span class="marquee-div">·</span></div>
-    <div class="marquee-item"><div class="marquee-num">IoMT</div><div class="marquee-label">Internet of Medical Things</div></div>
-    <div class="marquee-item"><span class="marquee-div">·</span></div>
-    <div class="marquee-item"><div class="marquee-num">mHealth</div><div class="marquee-label">Mobile Health Platforms</div></div>
-    <div class="marquee-item"><span class="marquee-div">·</span></div>
-    <div class="marquee-item"><div class="marquee-num">VW</div><div class="marquee-label">Virtual Wards &amp; Remote Care</div></div>
-    <div class="marquee-item"><span class="marquee-div">·</span></div>
+<section class="capability rv">
+  <div class="flow-head">
+    <div class="eyebrow">Capability</div>
+    <h2>What I <i>actually</i> do</h2>
   </div>
-</div>
-
-<!-- ═══ BENTO GRID — KEY PILLARS ═══ -->
-<div class="bento-section">
-  <div class="rv" style="display:flex;align-items:center;gap:.7rem;margin-bottom:1rem;">
-    <span style="font-family:var(--ff-ui);font-size:.58rem;font-weight:600;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);">Key Pillars</span>
-    <span style="flex:1;height:1px;background:rgba(255,255,255,.06);"></span>
-    <span style="font-family:var(--ff-ui);font-size:.52rem;color:rgba(255,255,255,.2);letter-spacing:.1em;">Seven domains</span>
+  <div class="cap-grid">
+    <div class="cap-item"><h3>Digital data collection</h3><p>Designing and supporting structured field data collection using KoboToolbox and ODK.</p></div>
+    <div class="cap-item"><h3>Health information</h3><p>Working with programme and health information through DHIS2 and structured reporting systems.</p></div>
+    <div class="cap-item"><h3>Data quality</h3><p>Checking completeness, consistency, and reliability before information is used for a decision.</p></div>
+    <div class="cap-item"><h3>Data visualization</h3><p>Turning programme information into understandable visuals and summaries using Power BI and Excel.</p></div>
+    <div class="cap-item"><h3>Monitoring and learning</h3><p>Connecting indicators and field observations to programme adaptation.</p></div>
+    <div class="cap-item"><h3>Evidence communication</h3><p>Making technical information understandable to programme teams, partners, and community-facing staff.</p></div>
   </div>
-  <h2 class="rv d1" style="font-family:var(--ff-d);font-size:clamp(2rem,4vw,3.5rem);font-weight:600;color:#fff;margin-bottom:3rem;letter-spacing:-.01em;">The Digital Health <em style="font-style:italic;color:var(--gold);">Ecosystem</em></h2>
+</section>
 
-  <div class="bento-grid">
-
-    <!-- Large cell — Telemedicine -->
-    <div class="bento-cell span-8 accent" style="transition-delay:.05s">
-      <div class="bento-num">01</div>
-      <div class="bento-icon">📡</div>
-      <div class="bento-title">Telemedicine &amp; Telehealth</div>
-      <div class="bento-body">Remote consultations and virtual care reduce geographical and financial barriers to access. <a href="https://healthcare.techaheadcorp.com/blog/digital-health-redefining-innovation-in-modern-healthcare/" target="_blank" rel="noopener">From rural clinics to urban specialists</a>, patients connect seamlessly across distances — fundamentally democratising access to quality care.</div>
+<section class="trust rv">
+  <div class="trust-inner">
+    <div class="trust-copy">
+      <div class="eyebrow">Data quality</div>
+      <h2>Before I trust the number</h2>
+      <p style="margin-top:1rem;">Every figure in a report has a history. These are the questions I ask before it goes any further.</p>
     </div>
-
-    <!-- Small cell — mHealth -->
-    <div class="bento-cell span-4" style="transition-delay:.1s">
-      <div class="bento-num">02</div>
-      <div class="bento-icon">📱</div>
-      <div class="bento-title">Mobile Health (mHealth)</div>
-      <div class="bento-body">Smartphone applications empower individuals to actively manage their own health — tracking vitals, medications, and mental well-being in real time.</div>
-    </div>
-
-    <!-- Small cell — EHR -->
-    <div class="bento-cell span-4 teal-accent" style="transition-delay:.15s">
-      <div class="bento-num">03</div>
-      <div class="bento-icon">🗂️</div>
-      <div class="bento-title">Electronic Health Records</div>
-      <div class="bento-body"><a href="https://healthcare.techaheadcorp.com/blog/digital-health-redefining-innovation-in-modern-healthcare/" target="_blank" rel="noopener">EHRs centralise medical information digitally</a>, enabling clinicians to coordinate care across facilities with full visibility of a patient's health history.</div>
-    </div>
-
-    <!-- Medium cell — IoMT -->
-    <div class="bento-cell span-8" style="transition-delay:.2s">
-      <div class="bento-num">04</div>
-      <div class="bento-icon">⌚</div>
-      <div class="bento-title">Wearables &amp; the Internet of Medical Things</div>
-      <div class="bento-body">Continuous health monitoring through connected devices — smartwatches, biosensors, implantables — generates real-time patient data that enables proactive, preventive care before conditions escalate. <a href="https://www.tmasolutions.com/insights/digital-health-innovation-trends-technologies-in-2025" target="_blank" rel="noopener">The IoMT ecosystem</a> is reshaping how clinicians observe and respond to patient health.</div>
-    </div>
-
-    <!-- Small cell — AI -->
-    <div class="bento-cell span-6 accent" style="transition-delay:.25s">
-      <div class="bento-num">05</div>
-      <div class="bento-icon">🧠</div>
-      <div class="bento-title">AI &amp; Machine Learning</div>
-      <div class="bento-body">Predictive analytics, decision support, and pattern recognition from vast datasets improve diagnostic accuracy and clinical operations — moving medicine from reactive to anticipatory.</div>
-    </div>
-
-    <!-- Small cell — Big Data -->
-    <div class="bento-cell span-6" style="transition-delay:.3s">
-      <div class="bento-num">06</div>
-      <div class="bento-icon">📊</div>
-      <div class="bento-title">Data Analytics &amp; Big Data</div>
-      <div class="bento-body">Population health management, epidemiological surveillance, and policy decision-making all depend on <a href="https://www.who.int/europe/health-topics/digital-health/incorporating-innovation-and-digital-health-to-improve-quality-of-care-and-patient-safety" target="_blank" rel="noopener">robust data infrastructure</a> and analytical capacity.</div>
-    </div>
-
-    <!-- Full width — Cybersecurity -->
-    <div class="bento-cell span-12 teal-accent" style="transition-delay:.35s">
-      <div class="bento-num">07</div>
-      <div class="bento-icon">🔐</div>
-      <div class="bento-title">Cybersecurity &amp; Interoperability</div>
-      <div class="bento-body" style="max-width:700px;">Secure health data exchange and seamless communication between systems is not a technical afterthought — it is the foundational layer upon which trust in digital health is built. Without it, every other pillar is compromised. Interoperability standards, encrypted data pipelines, and regulatory compliance ensure that innovation does not come at the cost of patient safety or privacy.</div>
-    </div>
-
+    <ul class="trust-list" id="trustList">
+      <li><span class="t-num">01</span><span class="t-q">Where did it come from?</span></li>
+      <li><span class="t-num">02</span><span class="t-q">Was it collected consistently?</span></li>
+      <li><span class="t-num">03</span><span class="t-q">Is anything missing?</span></li>
+      <li><span class="t-num">04</span><span class="t-q">Does the number make sense?</span></li>
+      <li><span class="t-num">05</span><span class="t-q">What does the field context say?</span></li>
+      <li><span class="t-num">06</span><span class="t-q">What decision will this support?</span></li>
+    </ul>
   </div>
-</div>
+</section>
 
-<!-- ═══ PROJECTS — COMING SOON ═══ -->
-<div class="projects-section">
-  <div class="rv" style="display:flex;align-items:center;gap:.7rem;margin-bottom:1.2rem;">
-    <span style="display:block;width:24px;height:2px;background:var(--gold)"></span>
-    <span style="font-family:var(--ff-ui);font-size:.56rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--teal);">Initiatives</span>
-  </div>
-  <h2 class="sec-heading rv d1" style="color:var(--teal);">Coming <em>Soon</em></h2>
+<section class="connect rv">
+  <p class="connect-flow"><b>Person</b> &rarr; community &rarr; health worker &rarr; programme &rarr; data &rarr; <b>decision</b>.</p>
+  <p class="connect-note">Technology only earns its place when it shortens the distance between the two ends of that line.</p>
+</section>
 
-  <div class="projects-grid">
-
-    <!-- SARVA -->
-    <div class="project-card" style="transition-delay:.05s">
-      <div class="project-img">
-        <span class="cs-badge">Coming Soon</span>
-        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80" alt="SARVA mental health platform">
-      </div>
-      <div class="project-body">
-        <div class="project-title">SARVA</div>
-        <p class="project-desc">A mental health platform that uses QR code access to connect people instantly to trusted mental health resources, support tools, and care pathways — right at the point of need.</p>
-        <div class="project-footer">
-          <span class="project-tag">Mental Health · mHealth</span>
-          <span class="project-arrow">In development →</span>
-        </div>
+<section class="yt rv">
+  <div class="yt-inner">
+    <div class="yt-left">
+      <div class="eyebrow">Also on video</div>
+      <h2>@escriva_ke</h2>
+      <p>Documenting what it actually looks like to build a career, do meaningful work, and create something of your own as a young African professional, career, humanitarian work, public health, and the real, unfiltered process of figuring it out.</p>
+      <a class="yt-link" href="https://www.youtube.com/@escriva_ke" target="_blank" rel="noopener">Visit the channel &rarr;</a>
+    </div>
+    <div class="yt-right">
+      <div class="yt-embed">
+        <a href="https://www.youtube.com/@escriva_ke" target="_blank" rel="noopener">
+          <img src="images/Q.webp" alt="Latest video on the Escriva YouTube channel">
+          <span class="yt-play"><svg width="18" height="18" viewBox="0 0 24 24" fill="#f1efe7"><polygon points="8,5 18,12 8,19"/></svg></span>
+        </a>
       </div>
     </div>
-
-  
-
-    <!-- YouTube Channel -->
-    <div class="project-card" style="transition-delay:.2s">
-      <div class="project-img">
-        <span class="cs-badge">Active</span>
-        <img src="images/re.webp" alt="Hyper Collective YouTube channel">
-      </div>
-      <div class="project-body">
-        <div class="project-title">Escriva Hyper Collective — Channel</div>
-        <p class="project-desc">Career growth, public health insights, community conversations, and humanitarian issues that matter — delivered through accessible, evidence-grounded video content.</p>
-        <div class="project-footer">
-          <span class="project-tag">Media · Community</span>
-          <a href="https://youtube.com/@escrivahypercollective?si=qVorezgzhYidVWwV" target="_blank" rel="noopener" style="font-family:var(--ff-ui);font-size:.55rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--teal-lite);text-decoration:none;">Watch now →</a>
-        </div>
-      </div>
-    </div>
-
   </div>
-</div>
+</section>
 
-<!-- ═══ REAL-WORLD IMPACT ROW ═══ -->
-<div style="background:var(--teal-deep);padding:6rem 8%;">
-  <div class="rv" style="display:flex;align-items:center;gap:.7rem;margin-bottom:1.2rem;">
-    <span style="font-family:var(--ff-ui);font-size:.58rem;font-weight:600;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);">Real-World Impact</span>
-    <span style="flex:1;height:1px;background:rgba(255,255,255,.06)"></span>
-  </div>
-  <h2 class="rv d1" style="font-family:var(--ff-d);font-size:clamp(1.8rem,3.5vw,3rem);font-weight:600;color:#fff;letter-spacing:-.01em;margin-bottom:3rem;">Applications Transforming <em style="font-style:italic;color:var(--gold);">Care Delivery</em></h2>
-
-  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;" class="rv d2">
-
-    <div style="background:var(--teal-deep);padding:2rem;display:flex;gap:1.2rem;align-items:flex-start;border-bottom:1px solid var(--border);transition:background .3s;" onmouseenter="this.style.background='rgba(4,71,78,.5)'" onmouseleave="this.style.background='rgba(2,13,14,1)'">
-      <div style="font-size:1.1rem;flex-shrink:0;margin-top:.1rem;">🏥</div>
-      <div>
-        <div style="font-family:var(--ff-d);font-size:1.05rem;font-weight:600;color:#fff;margin-bottom:.4rem;">Remote Patient Monitoring</div>
-        <div style="font-family:var(--ff-d);font-style:italic;font-size:.9rem;line-height:1.7;color:rgba(255,255,255,.5);">Clinicians track vital signs outside hospitals, reducing readmissions and enabling early intervention before crises occur.</div>
-      </div>
-    </div>
-
-    <div style="background:var(--teal-deep);padding:2rem;display:flex;gap:1.2rem;align-items:flex-start;border-bottom:1px solid var(--border);border-left:1px solid var(--border);transition:background .3s;" onmouseenter="this.style.background='rgba(4,71,78,.5)'" onmouseleave="this.style.background='rgba(2,13,14,1)'">
-      <div style="font-size:1.1rem;flex-shrink:0;margin-top:.1rem;">🏠</div>
-      <div>
-        <div style="font-family:var(--ff-d);font-size:1.05rem;font-weight:600;color:#fff;margin-bottom:.4rem;">Virtual Wards</div>
-        <div style="font-family:var(--ff-d);font-style:italic;font-size:.9rem;line-height:1.7;color:rgba(255,255,255,.5);">Patients receive hospital-level care at home, freeing physical beds and improving recovery comfort outcomes simultaneously.</div>
-      </div>
-    </div>
-
-    <div style="background:var(--teal-deep);padding:2rem;display:flex;gap:1.2rem;align-items:flex-start;transition:background .3s;" onmouseenter="this.style.background='rgba(4,71,78,.5)'" onmouseleave="this.style.background='rgba(2,13,14,1)'">
-      <div style="font-size:1.1rem;flex-shrink:0;margin-top:.1rem;">💬</div>
-      <div>
-        <div style="font-family:var(--ff-d);font-size:1.05rem;font-weight:600;color:#fff;margin-bottom:.4rem;">Digital Therapeutics</div>
-        <div style="font-family:var(--ff-d);font-style:italic;font-size:.9rem;line-height:1.7;color:rgba(255,255,255,.5);">Evidence-based digital tools expand access to treatments for mental health, chronic disease, and behavioural conditions at scale.</div>
-      </div>
-    </div>
-
-    <div style="background:var(--teal-deep);padding:2rem;display:flex;gap:1.2rem;align-items:flex-start;border-left:1px solid var(--border);transition:background .3s;" onmouseenter="this.style.background='rgba(4,71,78,.5)'" onmouseleave="this.style.background='rgba(2,13,14,1)'">
-      <div style="font-size:1.1rem;flex-shrink:0;margin-top:.1rem;">🌍</div>
-      <div>
-        <div style="font-family:var(--ff-d);font-size:1.05rem;font-weight:600;color:#fff;margin-bottom:.4rem;">National Digital Health Initiatives</div>
-        <div style="font-family:var(--ff-d);font-style:italic;font-size:.9rem;line-height:1.7;color:rgba(255,255,255,.5);">Country-level programmes like Ayushman Bharat Digital Mission unify health records and improve care delivery at population scale.</div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ═══ CTA BLOCK ═══ -->
-<div class="cta-block rv">
-  <h2 class="cta-heading">
-    Let's Build<br>the
-    <em>Future of Health</em><br>Together.
-  </h2>
-  <div class="cta-right">
-    <p>The intersection of technology and healthcare demands multidisciplinary collaboration. Whether you are a clinician, technologist, researcher, or innovator — the conversation starts here.</p>
-    <a class="cta-link" href="https://www.linkedin.com/in/josemaria-escriva-594490214/" target="_blank" rel="noopener">↗ Connect on LinkedIn</a>
-  </div>
-</div>
-
-<!-- ═══ CONTACT ═══ -->
-<div class="contact-section">
-  <div class="contact-left">
-    <div class="rv" style="font-family:var(--ff-ui);font-size:.58rem;font-weight:600;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;"><span style="display:block;width:24px;height:1px;background:var(--gold)"></span>Get in Touch</div>
-    <h2 class="rv d1">Enquiries</h2>
-    <p class="sub rv d2">Available for collaboration, research partnerships, and digital health consulting.</p>
-    <form method="POST" action="https://formspree.io/f/xwvpkvzl" class="rv d2">
-      <div class="ff-row ff"><div><input type="text" name="name" placeholder="Name" required></div><div><input type="email" name="email" placeholder="Email" required></div></div>
-      <div class="ff"><textarea name="message" placeholder="Your message…" rows="4"></textarea></div>
-      <button type="submit" class="send-btn">Send Message →</button>
-    </form>
-  </div>
-  <div class="contact-right rv">
-    <h3>Connect &amp; follow the work</h3>
-    <div class="socials">
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:74px;max-width:860px;">
-
-  <!-- X -->
-  <a href="https://x.com/Leafspire" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-x-twitter"></i></a>
-
-  <!-- Facebook -->
-  <a href="https://www.facebook.com/iamescriva/" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-facebook-f"></i></a>
-
-  <!-- Instagram -->
-  <a href="https://www.instagram.com/leafspirefoundation/" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-instagram"></i></a>
-
-  <!-- LinkedIn -->
-  <a href="https://www.linkedin.com/in/josemariaescriva/" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-linkedin-in"></i></a>
-
-  <!-- GitHub -->
-  <a href="https://github.com/escrivajosemaria" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-github"></i></a>
-
-  <!-- Portfolio -->
-  <a href="https://leafspire.github.io/leafoundation/" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-solid fa-globe"></i></a>
-
-  <!-- YouTube -->
-  <a href="https://youtube.com/@escrivahypercollective?si=qVorezgzhYidVWwV" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-youtube"></i></a>
-
-  <!-- WordPress -->
-  <a href="http://esvarj.wordpress.com" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-wordpress"></i></a>
-
-</div>
-    </div>
-  </div>
-</div>
-
-<div class="footer-bar">
-  <p>&copy; Escriva Josemaria 2024</p>
-  <p>Design: escriva.https</p>
-</div>
+<footer>
+  <ul class="foot-socials">
+ <a href="https://x.com/escriva_ke" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://web.facebook.com/escriva101/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/escriva_ke/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/josemariaescriva/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="https://github.com/escrivajosemaria" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="https://leafspire.github.io/leafoundation/" target="_blank" rel="noopener noreferrer" aria-label="Portfolio"><i class="fa-solid fa-globe"></i></a>
+            <a href="https://www.youtube.com/@escriva_ke" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="https://gravatar.com/josemariaescriva82" target="_blank" rel="noopener noreferrer" aria-label="WordPress"><i class="fa-brands fa-wordpress"></i></a>
+  </ul>
+  <p class="foot-copy">&copy; Escriva Josemaria, 2024</p>
+</footer>
 
 <script>
 (function(){
-  const pb=document.getElementById('prog');
-  window.addEventListener('scroll',()=>{ const s=document.documentElement; pb.style.width=(window.scrollY/(s.scrollHeight-window.innerHeight)*100)+'%'; },{passive:true});
+  // scroll progress + header solid state
+  var pb=document.getElementById('prog');
+  var hdr=document.getElementById('header');
+  var heroH=document.getElementById('hero').offsetHeight;
+  function onScroll(){
+    var s=document.documentElement;
+    pb.style.width=(window.scrollY/(s.scrollHeight-window.innerHeight)*100)+'%';
+    hdr.classList.toggle('solid', window.scrollY>heroH-90);
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
 
-  const hdr=document.getElementById('header');
-  window.addEventListener('scroll',()=>hdr.classList.toggle('solid',window.scrollY>60),{passive:true});
+  // menu
+  var menuEl=document.getElementById('menu');
+  document.getElementById('mt').addEventListener('click',function(e){
+    e.preventDefault();
+    menuEl.classList.add('on');
+    menuEl.setAttribute('aria-hidden','false');
+  });
+  document.getElementById('mc').addEventListener('click',function(){
+    menuEl.classList.remove('on');
+    menuEl.setAttribute('aria-hidden','true');
+  });
 
-  const menuEl=document.getElementById('menu'),ov=document.getElementById('mo');
-  document.getElementById('mt').addEventListener('click',e=>{e.preventDefault();menuEl.classList.add('on');ov.classList.add('on');});
-  document.getElementById('mc').addEventListener('click',()=>{menuEl.classList.remove('on');ov.classList.remove('on');});
-  ov.addEventListener('click',()=>{menuEl.classList.remove('on');ov.classList.remove('on');});
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const rvObs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('vis');rvObs.unobserve(e.target);} });
-  },{threshold:.08,rootMargin:'0px 0px -40px 0px'});
-  document.querySelectorAll('.rv,.bento-cell,.project-card').forEach(el=>rvObs.observe(el));
+  // reveal on scroll
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.style.opacity=1; e.target.style.transform='translateY(0)'; obs.unobserve(e.target); }
+    });
+  },{threshold:.08});
+  document.querySelectorAll('.rv').forEach(function(el){
+    el.style.transition='opacity .8s cubic-bezier(.22,.7,.2,1), transform .8s cubic-bezier(.22,.7,.2,1)';
+    obs.observe(el);
+  });
+  if(reduceMotion){
+    document.querySelectorAll('.rv, .hero-kicker, .hero-name, .hero-sub, .hero-lower').forEach(function(el){
+      el.style.opacity=1; el.style.transform='none'; el.style.animation='none';
+    });
+  }
+
+  // staggered checklist reveal
+  var items=document.querySelectorAll('#trustList li');
+  var tObs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        items.forEach(function(li,i){
+          setTimeout(function(){ li.classList.add('vis'); }, reduceMotion?0:i*90);
+        });
+        tObs.disconnect();
+      }
+    });
+  },{threshold:.2});
+  var listEl=document.getElementById('trustList');
+  if(listEl) tObs.observe(listEl);
+  if(reduceMotion){ items.forEach(function(li){ li.classList.add('vis'); }); }
 })();
 </script>
 </body>
