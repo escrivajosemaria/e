@@ -1,1111 +1,1028 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Policy & Health Governance</title>
-  <link rel="shortcut icon" href="images/favicon.ico">
-  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,800;1,9..144,300;1,9..144,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-  <style>
-  /* ── TOKENS ──────────────────────────────────────────────────────── */
-  :root {
-    --teal:      #04474e;
-    --teal-deep: #020d0e;
-    --teal-mid:  #075f6a;
-    --teal-lite: #0d9db0;
-    --gold:      #c8973a;
-    --gold-lt:   #e8b65a;
-    --cream:     #faf8f4;
-    --ink:       #0d1a1b;
-    --border:    rgba(255,255,255,.07);
-    --alert:     #e05a3a;
-    --ff-d:      'Fraunces', Georgia, serif;
-    --ff-ui:     'Manrope', sans-serif;
-    --ease:      cubic-bezier(0.4,0,0.2,1);
-  }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Policy &amp; Health Governance</title>
+<link rel="shortcut icon" href="images/favicon.ico">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400;1,6..72,500&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
 
-  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
-  html { scroll-behavior:smooth; }
-  body { font-family:var(--ff-ui); background:var(--teal-deep); color:#fff; overflow-x:hidden; }
-  ::-webkit-scrollbar { width:3px; }
-  ::-webkit-scrollbar-track { background:var(--teal-deep); }
-  ::-webkit-scrollbar-thumb { background:var(--gold); }
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --paper:      #eef0ea;
+  --paper-2:    #e4e7de;
+  --white:      #fffefb;
+  --ink:        #14181a;
+  --ink-soft:   #4c5551;
+  --ink-faint:  #85908a;
+  --rule:       rgba(20,24,26,.14);
+  --rule-soft:  rgba(20,24,26,.08);
+  --seal:       #7a3226;
+  --archive:    #2f4a3c;
+  --archive-lt: #4c6b58;
 
-  /* ── PROGRESS ────────────────────────────────────────────────────── */
-  #prog { position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--teal-lite),var(--gold));z-index:9000;width:0;transition:width .08s linear; }
+  --serif: 'Newsreader', Georgia, serif;
+  --sans:  'Inter', -apple-system, sans-serif;
+  --ease:  cubic-bezier(.4,0,.2,1);
+}
 
-  /* ── HEADER ──────────────────────────────────────────────────────── */
-  #header { position:fixed;top:0;left:0;right:0;z-index:800;padding:1.2rem 4rem;display:flex;justify-content:flex-end;transition:background .4s; }
-  #header.solid { background:rgba(2,13,14,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--border); }
-  #header nav ul { list-style:none;display:flex; }
-  #header nav ul li a { font-family:var(--ff-ui);font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);text-decoration:none;padding:.5rem 1rem;border:1px solid rgba(255,255,255,.15);border-radius:2px;transition:all .3s; }
-  #header nav ul li a:hover { color:var(--gold);border-color:var(--gold);background:rgba(200,151,58,.08); }
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+html{ scroll-behavior:smooth; }
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; }
+::selection{ background:var(--ink); color:var(--paper); }
 
-  /* ── SIDE MENU ───────────────────────────────────────────────────── */
-  #mo { display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:1999;backdrop-filter:blur(4px); }
-  #mo.on { display:block; }
-  #menu { position:fixed;top:0;right:-380px;width:380px;height:100vh;background:var(--teal);z-index:2000;padding:5rem 3.5rem 3rem;transition:right .45s cubic-bezier(.77,0,.18,1); }
-  #menu.on { right:0; }
-  #mc { position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:rgba(255,255,255,.6);font-size:1.4rem;cursor:pointer;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s; }
-  #mc:hover { background:rgba(255,255,255,.1);color:#fff; }
-  #menu h2 { font-family:var(--ff-ui);font-size:.58rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:2.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,.1); }
-  #menu ul { list-style:none; }
-  #menu ul li { margin-bottom:.1rem;opacity:0;transform:translateX(24px);transition:all .35s; }
-  #menu.on ul li { opacity:1;transform:translateX(0); }
-  #menu.on ul li:nth-child(1){transition-delay:.08s} #menu.on ul li:nth-child(2){transition-delay:.14s}
-  #menu.on ul li:nth-child(3){transition-delay:.2s}  #menu.on ul li:nth-child(4){transition-delay:.26s}
-  #menu ul li a { display:block;font-family:var(--ff-d);font-size:1.5rem;color:rgba(255,255,255,.82);text-decoration:none;padding:.65rem 0;border-bottom:1px solid rgba(255,255,255,.07);transition:color .3s,padding-left .3s; }
-  #menu ul li a:hover { color:var(--gold);padding-left:.5rem; }
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{ animation-duration:.001ms !important; transition-duration:.001ms !important; scroll-behavior:auto !important; }
+}
 
-  /* ── HERO ────────────────────────────────────────────────────────── */
-  #hero {
-    min-height: 100vh; position:relative;
-    overflow:hidden; background:var(--teal-deep);
-    display:flex; flex-direction:column; justify-content:flex-end;
-  }
+.wrap{ max-width:1320px; margin:0 auto; padding-left:6.5%; padding-right:6.5%; }
 
-  /* Blueprint grid */
-  .hero-grid {
-    position:absolute; inset:0; pointer-events:none;
-    background-image:
-      linear-gradient(rgba(200,151,58,.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(200,151,58,.04) 1px, transparent 1px),
-      linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
-    background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
-  }
+/* Marginalia section marker, used consistently as the site's running index */
+.mark{
+  font-family:var(--sans); font-size:.72rem; font-weight:600;
+  color:var(--ink-faint); letter-spacing:.02em;
+  display:flex; align-items:baseline; gap:.55rem; margin-bottom:1.6rem;
+}
+.mark::before{ content:''; width:14px; height:1px; background:var(--ink-faint); }
 
-  /* Architectural corner marks */
-  .corner-mark {
-    position:absolute; width:40px; height:40px;
-    border-color:rgba(200,151,58,.3); border-style:solid;
-    opacity:.6;
-  }
-  .cm-tl { top:5rem;left:6%; border-width:2px 0 0 2px; }
-  .cm-tr { top:5rem;right:6%; border-width:2px 2px 0 0; }
-  .cm-bl { bottom:8rem;left:6%; border-width:0 0 2px 2px; }
-  .cm-br { bottom:8rem;right:6%; border-width:0 2px 2px 0; }
+/* ============================================================
+   READ PROGRESS
+   ============================================================ */
+#prog{ position:fixed; top:0; left:0; height:1px; background:var(--ink); z-index:900; width:0; }
 
-  .hero-inner {
-    position:relative; z-index:2;
-    padding:0 8% 0;
-    padding-top:9rem;
-    display:grid; grid-template-columns:3fr 2fr;
-    gap:4rem; align-items:end;
-    flex:1;
-  }
+/* ============================================================
+   HEADER (global system, matching index.html)
+   ============================================================ */
+#header{
+  position:fixed; top:0; left:0; right:0; z-index:700;
+  padding:1.6rem 6.5%;
+  display:flex; align-items:center; justify-content:space-between;
+  color:var(--ink);
+  transition:background .4s var(--ease), border-color .4s var(--ease), padding .3s var(--ease);
+  border-bottom:1px solid transparent;
+}
+#header.solid{ background:rgba(238,240,234,.92); backdrop-filter:blur(10px); border-bottom-color:var(--rule); padding-top:1.1rem; padding-bottom:1.1rem; }
+.h-logo{ display:inline-flex; align-items:center; line-height:0; }
+.h-logo img{ height:34px; width:auto; display:block; transition:opacity .25s; }
+.h-logo:hover img{ opacity:.72; }
+#header nav a{
+  font-family:var(--sans); font-size:.82rem; font-weight:500;
+  text-decoration:none; letter-spacing:.01em;
+  border-bottom:1px solid currentColor; padding-bottom:.15rem;
+  opacity:.9; transition:opacity .25s;
+}
+#header nav a:hover{ opacity:.55; }
 
-  .hero-tag {
-    font-family:var(--ff-ui); font-size:.6rem; font-weight:700;
-    letter-spacing:.4em; text-transform:uppercase; color:var(--gold);
-    display:flex; align-items:center; gap:.7rem; margin-bottom:1.5rem;
-    opacity:0; animation:rise .8s var(--ease) .2s forwards;
-  }
-  .hero-tag::before { content:''; display:block; width:28px; height:1px; background:var(--gold); }
+/* ============================================================
+   GLOBAL MENU (identical component to index.html)
+   Scoped tokens mirror the index palette so the panel renders
+   exactly as it does on the home page.
+   ============================================================ */
+#menu{
+  --m-paper:#f1efe7;
+  --m-ink:#16181a;
+  --m-line:rgba(22,24,26,.14);
+  --m-stone:#8d897e;
+  --m-clay:#7a3320;
+  --m-ease:cubic-bezier(.22,.7,.2,1);
+  --m-serif:'Instrument Serif', Georgia, serif;
 
-  .hero-title {
-    font-family:var(--ff-d); font-weight:800;
-    font-size:clamp(4rem,8.5vw,8.5rem); line-height:.88; letter-spacing:-.02em;
-    color:#fff; margin-bottom:2rem;
-    opacity:0; animation:rise 1s var(--ease) .4s forwards;
-  }
-  .hero-title em { font-style:italic; color:var(--gold); display:block; }
+  position:fixed; inset:0; background:var(--m-paper); z-index:1000;
+  display:flex; flex-direction:column; justify-content:center;
+  padding:6% 8%;
+  clip-path:inset(0 0 100% 0);
+  transition:clip-path .55s var(--m-ease);
+}
+#menu.on{ clip-path:inset(0 0 0 0); }
+#mc{
+  position:absolute; top:1.6rem; right:6.5%; background:none; border:none;
+  font-family:var(--sans); font-size:.85rem; color:var(--m-ink); cursor:pointer;
+}
+#menu ul{ list-style:none; }
+#menu ul li a{
+  display:block; font-family:var(--m-serif); font-size:clamp(2.4rem,7vw,4.2rem);
+  font-style:italic; color:var(--m-ink); text-decoration:none;
+  padding:.25rem 0; line-height:1.15;
+  border-bottom:1px solid var(--m-line);
+  transition:padding-left .3s var(--m-ease), color .3s;
+}
+#menu ul li:last-child a{ border-bottom:none; }
+#menu ul li a:hover{ padding-left:.6rem; color:var(--m-clay); }
+#menu .menu-foot{ margin-top:2.5rem; font-size:.78rem; color:var(--m-stone); font-family:var(--sans); }
 
-  .hero-right {
-    display:flex; flex-direction:column; justify-content:flex-end;
-    padding-bottom:.5rem;
-    opacity:0; animation:rise .9s var(--ease) .8s forwards;
-  }
-  .hero-def {
-    font-family:var(--ff-d); font-style:italic; font-size:1.05rem; font-weight:300;
-    color:rgba(255,255,255,.55); line-height:1.8; margin-bottom:2rem;
-    border-left:2px solid var(--gold); padding-left:1.2rem;
-  }
+/* ============================================================
+   HERO, cover-page treatment
+   ============================================================ */
+#hero{
+  min-height:100vh; position:relative; background:var(--paper);
+  display:flex; flex-direction:column; justify-content:space-between;
+  padding-top:6.5rem;
+}
+.hero-top{ padding:0 6.5%; display:flex; justify-content:space-between; align-items:flex-start; gap:2rem; }
+.hero-field{ font-family:var(--sans); font-size:.78rem; color:var(--ink-soft); max-width:220px; line-height:1.6; }
+.hero-field b{ display:block; color:var(--ink); font-weight:600; margin-bottom:.15rem; }
 
-  /* Key pillars row */
-  .pillar-row {
-    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
-    background:var(--border); border:1px solid var(--border);
-    margin-bottom:0;
-  }
-  .pillar-cell {
-    background:rgba(255,255,255,.03); padding:1rem .8rem; text-align:center;
-    transition:background .3s;
-  }
-  .pillar-cell:hover { background:rgba(200,151,58,.08); }
-  .pillar-icon { font-size:1.1rem; display:block; margin-bottom:.3rem; }
-  .pillar-name {
-    font-family:var(--ff-ui); font-size:.52rem; font-weight:700;
-    letter-spacing:.15em; text-transform:uppercase; color:var(--gold);
-  }
+.hero-mid{ padding:2.5rem 6.5% 0; }
+.hero-title{
+  font-family:var(--serif); font-weight:400; font-style:normal;
+  font-size:clamp(3rem,8vw,7.2rem); line-height:.98; letter-spacing:-.01em;
+  color:var(--ink); max-width:15ch;
+  opacity:0; animation:rise 1s var(--ease) .15s forwards;
+}
+.hero-title .it{ font-style:italic; font-weight:300; }
 
-  /* Bottom ticker */
-  .hero-ticker {
-    position:relative; z-index:2;
-    background:rgba(4,71,78,.4); backdrop-filter:blur(6px);
-    border-top:1px solid var(--border);
-    padding:.7rem 8%; overflow:hidden;
-    display:flex; align-items:center; gap:1.5rem;
-    margin-top:3rem;
-  }
-  .ticker-label {
-    font-family:var(--ff-ui); font-size:.52rem; font-weight:700;
-    letter-spacing:.22em; text-transform:uppercase; color:var(--gold);
-    white-space:nowrap; flex-shrink:0;
-    padding-right:1rem; border-right:1px solid rgba(255,255,255,.1);
-  }
-  .ticker-inner { overflow:hidden; flex:1; }
-  .ticker-slide {
-    display:flex; gap:3rem; white-space:nowrap;
-    animation:tickH 30s linear infinite;
-  }
-  .ts { font-family:var(--ff-ui); font-size:.6rem; font-weight:500; color:rgba(255,255,255,.45); letter-spacing:.08em; }
-  .ts-gold { color:var(--gold); }
-  @keyframes tickH { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.hero-lower{
+  padding:2.5rem 6.5% 3rem; display:grid; grid-template-columns:1.1fr .9fr; gap:5rem;
+  align-items:end; border-top:1px solid var(--rule); margin-top:2.5rem;
+  opacity:0; animation:rise 1s var(--ease) .4s forwards;
+}
+.hero-def{
+  font-family:var(--serif); font-style:italic; font-weight:300; font-size:1.28rem;
+  line-height:1.6; color:var(--ink-soft); padding-top:2.2rem; max-width:46ch;
+}
+.pillar-list{ padding-top:2.2rem; }
+.pillar-list ol{ list-style:none; display:flex; flex-direction:column; }
+.pillar-list li{
+  display:flex; align-items:baseline; justify-content:space-between;
+  padding:.7rem 0; border-bottom:1px solid var(--rule-soft);
+  font-family:var(--sans); font-size:.92rem; font-weight:500;
+}
+.pillar-list li span:first-child{ color:var(--ink-faint); font-size:.78rem; font-weight:600; }
 
-  @keyframes rise { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+@keyframes rise{ from{ opacity:0; transform:translateY(20px);} to{ opacity:1; transform:translateY(0);} }
 
-  /* ── CONTEXT BAND ────────────────────────────────────────────────── */
-  .context-band {
-    background:var(--cream); color:var(--ink);
-    padding:5rem 8%;
-    display:grid; grid-template-columns:1fr 2fr; gap:5rem; align-items:start;
-  }
-  .ctx-label {
-    font-family:var(--ff-ui); font-size:.58rem; font-weight:700;
-    letter-spacing:.35em; text-transform:uppercase; color:var(--teal);
-    padding-top:.3rem;
-    display:flex; align-items:flex-start; gap:.6rem;
-  }
-  .ctx-label::before { content:''; display:block; width:24px; height:2px; background:var(--gold); margin-top:.35rem; flex-shrink:0; }
-  .ctx-text p {
-    font-family:var(--ff-d); font-size:1.1rem; font-weight:300;
-    line-height:1.9; color:#2d3a3b; margin-bottom:1.2rem;
-  }
-  .ctx-text p:first-of-type::first-letter {
-    font-family:var(--ff-d); font-size:4rem; font-weight:800;
-    color:var(--teal); float:left; line-height:.85; margin:.04em .1em 0 0;
-  }
+/* Signal wire */
+.wire{
+  border-top:1px solid var(--rule); background:var(--paper-2);
+  padding:.85rem 6.5%; overflow:hidden; display:flex; align-items:center; gap:1.4rem;
+}
+.wire-label{
+  font-family:var(--sans); font-size:.7rem; font-weight:600; color:var(--ink-soft);
+  white-space:nowrap; padding-right:1.2rem; border-right:1px solid var(--rule); flex-shrink:0;
+}
+.wire-track{ overflow:hidden; flex:1; }
+.wire-slide{ display:flex; gap:2.6rem; white-space:nowrap; width:max-content; animation:scrollWire 34s linear infinite; }
+.ws{ font-family:var(--serif); font-style:italic; font-size:.92rem; color:var(--ink-soft); }
+.ws b{ font-style:normal; font-weight:500; color:var(--ink); }
+@keyframes scrollWire{ from{ transform:translateX(0);} to{ transform:translateX(-50%);} }
 
-  /* ── FOUR LENSES ─────────────────────────────────────────────────── */
-  .lenses-section {
-    background:var(--teal-deep); padding:6rem 8%;
-  }
-  .lenses-header {
-    display:flex; align-items:flex-end; justify-content:space-between;
-    margin-bottom:3rem;
-  }
-  .lenses-header h2 {
-    font-family:var(--ff-d); font-size:clamp(2rem,4vw,3.2rem);
-    font-weight:700; color:#fff; line-height:1;
-  }
-  .lenses-header h2 em { font-style:italic; color:var(--gold); }
-  .lenses-header p {
-    font-family:var(--ff-ui); font-size:.82rem; font-weight:300;
-    color:rgba(255,255,255,.4); max-width:320px; text-align:right; line-height:1.6;
-  }
+/* ============================================================
+   FOUNDATION
+   ============================================================ */
+.section{ padding:6.5rem 6.5%; }
+.section.paper{ background:var(--paper); }
+.section.white{ background:var(--white); }
+.section.ink{ background:var(--ink); color:var(--paper); }
 
-  .lenses-grid {
-    display:grid; grid-template-columns:repeat(4,1fr); gap:0;
-    border:1px solid var(--border); background:var(--border);
-  }
-  .lens-panel {
-    background:var(--teal-deep); padding:0;
-    cursor:pointer; position:relative; overflow:hidden;
-    transition:background .4s;
-  }
-  .lens-panel.active { background:var(--teal); }
-  .lens-panel:hover { background:rgba(4,71,78,.5); }
+.foundation{ display:grid; grid-template-columns:.6fr 1.4fr; gap:5rem; align-items:start; }
+.foundation-text p{
+  font-family:var(--serif); font-size:1.32rem; font-weight:300; line-height:1.75;
+  color:var(--ink); max-width:62ch; margin-bottom:1.4rem;
+}
+.foundation-text p:first-of-type::first-letter{
+  font-family:var(--serif); font-size:3.6rem; font-weight:500; float:left;
+  line-height:.8; margin:.06em .12em 0 0; color:var(--ink);
+}
 
-  .lens-top {
-    padding:2rem 2rem 1.2rem; border-bottom:1px solid var(--border);
-    position:relative;
-  }
-  .lens-num {
-    font-family:var(--ff-d); font-size:3.5rem; font-weight:800;
-    color:rgba(255,255,255,.04); line-height:1; margin-bottom:.5rem;
-    transition:color .4s;
-  }
-  .lens-panel.active .lens-num { color:rgba(200,151,58,.12); }
-  .lens-icon {
-    font-size:1.5rem; margin-bottom:.5rem; display:block;
-  }
-  .lens-name {
-    font-family:var(--ff-d); font-size:1.3rem; font-weight:700;
-    color:rgba(255,255,255,.5); line-height:1.1;
-    transition:color .4s;
-  }
-  .lens-panel.active .lens-name { color:#fff; }
+/* ============================================================
+   PRACTICE, four lenses, tab style
+   ============================================================ */
+.practice-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:2rem; margin-bottom:3rem; flex-wrap:wrap; }
+.practice-head h2{ font-family:var(--serif); font-weight:400; font-size:clamp(2rem,3.6vw,3rem); max-width:14ch; }
+.practice-head p{ font-family:var(--sans); font-size:.92rem; color:var(--ink-soft); max-width:32ch; line-height:1.6; }
 
-  /* Active indicator */
-  .lens-panel::after {
-    content:''; position:absolute;
-    bottom:0; left:0; right:0; height:3px;
-    background:var(--gold); transform:scaleX(0);
-    transform-origin:left; transition:transform .4s var(--ease);
-  }
-  .lens-panel.active::after { transform:scaleX(1); }
+.lens-tabs{ display:flex; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); flex-wrap:wrap; }
+.lens-tab{
+  flex:1; min-width:150px; padding:1.3rem 1.6rem; cursor:pointer; background:none; border:none;
+  border-right:1px solid var(--rule); font-family:var(--serif); font-size:1.15rem; text-align:left;
+  color:var(--ink-faint); position:relative; transition:color .3s;
+}
+.lens-tab:last-child{ border-right:none; }
+.lens-tab.active{ color:var(--ink); }
+.lens-tab::after{
+  content:''; position:absolute; left:0; right:0; bottom:-1px; height:2px; background:var(--ink);
+  transform:scaleX(0); transform-origin:left; transition:transform .35s var(--ease);
+}
+.lens-tab.active::after{ transform:scaleX(1); }
 
-  .lens-body {
-    padding:1.5rem 2rem 2.5rem;
-    max-height:0; overflow:hidden;
-    transition:max-height .5s var(--ease), padding .4s;
-  }
-  .lens-panel.active .lens-body { max-height:200px; }
-  .lens-body p {
-    font-family:var(--ff-d); font-size:.95rem; font-weight:300;
-    font-style:italic; color:rgba(255,255,255,.6); line-height:1.8;
-  }
+.lens-panels{ padding-top:2.2rem; }
+.lens-panel{ display:none; }
+.lens-panel.active{ display:block; animation:fadein .5s var(--ease); }
+@keyframes fadein{ from{ opacity:0; transform:translateY(6px);} to{ opacity:1; transform:translateY(0);} }
+.lens-panel p{
+  font-family:var(--serif); font-style:italic; font-weight:300; font-size:1.25rem;
+  line-height:1.75; color:var(--ink-soft); max-width:64ch;
+}
 
-  /* ── FAULT LINE PROBLEMS ─────────────────────────────────────────── */
-  .faultline-section {
-    background:var(--teal); padding:6rem 8%;
-    position:relative; overflow:hidden;
-  }
-  .faultline-section::before {
-    content:''; position:absolute;
-    left:50%; top:0; bottom:0; width:1px;
-    background:linear-gradient(var(--alert), rgba(224,90,58,.1));
-    opacity:.4;
-  }
+/* ============================================================
+   GOVERNANCE FAILURES, index list
+   ============================================================ */
+.fail-head{ max-width:52ch; margin-bottom:3.5rem; }
+.fail-head h2{ font-family:var(--serif); font-weight:400; font-size:clamp(2rem,3.6vw,3rem); margin-bottom:.7rem; }
+.fail-head p{ font-family:var(--sans); font-size:.92rem; color:rgba(238,240,234,.6); line-height:1.65; }
 
-  .faultline-header {
-    max-width:600px; margin-bottom:4rem;
-  }
-  .faultline-header h2 {
-    font-family:var(--ff-d); font-size:clamp(1.8rem,3.5vw,3rem);
-    font-weight:700; color:#fff; margin-bottom:.6rem;
-  }
-  .faultline-header p {
-    font-family:var(--ff-ui); font-size:.9rem; font-weight:300;
-    color:rgba(255,255,255,.45); line-height:1.7;
-  }
+.fail-list{ border-top:1px solid rgba(238,240,234,.16); }
+.fail-item{
+  border-bottom:1px solid rgba(238,240,234,.16); padding:1.9rem 0;
+  display:grid; grid-template-columns:2.2fr 2fr; gap:3rem;
+  cursor:pointer;
+}
+.fail-q{ display:flex; align-items:baseline; gap:1rem; }
+.fail-q .no{ font-family:var(--sans); font-size:.72rem; font-weight:600; color:var(--seal); flex-shrink:0; padding-top:.35rem; }
+.fail-title{ font-family:var(--serif); font-size:1.3rem; color:var(--paper); margin-bottom:.5rem; }
+.fail-desc{ font-family:var(--sans); font-size:.86rem; color:rgba(238,240,234,.55); line-height:1.65; }
+.fail-resp{
+  border-left:1px solid rgba(238,240,234,.16); padding-left:2rem;
+  max-height:0; overflow:hidden; opacity:0; transition:max-height .5s var(--ease), opacity .4s;
+}
+.fail-item.open .fail-resp{ max-height:220px; opacity:1; }
+.fail-resp-label{ font-family:var(--sans); font-size:.72rem; font-weight:600; color:var(--archive-lt); margin-bottom:.5rem; }
+.fail-resp p{ font-family:var(--sans); font-size:.88rem; color:rgba(238,240,234,.75); line-height:1.7; }
 
-  .fault-list { display:flex; flex-direction:column; gap:0; }
-  .fault-item {
-    display:grid; grid-template-columns:1fr 1fr;
-    border-bottom:1px solid rgba(255,255,255,.08);
-    position:relative; overflow:hidden;
-  }
-  .fault-item:first-child { border-top:1px solid rgba(255,255,255,.08); }
+/* ============================================================
+   FIELD DOSSIERS, long-form case studies
+   ============================================================ */
+.dossier-head{ margin-bottom:4rem; max-width:56ch; }
+.dossier-head h2{ font-family:var(--serif); font-weight:400; font-size:clamp(2rem,3.6vw,3rem); margin-bottom:.7rem; }
+.dossier-head p{ font-family:var(--sans); font-size:.92rem; color:var(--ink-soft); line-height:1.6; }
 
-  /* Fault indicator line */
-  .fault-item::before {
-    content:''; position:absolute;
-    left:50%; top:0; bottom:0; width:3px;
-    background:var(--alert); opacity:0;
-    transition:opacity .4s;
-    transform:translateX(-50%);
-  }
-  .fault-item:hover::before { opacity:.6; }
+.dossier{ display:grid; grid-template-columns:.85fr 1.15fr; gap:3.5rem; padding:4rem 0; border-top:1px solid var(--rule); align-items:start; }
+.dossier:last-child{ border-bottom:1px solid var(--rule); }
+.dossier-img{ width:100%; aspect-ratio:4/5; object-fit:cover; filter:grayscale(.25) contrast(1.05); }
+.dossier-ref{ font-family:var(--sans); font-size:.74rem; color:var(--ink-faint); margin-top:.9rem; display:flex; justify-content:space-between; gap:1rem; }
+.dossier-stamp{ font-weight:600; color:var(--archive); }
 
-  .fault-problem {
-    padding:2rem 3rem 2rem 0; text-align:right;
-    position:relative;
-  }
-  .fault-item-num {
-    font-family:var(--ff-ui); font-size:.5rem; font-weight:700;
-    letter-spacing:.25em; text-transform:uppercase; color:rgba(224,90,58,.7);
-    margin-bottom:.5rem; display:block;
-  }
-  .fault-item-title {
-    font-family:var(--ff-d); font-size:1.1rem; font-weight:700;
-    color:rgba(255,255,255,.75); line-height:1.2;
-    transition:color .3s;
-  }
-  .fault-item:hover .fault-item-title { color:#fff; }
-  .fault-problem p {
-    font-family:var(--ff-ui); font-size:.8rem; font-weight:300;
-    color:rgba(255,255,255,.4); line-height:1.7; margin-top:.5rem;
-  }
+.dossier-body h3{ font-family:var(--serif); font-weight:400; font-size:1.7rem; line-height:1.25; margin-bottom:1.6rem; max-width:22ch; }
+.dossier-field{ margin-bottom:1.3rem; padding-bottom:1.3rem; border-bottom:1px solid var(--rule-soft); }
+.dossier-field:last-of-type{ border-bottom:none; }
+.df-label{ font-family:var(--sans); font-size:.72rem; font-weight:600; color:var(--ink-faint); margin-bottom:.3rem; display:block; }
+.df-val{ font-family:var(--serif); font-size:1.05rem; font-weight:300; color:var(--ink); line-height:1.6; }
 
-  .fault-solution {
-    padding:2rem 0 2rem 3rem; border-left:1px solid rgba(255,255,255,.06);
-    display:flex; flex-direction:column; justify-content:center;
-    opacity:0; transform:translateX(-8px);
-    transition:opacity .4s var(--ease), transform .4s var(--ease);
-  }
-  .fault-item:hover .fault-solution { opacity:1; transform:translateX(0); }
-  .fault-solution-label {
-    font-family:var(--ff-ui); font-size:.5rem; font-weight:700;
-    letter-spacing:.25em; text-transform:uppercase; color:var(--gold);
-    margin-bottom:.4rem;
-  }
-  .fault-solution p {
-    font-family:var(--ff-ui); font-size:.82rem; font-weight:400;
-    color:rgba(255,255,255,.6); line-height:1.7;
-  }
+.outcome{ margin-top:1.6rem; }
+.outcome-label{ display:flex; justify-content:space-between; font-family:var(--sans); font-size:.78rem; font-weight:600; color:var(--ink-soft); margin-bottom:.55rem; }
+.outcome-label b{ color:var(--archive); font-weight:600; }
+.outcome-track{ height:2px; background:var(--rule); }
+.outcome-fill{ height:100%; background:var(--ink); width:0%; transition:width 1.4s var(--ease); }
 
-  /* ── CASE DOSSIERS ───────────────────────────────────────────────── */
-  .dossier-section {
-    background:var(--teal-deep); padding:6rem 8%;
-  }
-  .dossier-section h2 {
-    font-family:var(--ff-d); font-size:clamp(2rem,4vw,3rem);
-    font-weight:700; color:#fff; margin-bottom:.6rem;
-  }
-  .dossier-section .intro {
-    font-family:var(--ff-ui); font-size:.88rem; font-weight:300;
-    color:rgba(255,255,255,.4); margin-bottom:3rem; max-width:500px;
-  }
+/* ============================================================
+   POLICY IN PRACTICE  +  FRAMEWORKS TO LOCAL PRACTICE
+   ============================================================ */
+.essay{ display:grid; grid-template-columns:.6fr 1.4fr; gap:5rem; align-items:start; }
+.essay-side{ padding-top:.4rem; }
+.essay-side p{
+  font-family:var(--sans); font-size:.86rem; line-height:1.7; color:var(--ink-soft);
+  max-width:28ch; border-top:1px solid var(--rule); padding-top:1rem;
+}
+.essay h2{
+  font-family:var(--serif); font-weight:400; font-size:clamp(2rem,3.8vw,3.1rem);
+  line-height:1.12; max-width:20ch; margin-bottom:1.8rem;
+}
+.essay h2 .it{ font-style:italic; font-weight:300; }
+.essay-lede{
+  font-family:var(--serif); font-weight:300; font-size:1.42rem; line-height:1.65;
+  color:var(--ink); max-width:60ch; margin-bottom:1.6rem;
+}
+.essay-body p{
+  font-family:var(--sans); font-size:.98rem; line-height:1.85; color:var(--ink-soft);
+  max-width:70ch; margin-bottom:1.25rem;
+}
+.essay-body p strong{ color:var(--ink); font-weight:500; }
 
-  .dossier-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; }
+.notes{ margin-top:2.6rem; border-top:1px solid var(--rule); }
+.note{ padding:1.4rem 0; border-bottom:1px solid var(--rule-soft); display:grid; grid-template-columns:.4fr 1.6fr; gap:2rem; }
+.note-label{ font-family:var(--sans); font-size:.78rem; font-weight:600; color:var(--ink); }
+.note p{ font-family:var(--sans); font-size:.9rem; line-height:1.75; color:var(--ink-soft); max-width:62ch; }
 
-  .dossier {
-    background:rgba(255,255,255,.03); border:1px solid var(--border);
-    border-radius:3px; overflow:hidden; position:relative;
-    transition:all .4s var(--ease);
-  }
-  .dossier:hover { border-color:rgba(200,151,58,.35); box-shadow:0 16px 40px rgba(0,0,0,.35); transform:translateY(-4px); }
+.chain{ margin-top:2.6rem; display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--rule); }
+.chain div{ padding:1.4rem 1.4rem 1.4rem 0; border-right:1px solid var(--rule); }
+.chain div:last-child{ border-right:none; padding-right:0; }
+.chain b{ display:block; font-family:var(--serif); font-size:1.08rem; font-weight:400; margin-bottom:.4rem; }
+.chain span{ font-family:var(--sans); font-size:.82rem; line-height:1.65; color:var(--ink-soft); }
 
-  /* Classified-style header */
-  .dossier-header {
-    background:var(--teal); padding:1.5rem 1.8rem;
-    display:flex; align-items:center; justify-content:space-between;
-    border-bottom:1px solid rgba(255,255,255,.08);
-  }
-  .dossier-ref {
-    font-family:var(--ff-ui); font-size:.5rem; font-weight:700;
-    letter-spacing:.3em; text-transform:uppercase; color:var(--gold);
-  }
-  .dossier-stamp {
-    font-family:var(--ff-ui); font-size:.5rem; font-weight:700;
-    letter-spacing:.18em; text-transform:uppercase;
-    padding:.25rem .7rem; border-radius:2px;
-  }
-  .dossier-stamp.resolved { color:#4ade80; border:1px solid rgba(74,222,128,.3); background:rgba(74,222,128,.08); }
-  .dossier-stamp.achieved { color:var(--gold); border:1px solid rgba(200,151,58,.3); background:rgba(200,151,58,.08); }
+/* Slow editorial band between the two sections */
+.band{
+  background:var(--paper-2); border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+  padding:1.6rem 0; overflow:hidden; max-width:100%;
+}
+.band-slide{
+  display:flex; align-items:center; gap:3.4rem; width:max-content; white-space:nowrap;
+  animation:bandDrift 120s linear infinite; will-change:transform;
+}
+.band-slide span{
+  font-family:var(--serif); font-style:italic; font-weight:300; font-size:1.18rem;
+  color:var(--ink-soft);
+}
+.band-slide span::after{
+  content:''; display:inline-block; width:4px; height:4px; background:var(--ink-faint);
+  border-radius:50%; margin-left:3.4rem; vertical-align:middle;
+}
+@keyframes bandDrift{ from{ transform:translateX(0);} to{ transform:translateX(-50%);} }
 
-  .dossier-body { padding:1.8rem; }
-  .dossier-body h3 {
-    font-family:var(--ff-d); font-size:1.15rem; font-weight:700;
-    color:#fff; margin-bottom:1.2rem; line-height:1.2;
-  }
+@media (prefers-reduced-motion: reduce){
+  .band{ overflow:hidden; }
+  .band-slide{ animation:none !important; transform:none !important; flex-wrap:wrap; white-space:normal; width:auto; gap:1.2rem 2.4rem; padding:0 6.5%; }
+  .band-slide span:nth-child(n+11){ display:none; }
+  .wire-slide{ animation:none !important; transform:none !important; }
+}
 
-  .dossier-field {
-    margin-bottom:.9rem; padding-bottom:.9rem;
-    border-bottom:1px solid rgba(255,255,255,.05);
-  }
-  .dossier-field:last-of-type { border-bottom:none; margin-bottom:1.2rem; }
-  .df-label {
-    font-family:var(--ff-ui); font-size:.5rem; font-weight:700;
-    letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.3);
-    margin-bottom:.3rem; display:block;
-  }
-  .df-val {
-    font-family:var(--ff-ui); font-size:.82rem; font-weight:400;
-    color:rgba(255,255,255,.65); line-height:1.6;
-  }
+/* ============================================================
+   POLICY FLOW
+   ============================================================ */
+.flow-head{ margin-bottom:3.5rem; max-width:56ch; }
+.flow-head h2{ font-family:var(--serif); font-weight:400; font-size:clamp(2rem,3.6vw,3rem); margin-bottom:.7rem; }
+.flow-head p{ font-family:var(--sans); font-size:.92rem; color:var(--ink-soft); line-height:1.6; }
+#flow-svg{ width:100%; max-width:920px; display:block; margin:0 auto 3.5rem; }
 
-  /* Outcome progress bar */
-  .outcome-bar-wrap { margin-top:1.2rem; }
-  .ob-label {
-    display:flex; justify-content:space-between; align-items:center;
-    font-family:var(--ff-ui); font-size:.55rem; font-weight:600;
-    text-transform:uppercase; letter-spacing:.12em;
-    color:rgba(255,255,255,.4); margin-bottom:.5rem;
-  }
-  .ob-pct { color:var(--gold); font-size:.75rem; }
-  .ob-track {
-    height:4px; background:rgba(255,255,255,.08); border-radius:2px; overflow:hidden;
-  }
-  .ob-fill {
-    height:100%; border-radius:2px;
-    background:linear-gradient(90deg, var(--teal-lite), var(--gold));
-    width:0%; transition:width 1.5s var(--ease);
-  }
+.flow-grid{ display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--rule); }
+.flow-cell{ padding:2.2rem 1.8rem 0 0; border-right:1px solid var(--rule); }
+.flow-cell:last-child{ border-right:none; padding-right:0; }
+.flow-cell .fc-no{ font-family:var(--sans); font-size:.72rem; font-weight:600; color:var(--ink-faint); margin-bottom:.7rem; }
+.flow-cell h4{ font-family:var(--serif); font-size:1.2rem; margin-bottom:.6rem; }
+.flow-cell p{ font-family:var(--sans); font-size:.84rem; color:var(--ink-soft); line-height:1.65; }
 
-  /* Dossier image */
-  .dossier-img {
-    width:100%; height:160px; object-fit:cover;
-    filter:brightness(.4) saturate(.6);
-    display:block;
-    background:linear-gradient(135deg,var(--teal),var(--teal-deep));
-  }
+/* ============================================================
+   HEALTH CHECK TOOL
+   ============================================================ */
+.check-head{ margin-bottom:3.5rem; max-width:56ch; }
+.check-head h2{ font-family:var(--serif); font-weight:400; font-size:clamp(2rem,3.6vw,3rem); color:var(--paper); margin-bottom:.7rem; }
+.check-head p{ font-family:var(--sans); font-size:.92rem; color:rgba(238,240,234,.6); line-height:1.6; }
 
-  /* ── POLICY FLOW SVG ─────────────────────────────────────────────── */
-  .flow-section {
-    background:var(--cream); color:var(--ink); padding:6rem 8%;
-  }
-  .flow-section h2 {
-    font-family:var(--ff-d); font-size:clamp(2rem,4vw,3rem);
-    font-weight:700; color:var(--teal); margin-bottom:.6rem;
-  }
-  .flow-section .intro {
-    font-family:var(--ff-ui); font-size:.88rem; font-weight:400;
-    color:#5a6a6b; margin-bottom:3.5rem; max-width:500px;
-  }
-  #flow-svg { width:100%; max-width:900px; display:block; margin:0 auto 3rem; }
+.check-grid{ display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; }
+.slider-item{ padding:1.2rem 0; border-bottom:1px solid rgba(238,240,234,.14); }
+.slider-item:first-child{ border-top:1px solid rgba(238,240,234,.14); }
+.slider-head{ display:flex; justify-content:space-between; margin-bottom:.7rem; }
+.slider-name{ font-family:var(--sans); font-size:.86rem; font-weight:500; color:var(--paper); }
+.slider-val{ font-family:var(--serif); font-size:1rem; color:rgba(238,240,234,.6); }
+input[type="range"]{
+  width:100%; -webkit-appearance:none; appearance:none; height:1px; outline:none; cursor:pointer;
+  background:linear-gradient(90deg, var(--paper) var(--pct,60%), rgba(238,240,234,.18) var(--pct,60%));
+}
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none; appearance:none; width:11px; height:11px; border-radius:50%;
+  background:var(--paper); cursor:pointer; transition:transform .2s;
+}
+input[type="range"]::-webkit-slider-thumb:hover{ transform:scale(1.25); }
+input[type="range"]::-moz-range-thumb{ width:11px; height:11px; border-radius:50%; background:var(--paper); border:none; }
 
-  .flow-detail-grid {
-    display:grid; grid-template-columns:repeat(4,1fr);
-    gap:1.5px; background:rgba(4,71,78,.1);
-    border:1px solid rgba(4,71,78,.1);
-    margin-top:3rem;
-  }
-  .flow-cell {
-    background:var(--cream); padding:2rem 1.5rem;
-    transition:background .35s;
-  }
-  .flow-cell:hover { background:#f0ece4; }
-  .flow-cell-num {
-    font-family:var(--ff-d); font-size:2rem; font-weight:800;
-    color:rgba(4,71,78,.1); line-height:1; margin-bottom:.5rem;
-  }
-  .flow-cell h4 {
-    font-family:var(--ff-d); font-size:1rem; font-weight:700;
-    color:var(--teal); margin-bottom:.5rem;
-  }
-  .flow-cell p {
-    font-family:var(--ff-ui); font-size:.78rem; font-weight:300;
-    color:#5a6a6b; line-height:1.65;
-  }
+.check-right{ display:flex; flex-direction:column; align-items:center; }
+#radar-svg{ width:100%; max-width:300px; }
+.overall{ text-align:center; margin-top:1.4rem; }
+.overall-val{ font-family:var(--serif); font-size:3.2rem; font-weight:300; color:var(--paper); line-height:1; }
+.overall-label{ font-family:var(--sans); font-size:.72rem; color:rgba(238,240,234,.5); margin-top:.4rem; }
 
-  /* ── GOVERNANCE HEALTH CHECK ─────────────────────────────────────── */
-  .check-section {
-    background:var(--teal); padding:6rem 8%;
-  }
-  .check-section h2 {
-    font-family:var(--ff-d); font-size:clamp(2rem,4vw,3rem);
-    font-weight:700; color:#fff; margin-bottom:.6rem;
-  }
-  .check-section .intro {
-    font-family:var(--ff-ui); font-size:.85rem; font-weight:300;
-    color:rgba(255,255,255,.45); margin-bottom:3rem; max-width:500px;
-  }
+a:focus-visible, .lens-tab:focus-visible, input:focus-visible, button:focus-visible{ outline:2px solid var(--archive); outline-offset:2px; }
 
-  .check-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; }
+/* ============================================================
+   FOOTER, quiet ending
+   ============================================================ */
+.site-foot{
+  background:var(--white); border-top:1px solid var(--rule);
+  padding:3rem 6.5%; text-align:center;
+}
+.foot-links{
+  list-style:none; display:flex; flex-wrap:wrap; justify-content:center;
+  gap:.6rem 1.8rem; margin-bottom:1.6rem;
+}
+.foot-links a{
+  font-family:var(--sans); font-size:.82rem; font-weight:500; color:var(--ink-soft);
+  text-decoration:none; border-bottom:1px solid transparent; padding-bottom:.15rem;
+  transition:color .25s, border-color .25s;
+}
+.foot-links a:hover{ color:var(--ink); border-bottom-color:var(--ink); }
+.site-foot p{ font-family:var(--sans); font-size:.72rem; color:var(--ink-faint); }
 
-  .slider-list { display:flex; flex-direction:column; gap:1.8rem; }
-  .slider-head {
-    display:flex; justify-content:space-between; align-items:center;
-    margin-bottom:.6rem;
-  }
-  .slider-name {
-    font-family:var(--ff-ui); font-size:.68rem; font-weight:700;
-    letter-spacing:.12em; text-transform:uppercase; color:#fff;
-  }
-  .slider-val {
-    font-family:var(--ff-d); font-size:1rem; font-weight:700; color:var(--gold);
-  }
-  input[type="range"] {
-    width:100%; -webkit-appearance:none; appearance:none;
-    height:3px; border-radius:2px; outline:none;
-    background:linear-gradient(90deg, var(--gold) var(--pct, 60%), rgba(255,255,255,.1) var(--pct, 60%));
-    cursor:pointer;
-  }
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance:none; appearance:none;
-    width:14px; height:14px; border-radius:50%;
-    background:var(--gold); border:2px solid var(--teal-deep);
-    cursor:pointer; transition:transform .2s;
-  }
-  input[type="range"]::-webkit-slider-thumb:hover { transform:scale(1.3); }
+/* ============================================================
+   REVEAL
+   ============================================================ */
+.rv{ opacity:0; transform:translateY(18px); transition:opacity .7s var(--ease), transform .7s var(--ease); }
+.rv.vis{ opacity:1; transform:translateY(0); }
 
-  /* Radar display */
-  .check-right { display:flex; flex-direction:column; align-items:center; }
-  #radar-svg { width:100%; max-width:320px; }
-  .overall-score {
-    text-align:center; margin-top:1.5rem;
-  }
-  .os-val {
-    font-family:var(--ff-d); font-size:3.5rem; font-weight:800;
-    color:var(--gold); line-height:1;
-  }
-  .os-label {
-    font-family:var(--ff-ui); font-size:.6rem; font-weight:600;
-    letter-spacing:.2em; text-transform:uppercase;
-    color:rgba(255,255,255,.35); margin-top:.3rem;
-  }
-
-  /* ── CONTACT / FOOTER ────────────────────────────────────────────── */
-  .contact-section { background:var(--teal-deep); display:grid; grid-template-columns:1fr 1fr; }
-  .contact-left { padding:6rem 5% 6rem 8%; border-right:1px solid var(--border); }
-  .contact-left h2 { font-family:var(--ff-d);font-size:2.5rem;font-weight:700;color:#fff;margin-bottom:.4rem; }
-  .contact-left .sub { font-family:var(--ff-d);font-style:italic;font-size:.95rem;color:rgba(255,255,255,.3);margin-bottom:2.5rem; }
-  .ff { margin-bottom:1.4rem; }
-  .ff input,.ff textarea { width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.12);padding:.7rem 0;color:#fff;font-family:var(--ff-ui);font-size:.9rem;font-weight:300;outline:none;transition:border-color .3s; }
-  .ff input::placeholder,.ff textarea::placeholder { color:rgba(255,255,255,.2); }
-  .ff input:focus,.ff textarea:focus { border-bottom-color:var(--gold); }
-  .ff textarea { resize:none;min-height:90px; }
-  .ff-row { display:grid;grid-template-columns:1fr 1fr;gap:1.2rem; }
-  .send-btn { background:var(--gold);color:var(--teal-deep);border:none;padding:.85rem 2.2rem;cursor:pointer;font-family:var(--ff-ui);font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;border-radius:2px;transition:all .3s; }
-  .send-btn:hover { background:var(--gold-lt);transform:translateY(-2px);box-shadow:0 8px 20px rgba(200,151,58,.3); }
-  .contact-right { padding:6rem 8% 6rem 5%;display:flex;flex-direction:column;justify-content:center; }
-  .contact-right h3 { font-family:var(--ff-d);font-style:italic;font-size:1.05rem;color:rgba(255,255,255,.3);margin-bottom:1.8rem; }
-  .socials { display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:2.5rem; }
-  .sc { display:flex;align-items:center;justify-content:center;height:46px;border:1px solid rgba(255,255,255,.08);border-radius:3px;color:rgba(255,255,255,.4);text-decoration:none;font-size:.8rem;font-weight:500;transition:all .3s; }
-  .sc:hover { border-color:var(--gold);color:var(--gold);background:rgba(200,151,58,.07); }
-  .footer-bar { background:#000;padding:1.2rem 8%;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.04); }
-  .footer-bar p { font-family:var(--ff-ui);font-size:.6rem;color:rgba(255,255,255,.15);letter-spacing:.05em; }
-
-  /* ── REVEAL ──────────────────────────────────────────────────────── */
-  .rv { opacity:0;transform:translateY(24px);transition:opacity .85s var(--ease),transform .85s var(--ease); }
-  .rv.vis { opacity:1;transform:translateY(0); }
-  .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
-
-  /* ── RESPONSIVE ──────────────────────────────────────────────────── */
-  @media(max-width:1100px){ .hero-inner{grid-template-columns:1fr} .hero-right{display:none} .lenses-grid{grid-template-columns:1fr 1fr} .dossier-grid{grid-template-columns:1fr} .flow-detail-grid{grid-template-columns:1fr 1fr} .check-grid{grid-template-columns:1fr} .context-band{grid-template-columns:1fr;gap:2rem} }
-  @media(max-width:768px){ #header{padding:1.2rem 5%} .faultline-section::before{display:none} .fault-item{grid-template-columns:1fr} .fault-solution{opacity:1;transform:none;border-left:none;border-top:1px solid rgba(255,255,255,.06);padding:0 0 1.5rem} .pillar-row{grid-template-columns:repeat(2,1fr)} .lenses-grid{grid-template-columns:1fr} .contact-section{grid-template-columns:1fr} .contact-right{border-top:1px solid var(--border);padding:3rem 5%} .contact-left{border-right:none;padding:5rem 5%} .ff-row{grid-template-columns:1fr} .flow-detail-grid{grid-template-columns:1fr} }
-  </style>
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1000px){
+  .hero-lower{ grid-template-columns:1fr; gap:2.5rem; }
+  .foundation{ grid-template-columns:1fr; gap:2rem; }
+  .essay{ grid-template-columns:1fr; gap:2rem; }
+  .essay-side p{ max-width:46ch; }
+  .dossier{ grid-template-columns:1fr; gap:1.8rem; }
+  .flow-grid{ grid-template-columns:1fr 1fr; }
+  .flow-cell{ border-bottom:1px solid var(--rule); padding-bottom:1.6rem; margin-bottom:1.6rem; }
+  .chain{ grid-template-columns:1fr 1fr; }
+  .chain div{ border-bottom:1px solid var(--rule-soft); }
+  .check-grid{ grid-template-columns:1fr; gap:3rem; }
+  .hero-top{ display:none; }
+}
+@media (max-width:700px){
+  .section{ padding:4.5rem 6%; }
+  .fail-item{ grid-template-columns:1fr; gap:1rem; }
+  .fail-resp{ border-left:none; padding-left:0; border-top:1px solid rgba(238,240,234,.16); padding-top:1rem; }
+  .fail-item.open .fail-resp{ max-height:300px; }
+  .lens-tabs{ flex-direction:column; }
+  .lens-tab{ border-right:none; border-bottom:1px solid var(--rule); }
+  .practice-head{ flex-direction:column; align-items:flex-start; }
+  .note{ grid-template-columns:1fr; gap:.5rem; }
+  .chain{ grid-template-columns:1fr; }
+  .chain div{ border-right:none; padding-right:0; }
+  .band{ padding:1.2rem 0; }
+  .band-slide span{ font-size:1.02rem; }
+  .flow-grid{ grid-template-columns:1fr; }
+  .h-logo img{ height:26px; }
+  .dossier-ref{ flex-direction:column; gap:.2rem; }
+}
+</style>
 </head>
 <body>
 
 <div id="prog"></div>
-<div id="mo"></div>
-<nav id="menu">
-  <button id="mc">✕</button>
-  <h2>Navigation</h2>
+
+<nav id="menu" aria-hidden="true">
+  <button id="mc" aria-label="Close menu">Close</button>
   <ul>
     <li><a href="index.html">Home</a></li>
     <li><a href="about.html">About</a></li>
-    <li><a href="http://esvarj.wordpress.com">Health Articles</a></li>
+    <li><a href="https://gravatar.com/josemariaescriva82">Health Articles</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
+  <div class="menu-foot">Nairobi, Kenya, open to collaboration &amp; consulting</div>
 </nav>
 
 <header id="header">
-  <nav><ul><li><a href="#" id="mt">Menu</a></li></ul></nav>
+  <a class="h-logo" href="index.html" aria-label="Escriva Josemaria, homepage">
+    <img src="images/B.webp" alt="Escriva Josemaria">
+  </a>
+  <nav><a href="#" id="mt">MENU</a></nav>
 </header>
 
-<!-- ═══ HERO ══════════════════════════════════════════════════════════ -->
+<!-- HERO -->
 <section id="hero">
-  <div class="hero-grid"></div>
-  <div class="corner-mark cm-tl"></div>
-  <div class="corner-mark cm-tr"></div>
-  <div class="corner-mark cm-bl"></div>
-  <div class="corner-mark cm-br"></div>
+  <div class="hero-top">
+    <div class="hero-field"><b>Field</b>Health policy &amp; governance analysis</div>
+    <div class="hero-field"><b>Geography</b>Kenya, East Africa</div>
+    <div class="hero-field"><b>Practice</b>Analysis, compliance, adaptation, advisory</div>
+  </div>
 
-  <div class="hero-inner">
-    <div>
-      <div class="hero-tag">Health Governance · Policy Analysis</div>
-      <h1 class="hero-title">
-        Policy &amp;<br>
-        <em>Health</em><br>
-        Governance
-      </h1>
-    </div>
-    <div class="hero-right">
-      <p class="hero-def">Health policy extends beyond the drafting of documents. It encompasses decision-making, the allocation of power, the creation of incentives, and the navigation of trade-offs that shape how health systems function.</p>
-      <div class="pillar-row">
-        <div class="pillar-cell"><span class="pillar-icon">🏛️</span><span class="pillar-name">Stewardship</span></div>
-        <div class="pillar-cell"><span class="pillar-icon">⚖️</span><span class="pillar-name">Accountability</span></div>
-        <div class="pillar-cell"><span class="pillar-icon">🔗</span><span class="pillar-name">Coordination</span></div>
-        <div class="pillar-cell"><span class="pillar-icon">📊</span><span class="pillar-name">Incentives</span></div>
-      </div>
+  <div class="hero-mid">
+    <h1 class="hero-title">Policy &amp; health<br><span class="it">governance</span></h1>
+  </div>
+
+  <div class="hero-lower">
+    <p class="hero-def">Health policy extends beyond the drafting of documents. It encompasses decision-making, the allocation of power, the creation of incentives, and the navigation of trade-offs that shape how health systems function.</p>
+    <div class="pillar-list">
+      <ol>
+        <li><span>Stewardship</span><span>Setting direction</span></li>
+        <li><span>Accountability</span><span>Holding the line</span></li>
+        <li><span>Coordination</span><span>Aligning actors</span></li>
+        <li><span>Incentives</span><span>Shaping behaviour</span></li>
+      </ol>
     </div>
   </div>
 
-  <div class="hero-ticker">
-    <span class="ticker-label">Governance Signals</span>
-    <div class="ticker-inner">
-      <div class="ticker-slide">
-        <span class="ts"><span class="ts-gold">Trans-Nzoia</span> — Immunization coverage +18% after governance reform</span>
-        <span class="ts">·</span>
-        <span class="ts"><span class="ts-gold">Malaria Net Campaign</span> — 90% household coverage via joint planning committees</span>
-        <span class="ts">·</span>
-        <span class="ts"><span class="ts-gold">WHO</span> — Stewardship is the core function distinguishing governance from management</span>
-        <span class="ts">·</span>
-        <span class="ts"><span class="ts-gold">East Africa</span> — Policy coherence gaps identified across SDG implementation monitoring</span>
-        <span class="ts">·</span>
-        <span class="ts"><span class="ts-gold">Kenya Health Sector</span> — Devolution creates new accountability architecture at county level</span>
-        <span class="ts">·</span>
-        <!-- Duplicate -->
-        <span class="ts"><span class="ts-gold">Trans-Nzoia</span> — Immunization coverage +18% after governance reform</span>
-        <span class="ts">·</span>
-        <span class="ts"><span class="ts-gold">Malaria Net Campaign</span> — 90% household coverage via joint planning committees</span>
-        <span class="ts">·</span>
-        <span class="ts"><span class="ts-gold">WHO</span> — Stewardship is the core function distinguishing governance from management</span>
-        <span class="ts">·</span>
-        <span class="ts"><span class="ts-gold">East Africa</span> — Policy coherence gaps identified across SDG implementation monitoring</span>
-        <span class="ts">·</span>
-        <span class="ts"><span class="ts-gold">Kenya Health Sector</span> — Devolution creates new accountability architecture at county level</span>
-        <span class="ts">·</span>
+  <div class="wire">
+    <span class="wire-label">Governance signals</span>
+    <div class="wire-track">
+      <div class="wire-slide">
+        <span class="ws"><b>Trans-Nzoia:</b> immunization coverage up 18% after governance reform</span>
+        <span class="ws"><b>Malaria net campaign:</b> 90% household coverage via joint planning committees</span>
+        <span class="ws"><b>WHO:</b> stewardship is the core function distinguishing governance from management</span>
+        <span class="ws"><b>East Africa:</b> policy coherence gaps identified across SDG implementation monitoring</span>
+        <span class="ws"><b>Kenya health sector:</b> devolution creates new accountability architecture at county level</span>
+        <span class="ws"><b>Trans-Nzoia:</b> immunization coverage up 18% after governance reform</span>
+        <span class="ws"><b>Malaria net campaign:</b> 90% household coverage via joint planning committees</span>
+        <span class="ws"><b>WHO:</b> stewardship is the core function distinguishing governance from management</span>
+        <span class="ws"><b>East Africa:</b> policy coherence gaps identified across SDG implementation monitoring</span>
+        <span class="ws"><b>Kenya health sector:</b> devolution creates new accountability architecture at county level</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ CONTEXT BAND ══════════════════════════════════════════════════ -->
-<div class="context-band rv">
-  <div class="ctx-label">Foundation</div>
-  <div class="ctx-text">
-    <p>Health policy extends beyond the drafting of documents. It encompasses decision-making, the allocation of power, the creation of incentives, and the navigation of trade-offs that shape how health systems function. Effective governance ensures that these policies are translated into action through accountability, coordination, stewardship, and compliance mechanisms.</p>
-    <p>Even the most well-designed policies can fail without strong governance structures. Conversely, governance mechanisms cannot compensate for policies that are unclear, misaligned, or lacking in strategic direction. Understanding the interplay between policy content and governance processes is critical to strengthening health systems and ensuring sustainable outcomes.</p>
-  </div>
-</div>
-
-<!-- ═══ FOUR LENSES ════════════════════════════════════════════════════ -->
-<div class="lenses-section">
-  <div class="lenses-header rv">
-    <div>
-      <div style="font-family:var(--ff-ui);font-size:.58rem;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem;"><span style="display:block;width:24px;height:1px;background:var(--gold)"></span>Practice Framework</div>
-      <h2>Four Governance<br><em>Lenses</em></h2>
-    </div>
-    <p>How policy and governance are approached in applied practice — from analysis through advisory.</p>
-  </div>
-
-  <div class="lenses-grid rv d1">
-    <div class="lens-panel active" data-lens="0">
-      <div class="lens-top">
-        <div class="lens-num">01</div>
-        <span class="lens-icon">🔍</span>
-        <div class="lens-name">Analysis</div>
-      </div>
-      <div class="lens-body">
-        <p>Policies are carefully examined before any action. This involves assessing their objectives, the evidence underpinning them, and potential impacts on program operations. Analysis ensures interventions are grounded in data and aligned with broader system priorities.</p>
-      </div>
-    </div>
-    <div class="lens-panel" data-lens="1">
-      <div class="lens-top">
-        <div class="lens-num">02</div>
-        <span class="lens-icon">✅</span>
-        <div class="lens-name">Compliance</div>
-      </div>
-      <div class="lens-body">
-        <p>Governance frameworks are implemented with care to maintain compliance without restricting necessary flexibility. Understanding legal, operational, and ethical boundaries ensures that programs adhere to standards while adapting to local realities.</p>
-      </div>
-    </div>
-    <div class="lens-panel" data-lens="2">
-      <div class="lens-top">
-        <div class="lens-num">03</div>
-        <span class="lens-icon">🔄</span>
-        <div class="lens-name">Adaptation</div>
-      </div>
-      <div class="lens-body">
-        <p>Decision-making under real-world constraints requires balancing evidence, operational realities, and stakeholder interests. Adaptive strategies ensure programs remain effective and responsive to changing conditions and emerging challenges.</p>
-      </div>
-    </div>
-    <div class="lens-panel" data-lens="3">
-      <div class="lens-top">
-        <div class="lens-num">04</div>
-        <span class="lens-icon">💡</span>
-        <div class="lens-name">Advisory</div>
-      </div>
-      <div class="lens-body">
-        <p>Programs are supported with strategic guidance without overstepping mandates. This involves advising on resource allocation, operational priorities, and governance strategies to strengthen overall system performance.</p>
+<!-- FOUNDATION -->
+<section class="section white">
+  <div class="wrap">
+    <div class="mark rv">§01 Foundation</div>
+    <div class="foundation">
+      <div></div>
+      <div class="foundation-text rv">
+        <p>Health policy extends beyond the drafting of documents. It encompasses decision-making, the allocation of power, the creation of incentives, and the navigation of trade-offs that shape how health systems function. Effective governance ensures that these policies are translated into action through accountability, coordination, stewardship, and compliance mechanisms.</p>
+        <p>Even the most well-designed policies can fail without strong governance structures. Conversely, governance mechanisms cannot compensate for policies that are unclear, misaligned, or lacking in strategic direction. Understanding the interplay between policy content and governance processes is critical to strengthening health systems and ensuring sustainable outcomes.</p>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- ═══ FAULT LINE PROBLEMS ═══════════════════════════════════════════ -->
-<div class="faultline-section">
-  <div style="font-family:var(--ff-ui);font-size:.58rem;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;" class="rv"><span style="display:block;width:24px;height:1px;background:var(--gold)"></span>Governance Failures</div>
-  <div class="faultline-header rv d1">
-    <h2>Governance Problems<br>This Work Addresses</h2>
-    <p>Hover each problem to reveal the governance response. The fault line between failure and solution is where applied governance work lives.</p>
+<!-- PRACTICE / FOUR LENSES -->
+<section class="section paper">
+  <div class="wrap">
+    <div class="mark rv">§02 Practice</div>
+    <div class="practice-head rv">
+      <h2>Four lenses on applied governance</h2>
+      <p>How policy and governance are approached in practice, from analysis through to advisory.</p>
+    </div>
+
+    <div class="rv">
+      <div class="lens-tabs" role="tablist">
+        <button class="lens-tab active" data-lens="0">Analysis</button>
+        <button class="lens-tab" data-lens="1">Compliance</button>
+        <button class="lens-tab" data-lens="2">Adaptation</button>
+        <button class="lens-tab" data-lens="3">Advisory</button>
+      </div>
+      <div class="lens-panels">
+        <div class="lens-panel active" data-lens="0">
+          <p>Policies are carefully examined before any action. This involves assessing their objectives, the evidence underpinning them, and potential impacts on program operations. Analysis ensures interventions are grounded in data and aligned with broader system priorities.</p>
+        </div>
+        <div class="lens-panel" data-lens="1">
+          <p>Governance frameworks are implemented with care to maintain compliance without restricting necessary flexibility. Understanding legal, operational, and ethical boundaries ensures that programs adhere to standards while adapting to local realities.</p>
+        </div>
+        <div class="lens-panel" data-lens="2">
+          <p>Decision-making under real-world constraints requires balancing evidence, operational realities, and stakeholder interests. Adaptive strategies ensure programs remain effective and responsive to changing conditions and emerging challenges.</p>
+        </div>
+        <div class="lens-panel" data-lens="3">
+          <p>Programs are supported with strategic guidance without overstepping mandates. This involves advising on resource allocation, operational priorities, and governance strategies to strengthen overall system performance.</p>
+        </div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <div class="fault-list">
-
-    <div class="fault-item rv">
-      <div class="fault-problem">
-        <span class="fault-item-num">Problem 01</span>
-        <div class="fault-item-title">Policies Not Implemented</div>
-        <p>Policies often exist on paper but fail in practice due to unclear responsibilities or weak enforcement mechanisms at the operational level.</p>
-      </div>
-      <div class="fault-solution">
-        <span class="fault-solution-label">Response →</span>
-        <p>Governance support ensures policies are operationalized effectively and linked to measurable outcomes — through clear accountability chains and implementation monitoring.</p>
-      </div>
+<!-- GOVERNANCE FAILURES -->
+<section class="section ink">
+  <div class="wrap">
+    <div class="mark rv" style="color:rgba(238,240,234,.55)">§03 Governance failures</div>
+    <div class="fail-head rv">
+      <h2>Governance problems this work addresses</h2>
+      <p>Select a problem to see the governance response. The line between failure and solution is where applied governance work lives.</p>
     </div>
 
-    <div class="fault-item rv d1">
-      <div class="fault-problem">
-        <span class="fault-item-num">Problem 02</span>
-        <div class="fault-item-title">Weak Accountability Mechanisms</div>
-        <p>Without transparent oversight, programs deviate from intended outcomes. Reporting systems fail. Supervision is inconsistent. Feedback never reaches decision-makers.</p>
+    <div class="fail-list rv">
+      <div class="fail-item open" data-fail="0">
+        <div class="fail-q">
+          <span class="no">01</span>
+          <div>
+            <div class="fail-title">Policies not implemented</div>
+            <p class="fail-desc">Policies often exist on paper but fail in practice due to unclear responsibilities or weak enforcement mechanisms at the operational level.</p>
+          </div>
+        </div>
+        <div class="fail-resp">
+          <div class="fail-resp-label">Response</div>
+          <p>Governance support ensures policies are operationalized effectively and linked to measurable outcomes, through clear accountability chains and implementation monitoring.</p>
+        </div>
       </div>
-      <div class="fault-solution">
-        <span class="fault-solution-label">Response →</span>
-        <p>Strengthening reporting systems, supervision structures, and feedback loops reinforces accountability across all levels of the health system.</p>
+
+      <div class="fail-item" data-fail="1">
+        <div class="fail-q">
+          <span class="no">02</span>
+          <div>
+            <div class="fail-title">Weak accountability mechanisms</div>
+            <p class="fail-desc">Without transparent oversight, programs deviate from intended outcomes. Reporting systems fail. Supervision is inconsistent. Feedback never reaches decision-makers.</p>
+          </div>
+        </div>
+        <div class="fail-resp">
+          <div class="fail-resp-label">Response</div>
+          <p>Strengthening reporting systems, supervision structures, and feedback loops reinforces accountability across all levels of the health system.</p>
+        </div>
+      </div>
+
+      <div class="fail-item" data-fail="2">
+        <div class="fail-q">
+          <span class="no">03</span>
+          <div>
+            <div class="fail-title">Fragmented decision-making</div>
+            <p class="fail-desc">Multiple actors with unclear authority slow implementation. Decisions stall. Resources wait. Communities wait longer.</p>
+          </div>
+        </div>
+        <div class="fail-resp">
+          <div class="fail-resp-label">Response</div>
+          <p>Governance support aligns roles, clarifies mandates, and facilitates coordinated decision-making that keeps programs moving.</p>
+        </div>
+      </div>
+
+      <div class="fail-item" data-fail="3">
+        <div class="fail-q">
+          <span class="no">04</span>
+          <div>
+            <div class="fail-title">Programs misaligned with national priorities</div>
+            <p class="fail-desc">Programs that bypass strategic priorities risk wasting resources and duplicating effort, undermining the very systems they aim to support.</p>
+          </div>
+        </div>
+        <div class="fail-resp">
+          <div class="fail-resp-label">Response</div>
+          <p>Governance guidance ensures alignment with national health strategies and long-term system goals, from program design through evaluation.</p>
+        </div>
+      </div>
+
+      <div class="fail-item" data-fail="4">
+        <div class="fail-q">
+          <span class="no">05</span>
+          <div>
+            <div class="fail-title">Data not used for governance</div>
+            <p class="fail-desc">Data is collected but rarely makes it into decisions. Reports go unread. Insights go unacted upon. The learning loop stays broken.</p>
+          </div>
+        </div>
+        <div class="fail-resp">
+          <div class="fail-resp-label">Response</div>
+          <p>Governance support integrates evidence into strategic planning, supervision cycles, and policy adjustments, closing the loop between data and decision.</p>
+        </div>
       </div>
     </div>
-
-    <div class="fault-item rv d2">
-      <div class="fault-problem">
-        <span class="fault-item-num">Problem 03</span>
-        <div class="fault-item-title">Fragmented Decision-Making</div>
-        <p>Multiple actors with unclear authority slow implementation. Decisions stall. Resources wait. Communities wait longer.</p>
-      </div>
-      <div class="fault-solution">
-        <span class="fault-solution-label">Response →</span>
-        <p>Governance support aligns roles, clarifies mandates, and facilitates coordinated decision-making that keeps programs moving.</p>
-      </div>
-    </div>
-
-    <div class="fault-item rv d3">
-      <div class="fault-problem">
-        <span class="fault-item-num">Problem 04</span>
-        <div class="fault-item-title">Programs Misaligned with National Priorities</div>
-        <p>Programs that bypass strategic priorities risk wasting resources and duplicating effort — undermining the very systems they aim to support.</p>
-      </div>
-      <div class="fault-solution">
-        <span class="fault-solution-label">Response →</span>
-        <p>Governance guidance ensures alignment with national health strategies and long-term system goals from program design through evaluation.</p>
-      </div>
-    </div>
-
-    <div class="fault-item rv">
-      <div class="fault-problem">
-        <span class="fault-item-num">Problem 05</span>
-        <div class="fault-item-title">Data Not Used for Governance</div>
-        <p>Data is collected but rarely makes it into decisions. Reports go unread. Insights go unacted upon. The learning loop stays broken.</p>
-      </div>
-      <div class="fault-solution">
-        <span class="fault-solution-label">Response →</span>
-        <p>Governance support integrates evidence into strategic planning, supervision cycles, and policy adjustments — closing the loop between data and decision.</p>
-      </div>
-    </div>
-
   </div>
-</div>
+</section>
 
-<!-- ═══ CASE DOSSIERS ══════════════════════════════════════════════════ -->
-<div class="dossier-section">
-  <div style="font-family:var(--ff-ui);font-size:.58rem;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;" class="rv"><span style="display:block;width:24px;height:1px;background:var(--gold)"></span>Applied Examples</div>
-  <h2 class="rv d1">Field Dossiers</h2>
-  <p class="intro rv d2">Applied policy and governance work from Trans-Nzoia County — where governance theory met operational reality.</p>
+<!-- FIELD DOSSIERS -->
+<section class="section white">
+  <div class="wrap">
+    <div class="mark rv">§04 Field dossiers</div>
+    <div class="dossier-head rv">
+      <h2>Applied examples from Trans-Nzoia County</h2>
+      <p>Two accounts of policy and governance work where theory met operational reality.</p>
+    </div>
 
-  <div class="dossier-grid">
-
-    <!-- DOSSIER 1 -->
     <div class="dossier rv">
-      <img class="dossier-img" src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&auto=format&fit=crop" alt="Immunization campaign">
-      <div class="dossier-header">
-        <span class="dossier-ref">REF-GOV-001 · Trans-Nzoia County</span>
-        <span class="dossier-stamp resolved">Resolved</span>
+      <div>
+        <img class="dossier-img" src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&auto=format&fit=crop" alt="Immunization outreach in Trans-Nzoia County">
+        <div class="dossier-ref"><span>Ref. GOV-001, Trans-Nzoia County</span><span class="dossier-stamp">Resolved</span></div>
       </div>
       <div class="dossier-body">
-        <h3>Immunization Campaign — Coordination Governance Reform</h3>
+        <h3>Immunization campaign: coordination governance reform</h3>
         <div class="dossier-field">
           <span class="df-label">Context</span>
-          <div class="df-val">District-wide vaccination drive facing delays due to fragmented coordination between health facilities and community outreach teams.</div>
+          <div class="df-val">A district-wide vaccination drive faced delays due to fragmented coordination between health facilities and community outreach teams.</div>
         </div>
         <div class="dossier-field">
-          <span class="df-label">Governance Failure</span>
+          <span class="df-label">Governance failure</span>
           <div class="df-val">Accountability mechanisms were weak. Data reporting was inconsistent across facilities. No shared coordination structure existed.</div>
         </div>
         <div class="dossier-field">
           <span class="df-label">Intervention</span>
-          <div class="df-val">Introduced standardized reporting templates and weekly coordination meetings aligned to facility and outreach schedules.</div>
+          <div class="df-val">Standardized reporting templates and weekly coordination meetings were introduced, aligned to facility and outreach schedules.</div>
         </div>
-        <div class="outcome-bar-wrap">
-          <div class="ob-label"><span>Coverage Improvement</span><span class="ob-pct">+18% in 3 months</span></div>
-          <div class="ob-track"><div class="ob-fill" data-width="78"></div></div>
+        <div class="outcome">
+          <div class="outcome-label"><span>Coverage improvement</span><b>+18% in 3 months</b></div>
+          <div class="outcome-track"><div class="outcome-fill" data-width="78"></div></div>
         </div>
       </div>
     </div>
 
-    <!-- DOSSIER 2 -->
-    <div class="dossier rv d1">
-      <img class="dossier-img" src="https://images.unsplash.com/photo-1530026186672-2cd00ffc50fe?w=800&auto=format&fit=crop" alt="Malaria prevention">
-      <div class="dossier-header">
-        <span class="dossier-ref">REF-GOV-002 · Trans-Nzoia County</span>
-        <span class="dossier-stamp achieved">Target Achieved</span>
+    <div class="dossier rv">
+      <div>
+        <img class="dossier-img" src="https://images.unsplash.com/photo-1530026186672-2cd00ffc50fe?w=800&auto=format&fit=crop" alt="Mosquito net distribution in Trans-Nzoia County">
+        <div class="dossier-ref"><span>Ref. GOV-002, Trans-Nzoia County</span><span class="dossier-stamp">Target achieved</span></div>
       </div>
       <div class="dossier-body">
-        <h3>Mosquito Net Distribution — Joint Planning Committee Model</h3>
+        <h3>Mosquito net distribution: joint planning committee model</h3>
         <div class="dossier-field">
           <span class="df-label">Context</span>
-          <div class="df-val">Community-level malaria prevention campaign with low participation — household coverage below target despite adequate net supply.</div>
+          <div class="df-val">A community-level malaria prevention campaign saw low participation. Household coverage stayed below target despite adequate net supply.</div>
         </div>
         <div class="dossier-field">
-          <span class="df-label">Governance Failure</span>
-          <div class="df-val">Weak coordination between district health office and local community leaders. No feedback mechanism. Distribution not tracked digitally.</div>
+          <span class="df-label">Governance failure</span>
+          <div class="df-val">Coordination between the district health office and local community leaders was weak. There was no feedback mechanism, and distribution was not tracked digitally.</div>
         </div>
         <div class="dossier-field">
           <span class="df-label">Intervention</span>
-          <div class="df-val">Established joint planning committees with local leaders. Integrated digital tracking for distribution. Added community feedback loops.</div>
+          <div class="df-val">Joint planning committees were established with local leaders. Digital tracking was integrated for distribution, alongside community feedback loops.</div>
         </div>
-        <div class="outcome-bar-wrap">
-          <div class="ob-label"><span>Household Coverage</span><span class="ob-pct">90% achieved</span></div>
-          <div class="ob-track"><div class="ob-fill" data-width="90"></div></div>
+        <div class="outcome">
+          <div class="outcome-label"><span>Household coverage</span><b>90% achieved</b></div>
+          <div class="outcome-track"><div class="outcome-fill" data-width="90"></div></div>
         </div>
       </div>
     </div>
-
   </div>
-</div>
+</section>
 
-<!-- ═══ POLICY FLOW ════════════════════════════════════════════════════ -->
-<div class="flow-section rv">
-  <div style="font-family:var(--ff-ui);font-size:.58rem;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:var(--teal);display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;"><span style="display:block;width:24px;height:2px;background:var(--gold)"></span>Systems Connection</div>
-  <h2>Policy → Governance →<br>Programs → <em style="font-style:italic;color:var(--gold)">Impact</em></h2>
-  <p class="intro">How the governance chain connects from strategic direction to measurable community health outcomes.</p>
-
-  <!-- Animated flow SVG -->
-  <svg id="flow-svg" viewBox="0 0 800 120" xmlns="http://www.w3.org/2000/svg">
-    <!-- Connector line -->
-    <line x1="120" y1="60" x2="680" y2="60" stroke="rgba(4,71,78,.2)" stroke-width="1.5" stroke-dasharray="6 4"/>
-    <!-- Animated flow line -->
-    <line x1="120" y1="60" x2="120" y2="60" stroke="var(--gold)" stroke-width="2" id="flow-line" style="transition:x2 2s ease"/>
-
-    <!-- Node 1: Policy -->
-    <g class="flow-node" data-idx="0">
-      <circle cx="120" cy="60" r="40" fill="#04474e" stroke="rgba(200,151,58,.5)" stroke-width="1.5"/>
-      <text x="120" y="54" text-anchor="middle" font-family="Manrope,sans-serif" font-size="8" fill="rgba(255,255,255,.5)" font-weight="700" letter-spacing="1">POLICY</text>
-      <text x="120" y="68" text-anchor="middle" font-family="Manrope,sans-serif" font-size="7" fill="rgba(200,151,58,.7)">Direction</text>
-    </g>
-
-    <!-- Arrow -->
-    <path d="M 164 60 L 224 60" stroke="rgba(200,151,58,.2)" stroke-width="1.5" marker-end="url(#arr)"/>
-    <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6" fill="none" stroke="rgba(200,151,58,.4)" stroke-width="1"/></marker></defs>
-
-    <!-- Node 2: Governance -->
-    <g class="flow-node" data-idx="1">
-      <circle cx="280" cy="60" r="40" fill="#04474e" stroke="rgba(200,151,58,.3)" stroke-width="1"/>
-      <text x="280" y="54" text-anchor="middle" font-family="Manrope,sans-serif" font-size="7" fill="rgba(255,255,255,.4)" font-weight="700" letter-spacing="1">GOVERNANCE</text>
-      <text x="280" y="68" text-anchor="middle" font-family="Manrope,sans-serif" font-size="7" fill="rgba(200,151,58,.5)">Accountability</text>
-    </g>
-
-    <path d="M 324 60 L 384 60" stroke="rgba(200,151,58,.2)" stroke-width="1.5" marker-end="url(#arr)"/>
-
-    <!-- Node 3: Programs -->
-    <g class="flow-node" data-idx="2">
-      <circle cx="440" cy="60" r="40" fill="#04474e" stroke="rgba(200,151,58,.3)" stroke-width="1"/>
-      <text x="440" y="54" text-anchor="middle" font-family="Manrope,sans-serif" font-size="8" fill="rgba(255,255,255,.4)" font-weight="700" letter-spacing="1">PROGRAMS</text>
-      <text x="440" y="68" text-anchor="middle" font-family="Manrope,sans-serif" font-size="7" fill="rgba(200,151,58,.5)">Delivery</text>
-    </g>
-
-    <path d="M 484 60 L 544 60" stroke="rgba(200,151,58,.2)" stroke-width="1.5" marker-end="url(#arr)"/>
-
-    <!-- Node 4: Impact -->
-    <g class="flow-node" data-idx="3">
-      <circle cx="600" cy="60" r="40" fill="rgba(200,151,58,.15)" stroke="#c8973a" stroke-width="2"/>
-      <text x="600" y="54" text-anchor="middle" font-family="Manrope,sans-serif" font-size="8" fill="#c8973a" font-weight="700" letter-spacing="1">IMPACT</text>
-      <text x="600" y="68" text-anchor="middle" font-family="Manrope,sans-serif" font-size="7" fill="rgba(200,151,58,.8)">Community</text>
-    </g>
-  </svg>
-
-  <div class="flow-detail-grid rv">
-    <div class="flow-cell">
-      <div class="flow-cell-num">01</div>
-      <h4>Policy</h4>
-      <p>Evidence-based policies set the strategic direction for health programs, define priorities, and establish the rules for action across the system.</p>
-    </div>
-    <div class="flow-cell">
-      <div class="flow-cell-num">02</div>
-      <h4>Governance</h4>
-      <p>Governance mechanisms ensure accountability, coordination, and stewardship — translating policies into actionable, operational plans.</p>
-    </div>
-    <div class="flow-cell">
-      <div class="flow-cell-num">03</div>
-      <h4>Programs</h4>
-      <p>Health programs implement policy directives and leverage governance structures to deliver services efficiently and effectively at all levels.</p>
-    </div>
-    <div class="flow-cell">
-      <div class="flow-cell-num">04</div>
-      <h4>Community Impact</h4>
-      <p>Strong connections from policy to governance to programs produce measurable improvements in population health outcomes and system resilience.</p>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ GOVERNANCE HEALTH CHECK ═══════════════════════════════════════ -->
-<div class="check-section">
-  <div style="font-family:var(--ff-ui);font-size:.58rem;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;" class="rv"><span style="display:block;width:24px;height:1px;background:var(--gold)"></span>Interactive Tool</div>
-  <h2 class="rv d1">Governance Health Check</h2>
-  <p class="intro rv d2">Use the sliders to assess governance strength across the five core pillars. The radar updates in real time.</p>
-
-  <div class="check-grid">
-    <div class="slider-list rv">
-      <div class="slider-item">
-        <div class="slider-head"><span class="slider-name">🏛️ Stewardship</span><span class="slider-val" id="v0">60%</span></div>
-        <input type="range" min="0" max="100" value="60" data-idx="0" class="gov-slider">
+<!-- POLICY IN PRACTICE -->
+<section class="section paper">
+  <div class="wrap">
+    <div class="mark rv">§05 Policy in practice</div>
+    <div class="essay">
+      <div class="essay-side rv">
+        <p>A working position on where policy actually becomes visible, written from the implementation side of the health system rather than the drafting side.</p>
       </div>
-      <div class="slider-item">
-        <div class="slider-head"><span class="slider-name">⚖️ Accountability</span><span class="slider-val" id="v1">45%</span></div>
-        <input type="range" min="0" max="100" value="45" data-idx="1" class="gov-slider">
-      </div>
-      <div class="slider-item">
-        <div class="slider-head"><span class="slider-name">🔗 Coordination</span><span class="slider-val" id="v2">70%</span></div>
-        <input type="range" min="0" max="100" value="70" data-idx="2" class="gov-slider">
-      </div>
-      <div class="slider-item">
-        <div class="slider-head"><span class="slider-name">📊 Data Use</span><span class="slider-val" id="v3">35%</span></div>
-        <input type="range" min="0" max="100" value="35" data-idx="3" class="gov-slider">
-      </div>
-      <div class="slider-item">
-        <div class="slider-head"><span class="slider-name">🎯 Alignment</span><span class="slider-val" id="v4">55%</span></div>
-        <input type="range" min="0" max="100" value="55" data-idx="4" class="gov-slider">
-      </div>
-    </div>
+      <div class="rv">
+        <h2>Policy is where evidence meets <span class="it">implementation</span></h2>
+        <p class="essay-lede">Much of my policy work has happened downstream from the policy document itself, where evidence has to become a programme decision, a monitoring framework, a community intervention, or a message that people can actually use.</p>
 
-    <div class="check-right rv d2">
-      <svg id="radar-svg" viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <filter id="glow3"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        </defs>
-        <!-- Background rings -->
-        <polygon points="150,30 253,91 253,211 150,272 47,211 47,91" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
-        <polygon points="150,55 228,105 228,195 150,245 72,195 72,105" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
-        <polygon points="150,80 203,119 203,179 150,218 97,179 97,119" fill="none" stroke="rgba(255,255,255,.03)" stroke-width="1"/>
-        <!-- Axis lines -->
-        <line x1="150" y1="30" x2="150" y2="150" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
-        <line x1="253" y1="91" x2="150" y2="150" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
-        <line x1="253" y1="211" x2="150" y2="150" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
-        <line x1="150" y1="272" x2="150" y2="150" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
-        <line x1="47" y1="211" x2="150" y2="150" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
-        <line x1="47" y1="91" x2="150" y2="150" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
-        <!-- Data polygon -->
-        <polygon id="radar-poly" points="" fill="rgba(200,151,58,.15)" stroke="#c8973a" stroke-width="1.5" filter="url(#glow3)"/>
-        <!-- Labels -->
-        <text x="150" y="22" text-anchor="middle" font-family="Manrope,sans-serif" font-size="7.5" fill="rgba(255,255,255,.4)" font-weight="700" letter-spacing="1">STEWARDSHIP</text>
-        <text x="268" y="90" text-anchor="start" font-family="Manrope,sans-serif" font-size="7" fill="rgba(255,255,255,.35)" font-weight="600">ACCOUNT-</text>
-        <text x="268" y="100" text-anchor="start" font-family="Manrope,sans-serif" font-size="7" fill="rgba(255,255,255,.35)" font-weight="600">ABILITY</text>
-        <text x="268" y="218" text-anchor="start" font-family="Manrope,sans-serif" font-size="7" fill="rgba(255,255,255,.35)" font-weight="600">COORD-</text>
-        <text x="268" y="228" text-anchor="start" font-family="Manrope,sans-serif" font-size="7" fill="rgba(255,255,255,.35)" font-weight="600">INATION</text>
-        <text x="150" y="285" text-anchor="middle" font-family="Manrope,sans-serif" font-size="7.5" fill="rgba(255,255,255,.35)" font-weight="600">DATA USE</text>
-        <text x="22" y="218" text-anchor="end" font-family="Manrope,sans-serif" font-size="7" fill="rgba(255,255,255,.35)" font-weight="600">ALIGN-</text>
-        <text x="22" y="228" text-anchor="end" font-family="Manrope,sans-serif" font-size="7" fill="rgba(255,255,255,.35)" font-weight="600">MENT</text>
-      </svg>
-      <div class="overall-score">
-        <div class="os-val" id="overall-score">53%</div>
-        <div class="os-label">Overall Governance Score</div>
+        <div class="essay-body">
+          <p>Coordinating public health programmes teaches you quickly that a policy is only as good as the arrangements that carry it. A vaccination schedule is a technical instruction until someone decides who reports what, on which day, to which office, and what happens when the numbers do not arrive. That gap between intent and delivery is where most of my practical governance work sits, and it is the reason I treat policy as an operational question before treating it as a written one.</p>
+          <p>Evidence is the part that holds it together. Coverage surveys, routine monitoring through platforms such as DHIS2 and KoboToolbox, supervision notes, and community feedback all describe the same system from different angles. Reading them together usually tells you something a single report cannot: whether a shortfall is a supply problem, a coordination problem, or a trust problem, and therefore whether the right response is a logistics fix, a governance fix, or a conversation.</p>
+          <p>Working in monitoring, evaluation, accountability and learning, including immunization related work in WHO supported settings, has made me careful about what data can and cannot carry. Indicators are decisions in compressed form. What gets counted shapes what gets funded, supervised, and eventually believed, so designing a reporting line is itself a small act of policy, and it deserves the same scrutiny as the strategy it serves.</p>
+          <p>The other half of the work is communication. Evidence that stays inside a report changes nothing. Turning findings into briefs, campaign material, visual summaries, and plain explanations for community health teams and partners is not a communications afterthought; it is how a policy position survives contact with the people expected to act on it.</p>
+        </div>
+
+        <div class="notes">
+          <div class="note">
+            <div class="note-label">Evidence</div>
+            <p>Research, coverage surveys, and routine programme data used to describe what is actually happening, not what was planned.</p>
+          </div>
+          <div class="note">
+            <div class="note-label">Implementation</div>
+            <p>Translating decisions into schedules, responsibilities, supervision routines, and community-level activity that can be delivered.</p>
+          </div>
+          <div class="note">
+            <div class="note-label">Monitoring and learning</div>
+            <p>Reporting frameworks and review cycles designed so that findings return to the people with the authority to change something.</p>
+          </div>
+          <div class="note">
+            <div class="note-label">Coordination</div>
+            <p>Aligning facilities, outreach teams, local leadership, and partners around a shared plan rather than parallel ones.</p>
+          </div>
+          <div class="note">
+            <div class="note-label">Communication</div>
+            <p>Reports, briefs, and campaign material that make a decision legible to the people expected to carry it out.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- ═══ CONTACT ════════════════════════════════════════════════════════ -->
-<div class="contact-section">
-  <div class="contact-left">
-    <div class="rv" style="font-family:var(--ff-ui);font-size:.58rem;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;"><span style="display:block;width:24px;height:1px;background:var(--gold)"></span>Get in Touch</div>
-    <h2 class="rv d1">Governance Enquiries</h2>
-    <p class="sub rv d2">Interested in policy analysis, governance strengthening, or program advisory support?</p>
-    <form method="POST" action="https://formspree.io/f/xwvpkvzl" class="rv d2">
-      <div class="ff-row ff"><div><input type="text" name="name" placeholder="Name" required></div><div><input type="email" name="email" placeholder="Email" required></div></div>
-      <div class="ff"><textarea name="message" placeholder="Your message or enquiry…" rows="4"></textarea></div>
-      <button type="submit" class="send-btn">Submit →</button>
-    </form>
+<!-- SLOW EDITORIAL BAND -->
+<div class="band" aria-hidden="true">
+  <div class="band-slide">
+    <span>Evidence to policy</span>
+    <span>Community realities</span>
+    <span>Public health governance</span>
+    <span>SDG implementation</span>
+    <span>Volunteerism and development</span>
+    <span>Research and learning</span>
+    <span>Programme coordination</span>
+    <span>Policy communication</span>
+    <span>UNV and UNDP experience</span>
+    <span>From frameworks to implementation</span>
+    <span>Evidence to policy</span>
+    <span>Community realities</span>
+    <span>Public health governance</span>
+    <span>SDG implementation</span>
+    <span>Volunteerism and development</span>
+    <span>Research and learning</span>
+    <span>Programme coordination</span>
+    <span>Policy communication</span>
+    <span>UNV and UNDP experience</span>
+    <span>From frameworks to implementation</span>
   </div>
-  <div class="contact-right rv">
-    <h3>Connect &amp; follow the work</h3>
-    <div class="socials">
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:74px;max-width:860px;">
-
-  <!-- X -->
-  <a href="https://x.com/Leafspire" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-x-twitter"></i></a>
-
-  <!-- Facebook -->
-  <a href="https://www.facebook.com/iamescriva/" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-facebook-f"></i></a>
-
-  <!-- Instagram -->
-  <a href="https://www.instagram.com/leafspirefoundation/" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-instagram"></i></a>
-
-  <!-- LinkedIn -->
-  <a href="https://www.linkedin.com/in/josemariaescriva/" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-linkedin-in"></i></a>
-
-  <!-- GitHub -->
-  <a href="https://github.com/escrivajosemaria" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-github"></i></a>
-
-  <!-- Portfolio -->
-  <a href="https://leafspire.github.io/leafoundation/" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-solid fa-globe"></i></a>
-
-  <!-- YouTube -->
-  <a href="https://youtube.com/@escrivahypercollective?si=qVorezgzhYidVWwV" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-youtube"></i></a>
-
-  <!-- WordPress -->
-  <a href="http://esvarj.wordpress.com" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-wordpress"></i></a>
-
 </div>
+
+<!-- FROM GLOBAL FRAMEWORKS TO LOCAL PRACTICE -->
+<section class="section white">
+  <div class="wrap">
+    <div class="mark rv">§06 Frameworks and practice</div>
+    <div class="essay">
+      <div class="essay-side rv">
+        <p>Notes from volunteer and development programme environments, where global goals have to be restated as something a county, a facility, or a youth group can act on.</p>
+      </div>
+      <div class="rv">
+        <h2>From global frameworks to <span class="it">local practice</span></h2>
+        <p class="essay-lede">Global development frameworks are written to be universal, which is exactly what makes them difficult to use. Someone has to decide what a goal means in a particular county, with a particular budget, in a particular season.</p>
+
+        <div class="essay-body">
+          <p>Working in United Nations Volunteers and UNDP programme environments gave me a fairly unsentimental view of that translation. The Sustainable Development Goals arrive as language. They leave as a training session, a data collection round, a partner meeting, a piece of advocacy material, or a youth-led activity in a community that has never read the framework and does not need to.</p>
+          <p>Volunteerism sits close to the centre of this. It is often described as a contribution of labour, but in practice it is a governance mechanism: it brings local knowledge into programmes that would otherwise be designed at a distance, and it gives young people a legitimate route into planning, monitoring, and advocacy rather than only into delivery. Youth development work has consistently been the point where the framework stops being abstract.</p>
+          <p>My contribution in these settings has mostly been on the evidence and communication side, coordinating activities, supporting research and analysis, preparing reports and knowledge products, and producing material that makes programme work visible to partners and to the communities involved. Visibility is not vanity here. Documented work is what makes a partnership possible, what makes a lesson transferable, and what keeps a commitment reviewable after the launch event.</p>
+          <p>Development and humanitarian contexts also impose their own discipline. Plans change quickly, and the useful skill is less the ability to produce a perfect framework than the ability to keep coordination, reporting, and stakeholder relationships intact while the situation moves. That is the part of governance that rarely appears in policy documents and almost always decides whether they hold.</p>
+        </div>
+
+        <div class="chain">
+          <div><b>Global frameworks</b><span>SDG commitments, national strategies, and programme mandates set the direction.</span></div>
+          <div><b>Evidence and communication</b><span>Research, monitoring data, reports, and knowledge products make the direction specific.</span></div>
+          <div><b>Programme implementation</b><span>Coordination, volunteer engagement, and delivery turn specifics into activity.</span></div>
+          <div><b>Community relevance</b><span>The test is whether people at community level recognise the result as useful.</span></div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
-<div class="footer-bar">
-  <p>&copy; Escriva Josemaria 2024</p>
-  <p>Design: escriva.https</p>
-</div>
+</section>
+
+<!-- POLICY FLOW -->
+<section class="section paper">
+  <div class="wrap">
+    <div class="mark rv">§07 Systems chain</div>
+    <div class="flow-head rv">
+      <h2>Policy, governance, programs, impact</h2>
+      <p>How the governance chain connects strategic direction to measurable community health outcomes.</p>
+    </div>
+
+    <svg id="flow-svg" viewBox="0 0 800 90" xmlns="http://www.w3.org/2000/svg" class="rv">
+      <line x1="60" y1="45" x2="740" y2="45" stroke="rgba(20,24,26,.18)" stroke-width="1"/>
+      <line id="flow-line" x1="60" y1="45" x2="60" y2="45" stroke="#14181a" stroke-width="1.4"/>
+      <g><circle cx="60" cy="45" r="5" fill="#14181a"/><text x="60" y="24" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#14181a">Policy</text></g>
+      <g><circle cx="286" cy="45" r="5" fill="#14181a" fill-opacity=".25" class="fnode"/><text x="286" y="24" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4c5551" class="ftext">Governance</text></g>
+      <g><circle cx="513" cy="45" r="5" fill="#14181a" fill-opacity=".25" class="fnode"/><text x="513" y="24" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4c5551" class="ftext">Programs</text></g>
+      <g><circle cx="740" cy="45" r="5" fill="#14181a" fill-opacity=".25" class="fnode"/><text x="740" y="24" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4c5551" class="ftext">Impact</text></g>
+    </svg>
+
+    <div class="flow-grid rv">
+      <div class="flow-cell">
+        <div class="fc-no">01</div>
+        <h4>Policy</h4>
+        <p>Evidence-based policies set the strategic direction for health programs, define priorities, and establish the rules for action across the system.</p>
+      </div>
+      <div class="flow-cell">
+        <div class="fc-no">02</div>
+        <h4>Governance</h4>
+        <p>Governance mechanisms ensure accountability, coordination, and stewardship, translating policies into actionable, operational plans.</p>
+      </div>
+      <div class="flow-cell">
+        <div class="fc-no">03</div>
+        <h4>Programs</h4>
+        <p>Health programs implement policy directives and leverage governance structures to deliver services efficiently and effectively at all levels.</p>
+      </div>
+      <div class="flow-cell">
+        <div class="fc-no">04</div>
+        <h4>Community impact</h4>
+        <p>Strong connections from policy to governance to programs produce measurable improvements in population health outcomes and system resilience.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HEALTH CHECK -->
+<section class="section ink">
+  <div class="wrap">
+    <div class="mark rv" style="color:rgba(238,240,234,.55)">§08 Assessment tool</div>
+    <div class="check-head rv">
+      <h2>Governance health check</h2>
+      <p>Adjust the sliders to assess governance strength across five core pillars. The diagram updates as you move them.</p>
+    </div>
+
+    <div class="check-grid">
+      <div class="rv">
+        <div class="slider-item">
+          <div class="slider-head"><span class="slider-name">Stewardship</span><span class="slider-val" id="v0">60%</span></div>
+          <input type="range" min="0" max="100" value="60" data-idx="0" class="gov-slider" aria-label="Stewardship">
+        </div>
+        <div class="slider-item">
+          <div class="slider-head"><span class="slider-name">Accountability</span><span class="slider-val" id="v1">45%</span></div>
+          <input type="range" min="0" max="100" value="45" data-idx="1" class="gov-slider" aria-label="Accountability">
+        </div>
+        <div class="slider-item">
+          <div class="slider-head"><span class="slider-name">Coordination</span><span class="slider-val" id="v2">70%</span></div>
+          <input type="range" min="0" max="100" value="70" data-idx="2" class="gov-slider" aria-label="Coordination">
+        </div>
+        <div class="slider-item">
+          <div class="slider-head"><span class="slider-name">Data use</span><span class="slider-val" id="v3">35%</span></div>
+          <input type="range" min="0" max="100" value="35" data-idx="3" class="gov-slider" aria-label="Data use">
+        </div>
+        <div class="slider-item">
+          <div class="slider-head"><span class="slider-name">Alignment</span><span class="slider-val" id="v4">55%</span></div>
+          <input type="range" min="0" max="100" value="55" data-idx="4" class="gov-slider" aria-label="Alignment">
+        </div>
+      </div>
+
+      <div class="check-right rv">
+        <svg id="radar-svg" viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="150,30 253,91 253,211 150,272 47,211 47,91" fill="none" stroke="rgba(238,240,234,.1)" stroke-width="1"/>
+          <polygon points="150,55 228,105 228,195 150,245 72,195 72,105" fill="none" stroke="rgba(238,240,234,.07)" stroke-width="1"/>
+          <polygon points="150,80 203,119 203,179 150,218 97,179 97,119" fill="none" stroke="rgba(238,240,234,.05)" stroke-width="1"/>
+          <line x1="150" y1="30" x2="150" y2="150" stroke="rgba(238,240,234,.08)" stroke-width="1"/>
+          <line x1="253" y1="91" x2="150" y2="150" stroke="rgba(238,240,234,.08)" stroke-width="1"/>
+          <line x1="253" y1="211" x2="150" y2="150" stroke="rgba(238,240,234,.08)" stroke-width="1"/>
+          <line x1="150" y1="272" x2="150" y2="150" stroke="rgba(238,240,234,.08)" stroke-width="1"/>
+          <line x1="47" y1="211" x2="150" y2="150" stroke="rgba(238,240,234,.08)" stroke-width="1"/>
+          <line x1="47" y1="91" x2="150" y2="150" stroke="rgba(238,240,234,.08)" stroke-width="1"/>
+          <polygon id="radar-poly" points="" fill="rgba(238,240,234,.1)" stroke="#eef0ea" stroke-width="1.4"/>
+          <text x="150" y="20" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(238,240,234,.5)" font-weight="600">Stewardship</text>
+          <text x="270" y="88" text-anchor="start" font-family="Inter,sans-serif" font-size="9" fill="rgba(238,240,234,.5)" font-weight="600">Accountability</text>
+          <text x="270" y="220" text-anchor="start" font-family="Inter,sans-serif" font-size="9" fill="rgba(238,240,234,.5)" font-weight="600">Coordination</text>
+          <text x="150" y="288" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(238,240,234,.5)" font-weight="600">Data use</text>
+          <text x="30" y="220" text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="rgba(238,240,234,.5)" font-weight="600">Alignment</text>
+        </svg>
+        <div class="overall">
+          <div class="overall-val" id="overall-score">53%</div>
+          <div class="overall-label">Overall governance score</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-foot">
+  <ul class="foot-links">
+    <a href="https://x.com/escriva_ke" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://web.facebook.com/escriva101/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/escriva_ke/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/josemariaescriva/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="https://github.com/escrivajosemaria" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="https://leafspire.github.io/leafoundation/" target="_blank" rel="noopener noreferrer" aria-label="Portfolio"><i class="fa-solid fa-globe"></i></a>
+            <a href="https://www.youtube.com/@escriva_ke" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="https://gravatar.com/josemariaescriva82" target="_blank" rel="noopener noreferrer" aria-label="WordPress"><i class="fa-brands fa-wordpress"></i></a>
+  </ul>
+  <p>&copy; Escriva Josemaria, 2024</p>
+</footer>
 
 <script>
 (function(){
 
-  /* PROGRESS */
+  /* progress */
   const pb=document.getElementById('prog');
-  window.addEventListener('scroll',()=>{ const s=document.documentElement; pb.style.width=(window.scrollY/(s.scrollHeight-window.innerHeight)*100)+'%'; },{passive:true});
+  window.addEventListener('scroll',()=>{
+    const s=document.documentElement;
+    pb.style.width=(window.scrollY/(s.scrollHeight-window.innerHeight)*100)+'%';
+  },{passive:true});
 
-  /* NAV */
+  /* header */
   const hdr=document.getElementById('header');
-  window.addEventListener('scroll',()=>hdr.classList.toggle('solid',window.scrollY>60),{passive:true});
+  window.addEventListener('scroll',()=>hdr.classList.toggle('solid',window.scrollY>40),{passive:true});
 
-  /* MENU */
-  const menuEl=document.getElementById('menu'),ov=document.getElementById('mo');
-  document.getElementById('mt').addEventListener('click',e=>{e.preventDefault();menuEl.classList.add('on');ov.classList.add('on');});
-  document.getElementById('mc').addEventListener('click',()=>{menuEl.classList.remove('on');ov.classList.remove('on');});
-  ov.addEventListener('click',()=>{menuEl.classList.remove('on');ov.classList.remove('on');});
+  /* menu, same behaviour as index.html */
+  const menuEl=document.getElementById('menu');
+  document.getElementById('mt').addEventListener('click',function(e){
+    e.preventDefault();
+    menuEl.classList.add('on');
+    menuEl.setAttribute('aria-hidden','false');
+  });
+  document.getElementById('mc').addEventListener('click',function(){
+    menuEl.classList.remove('on');
+    menuEl.setAttribute('aria-hidden','true');
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && menuEl.classList.contains('on')){
+      menuEl.classList.remove('on');
+      menuEl.setAttribute('aria-hidden','true');
+    }
+  });
 
-  /* REVEAL */
+  /* reveal on scroll */
   const rvObs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('vis');rvObs.unobserve(e.target);} });
-  },{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('vis'); rvObs.unobserve(e.target); } });
+  },{threshold:.08, rootMargin:'0px 0px -40px 0px'});
   document.querySelectorAll('.rv').forEach(el=>rvObs.observe(el));
 
-  /* LENS PANELS */
+  /* lens tabs */
+  const tabs=document.querySelectorAll('.lens-tab');
   const panels=document.querySelectorAll('.lens-panel');
-  panels.forEach(p=>{
-    p.addEventListener('click',()=>{
+  tabs.forEach(t=>{
+    t.addEventListener('click',()=>{
+      tabs.forEach(x=>x.classList.remove('active'));
       panels.forEach(x=>x.classList.remove('active'));
-      p.classList.add('active');
+      t.classList.add('active');
+      document.querySelector('.lens-panel[data-lens="'+t.dataset.lens+'"]').classList.add('active');
     });
   });
 
-  /* DOSSIER PROGRESS BARS */
+  /* fail items, accordion, one open at a time */
+  const failItems=document.querySelectorAll('.fail-item');
+  failItems.forEach(item=>{
+    item.addEventListener('click',()=>{
+      const isOpen=item.classList.contains('open');
+      failItems.forEach(x=>x.classList.remove('open'));
+      if(!isOpen) item.classList.add('open');
+    });
+  });
+
+  /* dossier outcome bars */
   const barObs=new IntersectionObserver(entries=>{
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.style.width=e.target.dataset.width+'%'; barObs.unobserve(e.target); } });
   },{threshold:.5});
-  document.querySelectorAll('.ob-fill').forEach(el=>barObs.observe(el));
+  document.querySelectorAll('.outcome-fill').forEach(el=>barObs.observe(el));
 
-  /* FLOW SVG NODE ILLUMINATE */
-  const flowNodes=document.querySelectorAll('.flow-node');
+  /* flow svg illuminate */
+  const flowNodes=document.querySelectorAll('.fnode');
+  const flowTexts=document.querySelectorAll('.ftext');
+  const flowLine=document.getElementById('flow-line');
+  const flowSvg=document.getElementById('flow-svg');
   const flowObs=new IntersectionObserver(entries=>{
     entries.forEach(e=>{
       if(e.isIntersecting){
-        flowNodes.forEach((n,i)=>{
-          setTimeout(()=>{
-            n.querySelector('circle').setAttribute('stroke','#c8973a');
-            n.querySelector('circle').setAttribute('stroke-width','2');
-            const texts=n.querySelectorAll('text');
-            texts[0].setAttribute('fill','rgba(255,255,255,.9)');
-            if(texts[1])texts[1].setAttribute('fill','#c8973a');
-          }, i*400);
-        });
+        if(flowLine){ flowLine.style.transition='x2 1.8s ease'; flowLine.setAttribute('x2','740'); }
+        flowNodes.forEach((n,i)=>{ setTimeout(()=>{ n.setAttribute('fill-opacity','1'); },500+i*350); });
+        flowTexts.forEach((t,i)=>{ setTimeout(()=>{ t.setAttribute('fill','#14181a'); },500+i*350); });
         flowObs.unobserve(e.target);
       }
     });
-  },{threshold:.4});
-  const flowSvg=document.getElementById('flow-svg');
-  if(flowSvg)flowObs.observe(flowSvg);
+  },{threshold:.5});
+  if(flowSvg) flowObs.observe(flowSvg);
 
-  /* RADAR CHART */
+  /* radar chart */
   const vals=[60,45,70,35,55];
-  // Hexagon vertices (top, upper-right, lower-right, bottom, lower-left, upper-left)
-  // We use 5 axes (pentagon): top=0°, then 72° increments
   const cx=150, cy=150, maxR=120;
-  const angles=[-90, -90+72, -90+144, -90+216, -90+288].map(a=>a*Math.PI/180);
-
-  function getPoint(val,angleIdx){
-    const r=(val/100)*maxR;
-    return [cx+r*Math.cos(angles[angleIdx]), cy+r*Math.sin(angles[angleIdx])];
-  }
-  function buildPoly(){
-    return vals.map((v,i)=>getPoint(v,i).join(',')).join(' ');
-  }
+  const angles=[-90,-90+72,-90+144,-90+216,-90+288].map(a=>a*Math.PI/180);
+  function getPoint(v,i){ const r=(v/100)*maxR; return [cx+r*Math.cos(angles[i]), cy+r*Math.sin(angles[i])]; }
+  function buildPoly(){ return vals.map((v,i)=>getPoint(v,i).join(',')).join(' '); }
   function updateRadar(){
     const poly=document.getElementById('radar-poly');
-    if(poly)poly.setAttribute('points',buildPoly());
+    if(poly) poly.setAttribute('points',buildPoly());
     const avg=Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);
     const os=document.getElementById('overall-score');
-    if(os)os.textContent=avg+'%';
+    if(os) os.textContent=avg+'%';
   }
-
   document.querySelectorAll('.gov-slider').forEach(slider=>{
     function updateSlider(el){
-      const v=parseInt(el.value);
-      const idx=parseInt(el.dataset.idx);
+      const v=parseInt(el.value), idx=parseInt(el.dataset.idx);
       vals[idx]=v;
       document.getElementById('v'+idx).textContent=v+'%';
       el.style.setProperty('--pct',v+'%');
