@@ -1,1111 +1,881 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <title>Health Systems & Programs</title>
-  <link rel="shortcut icon" href="images/favicon.ico">
-  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,800;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Health Systems &amp; Programs</title>
+<link rel="shortcut icon" href="images/favicon.ico">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-  <style>
-    /* ─── TOKENS ────────────────────────────────────────────────────── */
-    :root {
-      --teal:       #04474e;
-      --teal-deep:  #020d0e;
-      --teal-mid:   #075f6a;
-      --teal-pale:  #e8f4f5;
-      --gold:       #c8973a;
-      --gold-light: #e8b65a;
-      --cream:      #faf8f4;
-      --ink:        #0d1a1b;
-      --muted:      rgba(255,255,255,0.5);
-      --white:      #ffffff;
-      --ff-d:       'Playfair Display', Georgia, serif;
-      --ff-b:       'Crimson Pro', Georgia, serif;
-      --ease:       cubic-bezier(0.4,0,0.2,1);
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--ff-b);
-      background: var(--teal-deep);
-      color: var(--white);
-      overflow-x: hidden;
-      cursor: none;
-    }
-
-    /* ─── CUSTOM CURSOR ─────────────────────────────────────────────── */
-    #cursor {
-      width: 10px; height: 10px;
-      background: var(--gold);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 9999;
-      transition: transform 0.15s var(--ease), opacity 0.3s;
-      mix-blend-mode: screen;
-    }
-    #cursor-ring {
-      width: 36px; height: 36px;
-      border: 1.5px solid rgba(200,151,58,0.5);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 9998;
-      transition: transform 0.35s var(--ease), width 0.3s, height 0.3s, border-color 0.3s;
-    }
-    a:hover ~ #cursor-ring, button:hover ~ #cursor-ring { transform: scale(2); border-color: var(--gold); }
-
-    /* ─── SCROLLBAR ─────────────────────────────────────────────────── */
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: var(--teal-deep); }
-    ::-webkit-scrollbar-thumb { background: var(--gold); }
-
-    /* ─── NAV ───────────────────────────────────────────────────────── */
-    #header {
-      position: fixed; top: 0; left: 0; right: 0;
-      z-index: 1000;
-      padding: 1.5rem 4rem;
-      display: flex; justify-content: flex-end;
-      transition: background 0.4s var(--ease);
-    }
-    #header.solid { background: rgba(2,13,14,0.92); backdrop-filter: blur(12px); }
-
-    #header nav ul { list-style: none; display: flex; }
-    #header nav ul li a {
-      font-family: var(--ff-b);
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.75);
-      text-decoration: none;
-      padding: 0.55rem 1.1rem;
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 2px;
-      transition: all 0.3s var(--ease);
-    }
-    #header nav ul li a:hover {
-      color: var(--gold);
-      border-color: var(--gold);
-      background: rgba(200,151,58,0.08);
-    }
-
-    /* ─── SIDE MENU ─────────────────────────────────────────────────── */
-    #menu-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1999; backdrop-filter: blur(4px); }
-    #menu-overlay.open { display: block; }
-
-    #menu {
-      position: fixed; top: 0; right: -380px; width: 380px; height: 100vh;
-      background: var(--teal); z-index: 2000;
-      padding: 5rem 3.5rem 3rem;
-      transition: right 0.45s cubic-bezier(0.77,0,0.18,1);
-    }
-    #menu.open { right: 0; }
-    #menu-close {
-      position: absolute; top: 1.5rem; right: 1.5rem;
-      background: none; border: none;
-      color: rgba(255,255,255,0.6); font-size: 1.4rem;
-      cursor: pointer; width: 40px; height: 40px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 50%; transition: all 0.3s;
-    }
-    #menu-close:hover { background: rgba(255,255,255,0.1); color: #fff; }
-    #menu h2 {
-      font-family: var(--ff-b); font-size: 0.6rem;
-      letter-spacing: 0.35em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 2.5rem;
-      padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.12);
-    }
-    #menu ul { list-style: none; }
-    #menu ul li { margin-bottom: 0.15rem; opacity: 0; transform: translateX(24px); transition: all 0.35s; }
-    #menu.open ul li { opacity: 1; transform: translateX(0); }
-    #menu.open ul li:nth-child(1) { transition-delay: 0.08s; }
-    #menu.open ul li:nth-child(2) { transition-delay: 0.14s; }
-    #menu.open ul li:nth-child(3) { transition-delay: 0.2s; }
-    #menu.open ul li:nth-child(4) { transition-delay: 0.26s; }
-    #menu ul li a {
-      display: block; font-family: var(--ff-d);
-      font-size: 1.5rem; color: rgba(255,255,255,0.82);
-      text-decoration: none; padding: 0.65rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      transition: color 0.3s, padding-left 0.3s;
-    }
-    #menu ul li a:hover { color: var(--gold); padding-left: 0.5rem; }
-
-    /* ─── PROGRESS BAR ──────────────────────────────────────────────── */
-    #progress-bar {
-      position: fixed; top: 0; left: 0; height: 2px;
-      background: linear-gradient(90deg, var(--teal-mid), var(--gold));
-      z-index: 9000; width: 0%; transition: width 0.1s linear;
-    }
-
-    /* ─── HERO ──────────────────────────────────────────────────────── */
-    #hero {
-      height: 100vh; position: relative;
-      display: flex; align-items: center;
-      overflow: hidden;
-    }
-
-    #hero-canvas {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-    }
-
-    .hero-inner {
-      position: relative; z-index: 2;
-      padding: 0 8%;
-      max-width: 1400px;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: end;
-      width: 100%;
-      padding-bottom: 8vh;
-      margin-top: auto;
-    }
-
-    .hero-chapter {
-      font-family: var(--ff-b);
-      font-size: 0.65rem; font-weight: 600;
-      letter-spacing: 0.4em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 1.2rem;
-      display: flex; align-items: center; gap: 0.8rem;
-      opacity: 0; animation: rise 0.9s var(--ease) 0.4s forwards;
-    }
-    .hero-chapter::before { content: ''; display: block; width: 36px; height: 1px; background: var(--gold); }
-
-    .hero-title {
-      font-family: var(--ff-d);
-      font-size: clamp(3.5rem, 8vw, 7.5rem);
-      font-weight: 900; line-height: 0.92;
-      color: var(--white); max-width: 820px;
-      opacity: 0; animation: rise 1s var(--ease) 0.6s forwards;
-    }
-    .hero-title em { font-style: italic; color: var(--gold); }
-
-    .hero-tagline {
-      font-size: 1.1rem; font-weight: 300;
-      color: rgba(255,255,255,0.6); margin-top: 1.8rem;
-      max-width: 520px; line-height: 1.7;
-      opacity: 0; animation: rise 0.9s var(--ease) 0.9s forwards;
-    }
-
-    .hero-scroll-hint {
-      display: flex; flex-direction: column;
-      align-items: center; gap: 0.5rem;
-      color: rgba(255,255,255,0.35);
-      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
-      opacity: 0; animation: rise 0.8s var(--ease) 1.3s forwards;
-    }
-    .hero-scroll-hint::after {
-      content: '';
-      display: block; width: 1px; height: 60px;
-      background: linear-gradient(var(--gold), transparent);
-      animation: drip 1.8s ease-in-out infinite;
-    }
-    @keyframes drip {
-      0%,100% { height: 60px; opacity: 1; }
-      50% { height: 80px; opacity: 0.5; }
-    }
-
-    @keyframes rise {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ─── MARQUEE ───────────────────────────────────────────────────── */
-    .marquee-strip {
-      padding: 1.2rem 0;
-      background: var(--gold);
-      overflow: hidden; white-space: nowrap;
-    }
-    .marquee-track {
-      display: inline-flex; gap: 3rem;
-      animation: marquee 22s linear infinite;
-    }
-    .marquee-word {
-      font-family: var(--ff-d);
-      font-size: 0.7rem; font-weight: 600;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--teal-deep);
-    }
-    .marquee-dot { color: var(--teal-mid); }
-    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-    /* ─── CHAPTER WRAPPER ───────────────────────────────────────────── */
-    .chapter {
-      padding: 10rem 8%;
-      position: relative;
-    }
-
-    .chapter-number {
-      position: absolute;
-      font-family: var(--ff-d);
-      font-size: clamp(12rem, 20vw, 20rem);
-      font-weight: 900;
-      color: rgba(255,255,255,0.03);
-      line-height: 1; top: 3rem; right: 5%;
-      pointer-events: none; user-select: none;
-      letter-spacing: -0.05em;
-    }
-
-    .section-eyebrow {
-      font-family: var(--ff-b); font-size: 0.62rem;
-      font-weight: 600; letter-spacing: 0.35em;
-      text-transform: uppercase; color: var(--gold);
-      display: flex; align-items: center; gap: 0.7rem;
-      margin-bottom: 1.2rem;
-    }
-    .section-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--gold); }
-
-    /* ─── DIAGONAL SPLIT ────────────────────────────────────────────── */
-    .diagonal-section {
-      display: grid;
-      grid-template-columns: 55% 45%;
-      min-height: 100vh;
-      position: relative;
-    }
-
-    .diag-text {
-      padding: 8rem 6% 8rem 8%;
-      display: flex; flex-direction: column; justify-content: center;
-      background: var(--teal-deep);
-      position: relative; z-index: 2;
-      clip-path: polygon(0 0, 92% 0, 100% 100%, 0 100%);
-    }
-
-    .diag-text h2 {
-      font-family: var(--ff-d); font-size: clamp(2rem, 4vw, 3.2rem);
-      font-weight: 800; line-height: 1.15;
-      color: var(--white); margin-bottom: 1.5rem;
-    }
-    .diag-text h2 span { color: var(--gold); font-style: italic; }
-
-    .diag-text p {
-      font-size: 1.05rem; line-height: 1.8;
-      color: rgba(255,255,255,0.65); font-weight: 300;
-      max-width: 480px; margin-bottom: 1rem;
-    }
-
-    .diag-visual {
-      position: relative; overflow: hidden;
-    }
-    .diag-visual img {
-      width: 100%; height: 100%; object-fit: cover;
-      filter: brightness(0.5) saturate(0.8);
-      transition: transform 8s var(--ease);
-    }
-    .diagonal-section:hover .diag-visual img { transform: scale(1.04); }
-    .diag-visual::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(4,71,78,0.5), rgba(200,151,58,0.1));
-    }
-
-    /* ─── HEX GRID SECTION ──────────────────────────────────────────── */
-    .hex-section {
-      background: var(--teal);
-      padding: 8rem 8%;
-      position: relative; overflow: hidden;
-    }
-
-    .hex-section::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 70% 50%, rgba(200,151,58,0.08), transparent 60%);
-    }
-
-    .hex-section h2 {
-      font-family: var(--ff-d); font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 800; color: var(--white);
-      margin-bottom: 0.5rem;
-    }
-    .hex-section .subtitle {
-      font-size: 1.05rem; color: rgba(255,255,255,0.55);
-      font-weight: 300; margin-bottom: 4rem; max-width: 550px;
-    }
-
-    .hex-grid {
-      display: flex; flex-wrap: wrap;
-      gap: 2rem; justify-content: center;
-      max-width: 900px; margin: 0 auto;
-    }
-
-    .hex-item {
-      width: 220px;
-      opacity: 0; transform: scale(0.85) translateY(20px);
-      transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
-    }
-    .hex-item.vis { opacity: 1; transform: scale(1) translateY(0); }
-    .hex-item:nth-child(1) { transition-delay: 0.05s; }
-    .hex-item:nth-child(2) { transition-delay: 0.12s; }
-    .hex-item:nth-child(3) { transition-delay: 0.19s; }
-    .hex-item:nth-child(4) { transition-delay: 0.26s; }
-    .hex-item:nth-child(5) { transition-delay: 0.33s; }
-    .hex-item:nth-child(6) { transition-delay: 0.40s; }
-
-    .hex-inner {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 16px;
-      padding: 2rem 1.5rem;
-      text-align: center;
-      transition: all 0.4s var(--ease);
-      position: relative; overflow: hidden;
-    }
-    .hex-inner::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(200,151,58,0.12), transparent);
-      opacity: 0; transition: opacity 0.4s;
-    }
-    .hex-inner:hover { background: rgba(255,255,255,0.1); border-color: var(--gold); transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-    .hex-inner:hover::before { opacity: 1; }
-
-    .hex-icon {
-      width: 52px; height: 52px;
-      background: rgba(200,151,58,0.15);
-      border: 1px solid rgba(200,151,58,0.3);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 1rem;
-      font-size: 1.3rem;
-    }
-
-    .hex-inner h3 {
-      font-family: var(--ff-d); font-size: 1rem;
-      color: var(--gold); margin-bottom: 0.6rem;
-    }
-    .hex-inner p { font-size: 0.85rem; color: rgba(255,255,255,0.55); line-height: 1.6; font-weight: 300; }
-
-    /* ─── TIMELINE RAIL ─────────────────────────────────────────────── */
-    .timeline-section {
-      padding: 8rem 8%;
-      background: var(--teal-deep);
-    }
-
-    .timeline-section h2 {
-      font-family: var(--ff-d); font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 800; color: var(--white); margin-bottom: 5rem;
-    }
-
-    .timeline-rail {
-      position: relative;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    /* vertical rail line */
-    .rail-line {
-      position: absolute;
-      left: 28px; top: 0; bottom: 0;
-      width: 1px;
-      background: rgba(255,255,255,0.08);
-    }
-    .rail-fill {
-      position: absolute;
-      left: 28px; top: 0;
-      width: 1px; height: 0%;
-      background: linear-gradient(var(--gold), var(--teal-mid));
-      transition: height 0.12s linear;
-    }
-
-    .rail-step {
-      display: grid;
-      grid-template-columns: 60px 1fr;
-      gap: 2rem;
-      margin-bottom: 0.5rem;
-      position: relative;
-    }
-
-    .rail-node {
-      display: flex; flex-direction: column; align-items: center;
-      padding-top: 0.2rem;
-    }
-
-    .rail-dot {
-      width: 14px; height: 14px;
-      border-radius: 50%;
-      background: var(--teal-deep);
-      border: 2px solid rgba(255,255,255,0.2);
-      transition: all 0.4s var(--ease);
-      position: relative; z-index: 2;
-      flex-shrink: 0;
-      margin-left: 22px;
-    }
-    .rail-step.active .rail-dot {
-      background: var(--gold);
-      border-color: var(--gold);
-      box-shadow: 0 0 0 6px rgba(200,151,58,0.2);
-    }
-
-    .rail-body {
-      padding: 0 0 3.5rem 0;
-    }
-
-    .rail-step-num {
-      font-family: var(--ff-b); font-size: 0.6rem;
-      font-weight: 700; letter-spacing: 0.25em;
-      text-transform: uppercase; color: var(--gold);
-      margin-bottom: 0.5rem;
-      opacity: 0.5; transition: opacity 0.4s;
-    }
-    .rail-step.active .rail-step-num { opacity: 1; }
-
-    .rail-body h3 {
-      font-family: var(--ff-d); font-size: 1.4rem;
-      color: rgba(255,255,255,0.5);
-      margin-bottom: 0;
-      transition: color 0.4s, font-size 0.4s;
-    }
-    .rail-step.active .rail-body h3 { color: var(--white); font-size: 1.7rem; }
-
-    .rail-detail {
-      max-height: 0; overflow: hidden;
-      transition: max-height 0.5s var(--ease), opacity 0.4s;
-      opacity: 0;
-    }
-    .rail-step.active .rail-detail { max-height: 200px; opacity: 1; }
-
-    .rail-detail p {
-      font-size: 1rem; color: rgba(255,255,255,0.55);
-      line-height: 1.8; font-weight: 300; margin-top: 0.8rem;
-    }
-
-    /* ─── ARTICLES / INSIGHTS ───────────────────────────────────────── */
-    .insights-section {
-      background: var(--teal);
-      padding: 8rem 8%;
-    }
-
-    .insights-section h2 {
-      font-family: var(--ff-d); font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 800; color: var(--white); margin-bottom: 4rem;
-    }
-
-    .insights-list { max-width: 900px; }
-
-    .insight-item {
-      display: grid;
-      grid-template-columns: 80px 1fr auto;
-      align-items: center;
-      gap: 2rem;
-      padding: 2rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      text-decoration: none;
-      transition: all 0.35s var(--ease);
-      opacity: 0; transform: translateX(-20px);
-    }
-    .insight-item.vis { opacity: 1; transform: translateX(0); }
-    .insight-item:nth-child(1) { transition-delay: 0.05s; }
-    .insight-item:nth-child(2) { transition-delay: 0.1s; }
-    .insight-item:nth-child(3) { transition-delay: 0.15s; }
-    .insight-item:nth-child(4) { transition-delay: 0.2s; }
-    .insight-item:nth-child(5) { transition-delay: 0.25s; }
-    .insight-item:nth-child(6) { transition-delay: 0.3s; }
-    .insight-item:hover { padding-left: 1rem; }
-
-    .insight-num {
-      font-family: var(--ff-d); font-size: 2.2rem; font-weight: 900;
-      color: rgba(255,255,255,0.08); line-height: 1;
-      transition: color 0.35s;
-    }
-    .insight-item:hover .insight-num { color: var(--gold); }
-
-    .insight-title {
-      font-family: var(--ff-d); font-size: 1.1rem;
-      color: rgba(255,255,255,0.75); line-height: 1.4;
-      transition: color 0.35s;
-    }
-    .insight-item:hover .insight-title { color: var(--white); }
-
-    .insight-tag {
-      font-size: 0.62rem; font-weight: 700;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--gold); border: 1px solid rgba(200,151,58,0.3);
-      padding: 0.3rem 0.7rem; border-radius: 2px; white-space: nowrap;
-      transition: all 0.35s;
-    }
-    .insight-item:hover .insight-tag { background: rgba(200,151,58,0.15); }
-
-    /* ─── CONTACT RIBBON ────────────────────────────────────────────── */
-    .contact-ribbon {
-      background: var(--teal-deep);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 70vh;
-    }
-
-    .contact-left {
-      padding: 6rem 5% 6rem 8%;
-      border-right: 1px solid rgba(255,255,255,0.06);
-    }
-    .contact-left h2 {
-      font-family: var(--ff-d); font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 800; color: var(--white); margin-bottom: 0.8rem;
-    }
-    .contact-left p { font-size: 1rem; color: rgba(255,255,255,0.45); font-weight: 300; margin-bottom: 3rem; line-height: 1.7; }
-
-    .form-field {
-      margin-bottom: 1.8rem;
-    }
-    .form-field input, .form-field textarea {
-      width: 100%;
-      background: transparent;
-      border: none; border-bottom: 1px solid rgba(255,255,255,0.15);
-      padding: 0.8rem 0;
-      color: var(--white);
-      font-family: var(--ff-b); font-size: 1rem; font-weight: 300;
-      outline: none; transition: border-color 0.3s;
-    }
-    .form-field input::placeholder, .form-field textarea::placeholder { color: rgba(255,255,255,0.25); }
-    .form-field input:focus, .form-field textarea:focus { border-bottom-color: var(--gold); }
-    .form-field textarea { resize: none; min-height: 100px; }
-
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-
-    .submit-btn {
-      background: var(--gold); color: var(--teal-deep);
-      border: none; padding: 1rem 2.5rem;
-      font-family: var(--ff-b); font-size: 0.72rem;
-      font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
-      cursor: pointer; border-radius: 2px;
-      transition: all 0.3s var(--ease);
-    }
-    .submit-btn:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(200,151,58,0.35); }
-
-    .contact-right {
-      padding: 6rem 8% 6rem 5%;
-      display: flex; flex-direction: column; justify-content: center;
-    }
-
-    .contact-right h3 {
-      font-family: var(--ff-d); font-size: 1.1rem;
-      color: rgba(255,255,255,0.4); margin-bottom: 2rem;
-      font-weight: 400; font-style: italic;
-    }
-
-    .social-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 0.8rem; margin-bottom: 3rem;
-    }
-
-    .social-btn {
-      display: flex; align-items: center; justify-content: center;
-      height: 48px;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 3px;
-      color: rgba(255,255,255,0.5);
-      text-decoration: none; font-size: 0.75rem;
-      font-weight: 600; letter-spacing: 0.1em;
-      transition: all 0.3s var(--ease);
-    }
-    .social-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(200,151,58,0.08); }
-
-    /* ─── FOOTER BAR ────────────────────────────────────────────────── */
-    .footer-bar {
-      background: #000;
-      padding: 1.5rem 8%;
-      display: flex; align-items: center; justify-content: space-between;
-      border-top: 1px solid rgba(255,255,255,0.04);
-    }
-    .footer-bar p { font-size: 0.72rem; color: rgba(255,255,255,0.2); font-weight: 300; letter-spacing: 0.05em; }
-
-    /* ─── REVEAL ────────────────────────────────────────────────────── */
-    .rv { opacity: 0; transform: translateY(30px); transition: opacity 0.85s var(--ease), transform 0.85s var(--ease); }
-    .rv.vis { opacity: 1; transform: translateY(0); }
-    .rv-d1 { transition-delay: 0.1s; }
-    .rv-d2 { transition-delay: 0.2s; }
-    .rv-d3 { transition-delay: 0.3s; }
-
-    /* ─── RESPONSIVE ────────────────────────────────────────────────── */
-    @media (max-width: 900px) {
-      body { cursor: auto; }
-      #cursor, #cursor-ring { display: none; }
-      #header { padding: 1.2rem 5%; }
-      .chapter { padding: 6rem 5%; }
-      .chapter-number { font-size: 8rem; }
-      .diagonal-section { grid-template-columns: 1fr; }
-      .diag-text { clip-path: none; padding: 5rem 5%; }
-      .diag-visual { height: 300px; }
-      .hex-grid { gap: 1rem; }
-      .hex-item { width: 160px; }
-      .insight-item { grid-template-columns: 50px 1fr; }
-      .insight-tag { display: none; }
-      .contact-ribbon { grid-template-columns: 1fr; }
-      .contact-right { padding: 3rem 5%; border-top: 1px solid rgba(255,255,255,0.06); }
-      .contact-left { padding: 5rem 5%; border-right: none; }
-      .form-row { grid-template-columns: 1fr; }
-    }
-  </style>
-
-  <!-- Cursor -->
-  <div id="cursor"></div>
-  <div id="cursor-ring"></div>
-
-  <!-- Progress -->
-  <div id="progress-bar"></div>
-
-  <!-- Menu overlay + side menu -->
-  <div id="menu-overlay"></div>
-  <nav id="menu">
-    <button id="menu-close" aria-label="Close">✕</button>
-    <h2>Navigation</h2>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="http://esvarj.wordpress.com">Health Articles</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
-
-  <!-- Header -->
-  <header id="header">
-    <nav>
-      <ul>
-        <li><a href="#" id="menu-trigger">Menu</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <!-- ══════════════════════════════════════════════════════════════════ -->
-  <!-- HERO                                                               -->
-  <!-- ══════════════════════════════════════════════════════════════════ -->
-  <section id="hero">
-    <canvas id="hero-canvas"></canvas>
-    <div class="hero-inner">
+<style>
+
+  /* ── TOKENS (page identity, unchanged from the existing site) ─── */
+  :root{
+    --paper:      #f5f2ec;
+    --paper-deep: #ece7db;
+    --ink:        #18140f;
+    --ink-soft:   #524b40;
+    --ink-faint:  #8a8172;
+    --line:       rgba(24,20,15,0.14);
+    --line-soft:  rgba(24,20,15,0.08);
+    --accent:     #3a4a3c;
+    --accent-soft:#e4e6de;
+    --clay:       #7a3320;
+    --dark:       #16130f;
+    --dark-paper: #efeadf;
+    --dark-line:  rgba(239,234,223,0.16);
+
+    --serif: 'Fraunces', Georgia, serif;
+    --sans:  'Inter', -apple-system, sans-serif;
+
+    --ease: cubic-bezier(.22,.61,.36,1);
+  }
+
+  /* ── TOKENS (global nav, copied verbatim from index.html so the
+       header and menu are pixel-identical across the site) ───────── */
+  :root{
+    --nav-ink:#16181a;
+    --nav-paper:#f1efe7;
+    --nav-stone:#8d897e;
+    --nav-line:rgba(22,24,26,.14);
+    --nav-line-on-ink:rgba(241,239,231,.16);
+    --nav-clay:#7a3320;
+    --nav-clay-soft:#a85a3f;
+    --nav-serif:'Instrument Serif', Georgia, serif;
+    --nav-ease:cubic-bezier(.22,.7,.2,1);
+  }
+
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *,*::before,*::after{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  body{
+    font-family:var(--sans);
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  a{color:inherit;}
+  img{display:block; max-width:100%;}
+
+  ::selection{background:var(--ink); color:var(--paper);}
+
+  /* ══════════════════════════════════════════════════════════════
+     GLOBAL HEADER + MENU
+     Copied structurally and stylistically from index.html so this
+     page shares one global navigation component with the rest of
+     the site. Ids and class names match index.html exactly.
+     ══════════════════════════════════════════════════════════════ */
+
+  #prog{position:fixed;top:0;left:0;height:1px;background:var(--nav-ink);z-index:900;width:0;}
+
+  #header{
+    position:fixed;top:0;left:0;right:0;z-index:700;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:1.6rem 6.5%;
+    color:var(--nav-paper);
+    transition:color .4s var(--nav-ease), background .4s var(--nav-ease), border-color .4s var(--nav-ease);
+    border-bottom:1px solid transparent;
+  }
+  #header.solid{
+    background:rgba(241,239,231,.92);
+    backdrop-filter:blur(10px);
+    color:var(--nav-ink);
+    border-bottom-color:var(--nav-line);
+  }
+  .h-logo{
+    display:inline-flex;align-items:center;
+    line-height:0;
+  }
+  .h-logo img{
+    height:34px;width:auto;display:block;
+    transition:opacity .25s;
+  }
+  .h-logo:hover img{opacity:.72;}
+  #header nav a{
+    font-family:var(--sans);font-size:.82rem;font-weight:500;
+    text-decoration:none;letter-spacing:.01em;
+    border-bottom:1px solid currentColor;padding-bottom:.15rem;
+    opacity:.9;transition:opacity .25s;
+  }
+  #header nav a:hover{opacity:.55;}
+
+  #menu{
+    position:fixed;inset:0;background:var(--nav-paper);z-index:1000;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:6% 8%;
+    clip-path:inset(0 0 100% 0);
+    transition:clip-path .55s var(--nav-ease);
+  }
+  #menu.on{clip-path:inset(0 0 0 0);}
+  #mc{
+    position:absolute;top:1.6rem;right:6.5%;background:none;border:none;
+    font-family:var(--sans);font-size:.85rem;color:var(--nav-ink);cursor:pointer;
+  }
+  #menu ul{list-style:none;}
+  #menu ul li a{
+    display:block;font-family:var(--nav-serif);font-size:clamp(2.4rem,7vw,4.2rem);
+    font-style:italic;color:var(--nav-ink);text-decoration:none;
+    padding:.25rem 0;line-height:1.15;
+    border-bottom:1px solid var(--nav-line);
+    transition:padding-left .3s var(--nav-ease), color .3s;
+  }
+  #menu ul li:last-child a{border-bottom:none;}
+  #menu ul li a:hover{padding-left:.6rem;color:var(--nav-clay);}
+  #menu .menu-foot{margin-top:2.5rem;font-size:.78rem;color:var(--nav-stone);}
+
+  @media(max-width:640px){
+    .h-logo img{height:26px;}
+  }
+
+  /* ── SHARED LAYOUT PRIMITIVES ───────────────────────────────── */
+  .kicker{
+    font-family:var(--sans); font-size:0.78rem; font-weight:500;
+    color:var(--ink-faint); letter-spacing:0.01em; margin-bottom:1.1rem;
+  }
+  .measure{ max-width:38rem; }
+  section{ padding:clamp(5rem,10vw,9rem) clamp(1.5rem,6vw,5rem); }
+
+  h2.heading{
+    font-family:var(--serif); font-weight:500;
+    font-size:clamp(2.1rem, 4.4vw, 3.4rem);
+    line-height:1.08; letter-spacing:-0.01em;
+    margin-bottom:1.6rem;
+  }
+
+  p.body-text{
+    font-size:1.05rem; color:var(--ink-soft); font-weight:400;
+    line-height:1.75; margin-bottom:1.1rem;
+  }
+
+  /* reveal-on-scroll */
+  .rv{ opacity:0; transform:translateY(20px); transition:opacity .8s var(--ease), transform .8s var(--ease); }
+  .rv.in{ opacity:1; transform:translateY(0); }
+
+  /* ── HERO ───────────────────────────────────────────────────── */
+  #hero{
+    position:relative;
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    padding:9rem clamp(1.5rem,6vw,5rem) clamp(3.5rem,7vw,6rem);
+    color:var(--dark-paper);
+    overflow:hidden;
+  }
+  .hero-bg{
+    position:absolute; inset:0;
+    background-image:url("https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1800&auto=format&fit=crop&q=70");
+    background-size:cover; background-position:center 32%;
+    filter:grayscale(0.25) contrast(1.05);
+  }
+  .hero-bg::after{
+    content:'';
+    position:absolute; inset:0;
+    background:linear-gradient(to top, rgba(17,14,10,.92) 0%, rgba(17,14,10,.62) 40%, rgba(17,14,10,.32) 70%, rgba(17,14,10,.55) 100%);
+  }
+  .hero-inner{ position:relative; z-index:2; max-width:60rem; }
+  .hero-kicker{
+    font-size:0.8rem; color:rgba(239,234,223,0.65); margin-bottom:1.4rem;
+    display:flex; align-items:center; gap:0.7rem;
+    opacity:0; animation:rise .8s var(--ease) .1s forwards;
+  }
+  .hero-kicker::before{ content:''; width:30px; height:1px; background:rgba(239,234,223,0.5); display:block; }
+  .hero-title{
+    font-family:var(--serif); font-weight:400;
+    font-size:clamp(2.6rem, 7vw, 5.4rem);
+    line-height:1.02; letter-spacing:-0.015em;
+    max-width:20ch;
+    opacity:0; animation:rise .95s var(--ease) .22s forwards;
+  }
+  .hero-tagline{
+    margin-top:1.7rem; max-width:36rem;
+    font-size:1.08rem; color:rgba(239,234,223,0.78); font-weight:400;
+    line-height:1.75;
+    opacity:0; animation:rise .9s var(--ease) .4s forwards;
+  }
+  @keyframes rise{ from{opacity:0; transform:translateY(18px);} to{opacity:1; transform:translateY(0);} }
+
+  /* ── TWO-COLUMN EDITORIAL BLOCK ─────────────────────────────── */
+  .split{
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:clamp(2.5rem,6vw,5rem);
+    align-items:center;
+  }
+  .split.reverse .split-media{ order:-1; }
+  .split-media{ position:relative; }
+  .split-media img{
+    width:100%; height:100%; object-fit:cover; aspect-ratio:4/5;
+    filter:grayscale(0.35) contrast(1.03);
+  }
+  .split-media figcaption{
+    margin-top:0.8rem; font-size:0.78rem; color:var(--ink-faint);
+  }
+
+  .pull{
+    font-family:var(--serif); font-style:italic; font-weight:400;
+    font-size:clamp(1.35rem,2.4vw,1.7rem); line-height:1.45;
+    color:var(--ink); margin:1.8rem 0; padding-left:1.3rem;
+    border-left:1px solid var(--ink);
+    max-width:32rem;
+  }
+
+  @media (max-width:860px){
+    .split{ grid-template-columns:1fr; }
+    .split.reverse .split-media{ order:0; }
+    .split-media img{ aspect-ratio:16/10; }
+  }
+
+  /* ── FRAMEWORK LIST (building blocks of delivery) ───────────── */
+  .framework{ background:var(--paper-deep); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .framework-head{ max-width:40rem; margin-bottom:3.5rem; }
+  .framework-list{
+    display:grid; grid-template-columns:repeat(2,1fr);
+    border-top:1px solid var(--line);
+  }
+  .lever{
+    padding:2.1rem 2rem 2.1rem 0;
+    border-bottom:1px solid var(--line);
+    display:grid; grid-template-columns:2.6rem 1fr; gap:0.4rem 0;
+  }
+  .framework-list .lever:nth-child(odd){ border-right:1px solid var(--line); padding-right:2.4rem; }
+  .framework-list .lever:nth-child(even){ padding-left:2.4rem; }
+  .lever-mark{
+    font-family:var(--serif); font-style:italic; font-weight:500;
+    font-size:1.3rem; color:var(--ink-faint);
+    grid-row:1/3;
+  }
+  .lever h3{
+    font-family:var(--serif); font-weight:500; font-size:1.2rem;
+    margin-bottom:0.5rem;
+  }
+  .lever p{ font-size:0.94rem; color:var(--ink-soft); line-height:1.65; max-width:26rem; }
+
+  @media (max-width:860px){
+    .framework-list{ grid-template-columns:1fr; }
+    .framework-list .lever:nth-child(odd){ border-right:none; padding-right:0; }
+    .framework-list .lever:nth-child(even){ padding-left:0; }
+  }
+
+  /* ── CASE STUDIES: Health Systems in Practice ───────────────── */
+  .practice{ border-bottom:1px solid var(--line); }
+  .practice-head{ max-width:42rem; margin-bottom:1rem; }
+  .practice-head p.body-text{ margin-bottom:0; }
+
+  .cases{ margin-top:4rem; }
+  .case{
+    padding:3.4rem 0; border-top:1px solid var(--line);
+    display:grid; grid-template-columns:9rem 1fr; gap:clamp(1.5rem,4vw,3.5rem);
+  }
+  .cases .case:last-child{ border-bottom:1px solid var(--line); }
+  .case-org{
+    font-family:var(--serif); font-style:italic; font-weight:400;
+    font-size:1rem; color:var(--ink-faint); line-height:1.4;
+  }
+  .case-org span{ display:block; font-family:var(--sans); font-style:normal; font-size:0.74rem; color:var(--ink-faint); margin-top:0.5rem; }
+
+  .case-title{
+    font-family:var(--serif); font-weight:500; font-size:clamp(1.4rem,2.3vw,1.85rem);
+    line-height:1.18; margin-bottom:1.4rem; max-width:34rem;
+  }
+  .case-grid{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:1.6rem 2.4rem; margin-bottom:1.6rem;
+  }
+  .case-field h4{
+    font-family:var(--sans); font-size:0.74rem; font-weight:500; color:var(--ink-faint);
+    letter-spacing:0.01em; margin-bottom:0.45rem;
+  }
+  .case-field p{ font-size:0.96rem; color:var(--ink-soft); line-height:1.65; }
+
+  .case-figures{ display:flex; flex-wrap:wrap; gap:2.4rem; margin:1.6rem 0; }
+  .case-figures div{ min-width:6rem; }
+  .case-fig-num{ font-family:var(--serif); font-size:1.7rem; color:var(--ink); }
+  .case-fig-lbl{ font-family:var(--sans); font-size:0.74rem; color:var(--ink-faint); margin-top:0.15rem; }
+
+  .case-system{
+    display:flex; flex-wrap:wrap; align-items:center; gap:0.5rem;
+    font-family:var(--sans); font-size:0.78rem; color:var(--accent);
+    border-top:1px solid var(--line-soft); padding-top:1.1rem; margin-top:0.4rem;
+  }
+  .case-system .arrow{ color:var(--ink-faint); }
+
+  @media (max-width:720px){
+    .case{ grid-template-columns:1fr; }
+    .case-grid{ grid-template-columns:1fr; }
+  }
+
+  /* ── HOW I WORK: central alternating timeline ───────────────── */
+  .process-head{ max-width:36rem; margin-bottom:1rem; }
+
+  .timeline{ position:relative; margin-top:4rem; }
+  .timeline-spine{
+    position:absolute; left:50%; top:0; bottom:0; width:1px;
+    background:var(--line); transform:translateX(-50%);
+  }
+  .timeline-spine-fill{
+    position:absolute; left:50%; top:0; width:1px; height:0%;
+    background:var(--ink); transform:translateX(-50%);
+    transition:height .15s linear;
+  }
+
+  .tl-step{
+    position:relative; width:100%;
+    display:grid; grid-template-columns:1fr 1fr;
+    padding:2.6rem 0;
+  }
+  .tl-dot{
+    position:absolute; left:50%; top:2.9rem; width:9px; height:9px;
+    border-radius:50%; background:var(--paper); border:1px solid var(--ink-faint);
+    transform:translateX(-50%); transition:all .4s var(--ease); z-index:2;
+  }
+  .tl-step.active .tl-dot{ background:var(--ink); border-color:var(--ink); }
+
+  .tl-content{ max-width:26rem; }
+  .tl-step:nth-child(odd) .tl-content{ grid-column:2; padding-left:clamp(2rem,5vw,4rem); text-align:left; }
+  .tl-step:nth-child(even) .tl-content{ grid-column:1; padding-right:clamp(2rem,5vw,4rem); text-align:right; margin-left:auto; }
+
+  .tl-num{
+    font-family:var(--serif); font-style:italic; font-size:0.95rem;
+    color:var(--ink-faint); display:block; margin-bottom:0.5rem;
+  }
+  .tl-step h3{
+    font-family:var(--serif); font-weight:500; color:var(--ink-faint);
+    font-size:1.4rem; transition:color .4s var(--ease); margin-bottom:0.6rem;
+  }
+  .tl-step.active h3{ color:var(--ink); }
+  .tl-step p{
+    font-size:0.98rem; color:var(--ink-soft); line-height:1.7;
+  }
+
+  @media (max-width:760px){
+    .timeline-spine, .timeline-spine-fill{ left:0.45rem; transform:none; }
+    .tl-step{ grid-template-columns:1fr; padding-left:2rem; }
+    .tl-dot{ left:0.45rem; top:2.9rem; transform:none; }
+    .tl-step:nth-child(odd) .tl-content,
+    .tl-step:nth-child(even) .tl-content{
+      grid-column:1; padding-left:1.6rem; padding-right:0; text-align:left; margin-left:0;
+    }
+  }
+
+  /* ── WHAT I ACTUALLY DO ──────────────────────────────────────── */
+  .capabilities{ background:var(--paper-deep); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .cap-head{ max-width:38rem; margin-bottom:3.5rem; }
+  .cap-list{ display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid var(--line); border-left:1px solid var(--line); }
+  .cap{ padding:2rem 1.8rem; border-right:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .cap h3{ font-family:var(--serif); font-weight:500; font-size:1.1rem; margin-bottom:0.6rem; }
+  .cap p{ font-size:0.92rem; color:var(--ink-soft); line-height:1.6; }
+
+  @media (max-width:900px){ .cap-list{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:560px){ .cap-list{ grid-template-columns:1fr; } }
+
+  /* ── INSIGHTS ───────────────────────────────────────────────── */
+  .insights{ border-top:1px solid var(--line); }
+  .insights-list{ max-width:46rem; border-top:1px solid var(--line); }
+  .insight{
+    display:flex; align-items:baseline; justify-content:space-between; gap:1.5rem;
+    padding:1.5rem 0; border-bottom:1px solid var(--line);
+    text-decoration:none; color:var(--ink);
+  }
+  .insight-title{
+    font-family:var(--serif); font-size:1.08rem; font-weight:400;
+    transition:color .25s;
+  }
+  .insight:hover .insight-title{ color:var(--ink-soft); text-decoration:underline; text-underline-offset:3px; }
+  .insight-src{
+    font-size:0.78rem; color:var(--ink-faint); white-space:nowrap; flex-shrink:0;
+  }
+
+  /* ── SIMPLE FOOTER ──────────────────────────────────────────── */
+  footer{
+    background:var(--dark); color:rgba(239,234,223,0.55);
+    display:flex; flex-direction:column; align-items:center; gap:1.4rem;
+    padding:3rem clamp(1.5rem,6vw,4.5rem);
+    border-top:1px solid var(--dark-line);
+  }
+  .footer-social{ display:flex; gap:1.6rem; }
+  .footer-social a{
+    color:rgba(239,234,223,0.6); font-size:1rem; text-decoration:none;
+    transition:color .25s;
+  }
+  .footer-social a:hover{ color:var(--dark-paper); }
+  footer p{ font-size:0.75rem; color:rgba(239,234,223,0.4); }
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--ink); outline-offset:2px;
+  }
+</style>
+</head>
+<body>
+
+<div id="prog"></div>
+
+<nav id="menu" aria-hidden="true">
+  <button id="mc" aria-label="Close menu">Close</button>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="https://gravatar.com/josemariaescriva82">Health Articles</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="menu-foot">Nairobi, Kenya, open to collaboration &amp; consulting</div>
+</nav>
+
+<header id="header">
+  <a class="h-logo" href="index.html" aria-label="Escriva Josemaria, homepage">
+    <img src="images/B.webp" alt="Escriva Josemaria">
+  </a>
+  <nav><a href="#" id="mt">Menu</a></nav>
+</header>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-kicker">Health systems and programmes</div>
+    <h1 class="hero-title">Designing health systems that work in practice</h1>
+    <p class="hero-tagline">My work sits between the programme plan and the people expected to deliver it: coordinating community health activities, monitoring what is actually happening in the field, and using data to find where delivery is slowing down.</p>
+  </div>
+</section>
+
+<!-- ══════════════ THE CHALLENGE ══════════════ -->
+<section>
+  <div class="split">
+    <div>
+      <div class="kicker">The challenge</div>
+      <h2 class="heading">Moving beyond vertical interventions</h2>
+      <p class="body-text">Effective health programmes need to work within the wider system they sit inside, not as isolated interventions. A vaccination drive succeeds or fails based on cold chain logistics, health worker availability, and community trust, not on the vaccine alone. Programmes that treat one problem on its own rarely produce lasting change.</p>
+      <blockquote class="pull">My work sits at the intersection of programme design and frontline delivery: mapping the real constraints that keep good intentions from becoming good outcomes.</blockquote>
+    </div>
+    <figure class="split-media">
+      <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=900&auto=format&fit=crop" alt="Frontline health systems work" loading="lazy">
+    </figure>
+  </div>
+</section>
+
+<!-- ══════════════ BUILDING BLOCKS OF DELIVERY ══════════════ -->
+<section class="framework">
+  <div class="framework-head">
+    <div class="kicker">Framework</div>
+    <h2 class="heading">The building blocks of delivery</h2>
+    <p class="body-text">Six interconnected levers define how health systems perform at scale. In practice, most of the work happens at the seams between them: a supply chain failure shows up as a workforce problem, and a governance gap often shows up first as a data problem.</p>
+  </div>
+  <div class="framework-list">
+    <div class="lever">
+      <span class="lever-mark">a</span>
       <div>
-        <div class="hero-chapter">Health Systems &amp; Programs</div>
-        <h1 class="hero-title">From<br>Policy to<br><em>Patient.</em></h1>
-        <p class="hero-tagline">Grounding every initiative — from hospitals to community programs — in reality, evidence, and the people it serves.</p>
+        <h3>Service delivery</h3>
+        <p>Safety, quality, and continuity of care across every level of the health system, from the community to the facility.</p>
       </div>
-      <div class="hero-scroll-hint" style="align-self: flex-end; padding-bottom: 1.5rem;">Scroll</div>
     </div>
-  </section>
-
-  <!-- ══════════════════════════════════════════════════════════════════ -->
-  <!-- MARQUEE                                                            -->
-  <!-- ══════════════════════════════════════════════════════════════════ -->
-  <div class="marquee-strip">
-    <div class="marquee-track">
-      <span class="marquee-word">Service Delivery</span><span class="marquee-dot">·</span>
-      <span class="marquee-word">Health Workforce</span><span class="marquee-dot">·</span>
-      <span class="marquee-word">Supply Chain</span><span class="marquee-dot">·</span>
-      <span class="marquee-word">Governance</span><span class="marquee-dot">·</span>
-      <span class="marquee-word">Community Health</span><span class="marquee-dot">·</span>
-      <span class="marquee-word">Systems Thinking</span><span class="marquee-dot">·</span>
-      <span class="marquee-word">Health Information</span><span class="marquee-dot">·</span>
-      <span class="marquee-word">Resilience</span><span class="marquee-dot">·</span>
-      <!-- duplicate for seamless loop -->
-      <span class="marquee-word">Service Delivery</span><span class="marquee-dot">·</span>
-      <span class="marquee-word">Health Workforce</span><span class="marquee-dot">·</span>
-      <span class="marquee-word">Supply Chain</span><span class="marquee-dot">·</span>
-      <span class="marquee-word">Governance</span><span class="marquee-dot">·</span>
-      <span class="marquee-word">Community Health</span><span class="marquee-dot">·</span>
-      <span class="marquee-word">Systems Thinking</span><span class="marquee-dot">·</span>
-      <span class="marquee-word">Health Information</span><span class="marquee-dot">·</span>
-      <span class="marquee-word">Resilience</span><span class="marquee-dot">·</span>
+    <div class="lever">
+      <span class="lever-mark">b</span>
+      <div>
+        <h3>Health workforce</h3>
+        <p>Staffing patterns, training, and supervision that determine whether frontline plans are actually carried out.</p>
+      </div>
     </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════════════════════════ -->
-  <!-- CHAPTER 1 — DIAGONAL SPLIT                                         -->
-  <!-- ══════════════════════════════════════════════════════════════════ -->
-  <div class="diagonal-section">
-    <div class="diag-text">
-      <div class="chapter-number" style="right: -10%; top: 2rem; color: rgba(255,255,255,0.02);">01</div>
-      <div class="section-eyebrow rv">The Challenge</div>
-      <h2 class="rv rv-d1">Moving Beyond <span>Vertical</span> Interventions</h2>
-      <p class="rv rv-d2">Effective health programming requires a fundamental shift from disease-specific siloes to integrated system strengthening. Programmes that address one problem in isolation rarely produce lasting change.</p>
-      <p class="rv rv-d3">I work at the intersection of policy design and frontline delivery — mapping the real constraints that prevent good intentions from becoming good outcomes.</p>
+    <div class="lever">
+      <span class="lever-mark">c</span>
+      <div>
+        <h3>Supply chain</h3>
+        <p>Inventory and logistics systems that keep vaccines, medicines, and supplies where they are needed, when they are needed.</p>
+      </div>
     </div>
-    <div class="diag-visual">
-      <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=900&auto=format&fit=crop" alt="Health systems work" loading="lazy">
+    <div class="lever">
+      <span class="lever-mark">d</span>
+      <div>
+        <h3>Health information</h3>
+        <p>Moving from paper registers to routine data that programme teams can actually use for decisions.</p>
+      </div>
     </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════════════════════════ -->
-  <!-- CHAPTER 2 — HEX BUILDING BLOCKS                                   -->
-  <!-- ══════════════════════════════════════════════════════════════════ -->
-  <div class="hex-section">
-    <div class="chapter-number" style="left: -2%; top: 2rem; right: auto; color: rgba(255,255,255,0.025);">02</div>
-    <div class="rv section-eyebrow">Framework</div>
-    <h2 class="rv rv-d1">The Building Blocks of Delivery</h2>
-    <p class="subtitle rv rv-d2">Six interconnected levers that define how health systems perform at scale.</p>
-
-    <div class="hex-grid">
-      <div class="hex-item">
-        <div class="hex-inner">
-          <div class="hex-icon">🏥</div>
-          <h3>Service Delivery</h3>
-          <p>Safety, efficacy, and continuity of care across all levels of the health system.</p>
-        </div>
+    <div class="lever">
+      <span class="lever-mark">e</span>
+      <div>
+        <h3>Governance</h3>
+        <p>Local leadership, transparency, and accountability structures that hold a programme together once the initial funding attention fades.</p>
       </div>
-      <div class="hex-item">
-        <div class="hex-inner">
-          <div class="hex-icon">👥</div>
-          <h3>Health Workforce</h3>
-          <p>Optimising staffing patterns, training, and supervision for frontline clinicians.</p>
-        </div>
-      </div>
-      <div class="hex-item">
-        <div class="hex-inner">
-          <div class="hex-icon">📦</div>
-          <h3>Supply Chain</h3>
-          <p>Data-driven inventory and logistics systems to eliminate life-threatening stock-outs.</p>
-        </div>
-      </div>
-      <div class="hex-item">
-        <div class="hex-inner">
-          <div class="hex-icon">📊</div>
-          <h3>Health Information</h3>
-          <p>Moving from manual collection to real-time local decision-making platforms.</p>
-        </div>
-      </div>
-      <div class="hex-item">
-        <div class="hex-inner">
-          <div class="hex-icon">⚖️</div>
-          <h3>Governance</h3>
-          <p>Strengthening local leadership, transparency, and clinical accountability structures.</p>
-        </div>
-      </div>
-      <div class="hex-item">
-        <div class="hex-inner">
-          <div class="hex-icon">🤝</div>
-          <h3>Community</h3>
-          <p>Integrating community health workers into the formal public health architecture.</p>
-        </div>
+    </div>
+    <div class="lever">
+      <span class="lever-mark">f</span>
+      <div>
+        <h3>Community</h3>
+        <p>Community health workers and local actors, integrated into the formal system rather than treated as an add-on to it.</p>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- ══════════════════════════════════════════════════════════════════ -->
-  <!-- CHAPTER 3 — SECOND DIAGONAL (flipped)                             -->
-  <!-- ══════════════════════════════════════════════════════════════════ -->
-  <div class="diagonal-section" style="direction: rtl;">
-    <div class="diag-text" style="direction: ltr; clip-path: polygon(8% 0, 100% 0, 100% 100%, 0% 100%); padding: 8rem 8% 8rem 6%;">
-      <div class="section-eyebrow rv">Systems Thinking</div>
-      <h2 class="rv rv-d1">Mapping <span>Interconnection</span></h2>
-      <p class="rv rv-d2">Sustainable impact requires understanding how supply chains, policy environments, workforce dynamics, and human behavior interact — and where small changes produce outsized results.</p>
-      <p class="rv rv-d3">I bring a structured analytical lens to health programs, identifying feedback loops and systemic bottlenecks that conventional assessments overlook.</p>
+<!-- ══════════════ MAPPING THE INTERSECTION ══════════════ -->
+<section>
+  <div class="split reverse">
+    <div>
+      <div class="kicker">Systems thinking</div>
+      <h2 class="heading">Mapping the intersection</h2>
+      <p class="body-text">Sustainable impact requires understanding how supply chains, policy environments, workforce dynamics, and human behaviour interact, and where small changes produce outsized results.</p>
+      <p class="body-text">I bring a structured, practical lens to health programmes: identifying the feedback loops and bottlenecks that a conventional assessment, looking at one component at a time, tends to miss.</p>
     </div>
-    <div class="diag-visual">
-      <img src="images/redc.webp" alt="Systems work" loading="lazy">
-    </div>
+    <figure class="split-media">
+      <img src="images/redc.webp" alt="Systems thinking in health programs" loading="lazy">
+    </figure>
+  </div>
+</section>
+
+<!-- ══════════════ HEALTH SYSTEMS IN PRACTICE ══════════════ -->
+<section class="practice">
+  <div class="practice-head">
+    <div class="kicker">Portfolio</div>
+    <h2 class="heading">Health systems in practice</h2>
+    <p class="body-text">Four programmes that show what this work has actually involved: the problem on the ground, my role in it, how the work got done, and what changed as a result.</p>
   </div>
 
-  <!-- ══════════════════════════════════════════════════════════════════ -->
-  <!-- CHAPTER 4 — TIMELINE RAIL                                          -->
-  <!-- ══════════════════════════════════════════════════════════════════ -->
-  <div class="timeline-section">
-    <div class="chapter-number" style="right: 3%; top: 3rem; color: rgba(255,255,255,0.025);">04</div>
-    <div class="rv section-eyebrow">Process</div>
-    <h2 class="rv rv-d1">How I Work</h2>
+  <div class="cases">
 
-    <div class="timeline-rail">
-      <div class="rail-line"></div>
-      <div class="rail-fill" id="rail-fill"></div>
-
-      <div class="rail-step" data-step="0">
-        <div class="rail-node"><div class="rail-dot"></div></div>
-        <div class="rail-body">
-          <div class="rail-step-num">Step 01</div>
-          <h3>Assess</h3>
-          <div class="rail-detail"><p>Deep-dive contextual root-cause analysis and stakeholder mapping to identify systemic bottlenecks that affect programme performance across all levels.</p></div>
-        </div>
-      </div>
-
-      <div class="rail-step" data-step="1">
-        <div class="rail-node"><div class="rail-dot"></div></div>
-        <div class="rail-body">
-          <div class="rail-step-num">Step 02</div>
-          <h3>Co-Design</h3>
-          <div class="rail-detail"><p>Collaborative strategy building with local leaders and frontline actors to ensure ownership, cultural alignment, and operational feasibility from day one.</p></div>
-        </div>
-      </div>
-
-      <div class="rail-step" data-step="2">
-        <div class="rail-node"><div class="rail-dot"></div></div>
-        <div class="rail-body">
-          <div class="rail-step-num">Step 03</div>
-          <h3>Implement</h3>
-          <div class="rail-detail"><p>Phased rollout with heavy focus on quality improvement cycles, frontline empowerment, and rapid feedback mechanisms that prevent early failure.</p></div>
-        </div>
-      </div>
-
-      <div class="rail-step" data-step="3">
-        <div class="rail-node"><div class="rail-dot"></div></div>
-        <div class="rail-body">
-          <div class="rail-step-num">Step 04</div>
-          <h3>Monitor</h3>
-          <div class="rail-detail"><p>Real-time learning loops that allow rapid pivoting, early gap detection, and transparent performance reporting to stakeholders at every level.</p></div>
-        </div>
-      </div>
-
-      <div class="rail-step" data-step="4">
-        <div class="rail-node"><div class="rail-dot"></div></div>
-        <div class="rail-body">
-          <div class="rail-step-num">Step 05</div>
-          <h3>Scale</h3>
-          <div class="rail-detail"><p>Evidence-based expansion and permanent policy integration within the national health system — turning project pilots into enduring infrastructure.</p></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════════════════════════ -->
-  <!-- CHAPTER 5 — INSIGHTS                                              -->
-  <!-- ══════════════════════════════════════════════════════════════════ -->
-  <div class="insights-section">
-    <div class="chapter-number" style="right: 3%; top: 2rem; color: rgba(255,255,255,0.03);">05</div>
-    <div class="rv section-eyebrow">Related Insights</div>
-    <h2 class="rv rv-d1">Explore Related Insights</h2>
-
-    <div class="insights-list">
-
-      <a class="insight-item" href="https://www.linkedin.com/posts/josemariaescriva_the-article-explores-why-public-health-must-activity-7411673275082215425-23ac?utm_source=share&utm_medium=member_desktop" target="_blank" rel="noopener noreferrer">
-        <div class="insight-num">01</div>
-        <div class="insight-title">Moving Beyond Vertical Interventions in Public Health</div>
-        <div class="insight-tag">LinkedIn</div>
-      </a>
-
-      <a class="insight-item" href="https://medium.com/@escopy/systems-thinking-in-health-program-design-772c20b8c075" target="_blank" rel="noopener noreferrer">
-        <div class="insight-num">02</div>
-        <div class="insight-title">Systems Thinking in Health Program Design</div>
-        <div class="insight-tag">Medium</div>
-      </a>
-
-      <a class="insight-item" href="https://www.linkedin.com/posts/josemariaescriva_this-article-highlights-why-community-defined-activity-7411677477418389504-XCod?utm_source=share&utm_medium=member_desktop" target="_blank" rel="noopener noreferrer">
-        <div class="insight-num">03</div>
-        <div class="insight-title">Community Measures That Define Program Success</div>
-        <div class="insight-tag">LinkedIn</div>
-      </a>
-
-      <a class="insight-item" href="https://medium.com/@escopy/integrated-resilience-where-policy-meets-the-patient-b52bc25f2426" target="_blank" rel="noopener noreferrer">
-        <div class="insight-num">04</div>
-        <div class="insight-title">Integrated Resilience: Where Policy Meets the Patient</div>
-        <div class="insight-tag">Medium</div>
-      </a>
-
-      <a class="insight-item" href="https://open.substack.com/pub/escopy/p/coordinating-health-stakeholders?r=73zqs0&utm_campaign=post&utm_medium=web" target="_blank" rel="noopener noreferrer">
-        <div class="insight-num">05</div>
-        <div class="insight-title">Coordinating Health Stakeholders for Sustainable Delivery</div>
-        <div class="insight-tag">Substack</div>
-      </a>
-
-      <a class="insight-item" href="https://open.substack.com/pub/escopy/p/from-data-collection-to-data-use?r=73zqs0&utm_campaign=post&utm_medium=web" target="_blank" rel="noopener noreferrer">
-        <div class="insight-num">06</div>
-        <div class="insight-title">From Data Collection to Data Use in Health Systems</div>
-        <div class="insight-tag">Substack</div>
-      </a>
-
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════════════════════════ -->
-  <!-- CONTACT                                                            -->
-  <!-- ══════════════════════════════════════════════════════════════════ -->
-  <div class="contact-ribbon">
-    <div class="contact-left">
-      <div class="rv section-eyebrow">Get in Touch</div>
-      <h2 class="rv rv-d1">Let's Work Together</h2>
-      <p class="rv rv-d2">Interested in health systems strengthening, programme design, or collaboration? Send a message.</p>
-      <form method="POST" action="https://formspree.io/f/xwvpkvzl" class="rv rv-d2">
-        <div class="form-row">
-          <div class="form-field">
-            <input type="text" name="name" placeholder="Name" required>
+    <article class="case rv">
+      <div class="case-org">St. Martha Hospital<span>Programme Associate</span></div>
+      <div>
+        <h3 class="case-title">Coordinating six community health programmes and closing the reporting gap</h3>
+        <div class="case-grid">
+          <div class="case-field">
+            <h4>Context</h4>
+            <p>St. Martha Hospital ran six community health programmes covering preventive care, vaccination, and maternal and child health. The programmes had outgrown the coordination and reporting systems holding them together.</p>
           </div>
-          <div class="form-field">
-            <input type="email" name="email" placeholder="Email" required>
+          <div class="case-field">
+            <h4>My role</h4>
+            <p>I coordinated activity across the six programmes, supported outreach and training for community teams, and managed the reporting flow between the community level and hospital leadership.</p>
+          </div>
+          <div class="case-field">
+            <h4>How I worked</h4>
+            <p>I planned and ran outreach and training sessions with community health workers and clinical staff, strengthened referral pathways between the community and the facility, and set up a routine reporting cycle using DHIS2, Excel, and Power BI.</p>
+          </div>
+          <div class="case-field">
+            <h4>Evidence</h4>
+            <p>Vaccination records, training attendance, referral logs, and community feedback were tracked together, so the team could see whether outreach was actually converting into uptake and trust.</p>
           </div>
         </div>
-        <div class="form-field">
-          <textarea name="message" placeholder="Your message…" rows="4"></textarea>
+        <div class="case-figures">
+          <div><div class="case-fig-num">2,000+</div><div class="case-fig-lbl">People reached</div></div>
+          <div><div class="case-fig-num">6</div><div class="case-fig-lbl">Programmes coordinated</div></div>
+          <div><div class="case-fig-num">25%</div><div class="case-fig-lbl">Vaccination uptake increase</div></div>
+          <div><div class="case-fig-num">30%</div><div class="case-fig-lbl">Reduction in reporting delays</div></div>
         </div>
-        <button type="submit" class="submit-btn">Send Message →</button>
-      </form>
+        <div class="case-system">
+          <span>Community</span><span class="arrow">&rarr;</span><span>Workforce</span><span class="arrow">&rarr;</span><span>Data</span><span class="arrow">&rarr;</span><span>Service delivery</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="case rv">
+      <div class="case-org">St. Martha Hospital<span>Community Health Programme Assistant</span></div>
+      <div>
+        <h3 class="case-title">Building the feedback loop between the community and the programme</h3>
+        <div class="case-grid">
+          <div class="case-field">
+            <h4>Context</h4>
+            <p>Before coordinating the full programme set, I worked at the community level, where most of the actual contact with families happens and where most problems first become visible.</p>
+          </div>
+          <div class="case-field">
+            <h4>My role</h4>
+            <p>Programme Assistant, supporting data collection, community feedback, and outreach reporting for the same set of hospital programmes.</p>
+          </div>
+          <div class="case-field">
+            <h4>How I worked</h4>
+            <p>I ran structured household surveys and client feedback collection using KoboToolbox and ODK, supported outreach activities on the ground, and fed what came back into programme planning.</p>
+          </div>
+          <div class="case-field">
+            <h4>Evidence</h4>
+            <p>Survey and feedback data gave the programme a direct line to what was and was not working, rather than relying on assumptions about community needs.</p>
+          </div>
+        </div>
+        <div class="case-figures">
+          <div><div class="case-fig-num">800+</div><div class="case-fig-lbl">Survey participants</div></div>
+          <div><div class="case-fig-num">500+</div><div class="case-fig-lbl">Feedback responses a year</div></div>
+          <div><div class="case-fig-num">25+</div><div class="case-fig-lbl">Outreach activities supported</div></div>
+        </div>
+        <div class="case-system">
+          <span>Community</span><span class="arrow">&rarr;</span><span>Data</span><span class="arrow">&rarr;</span><span>Learning</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="case rv">
+      <div class="case-org">World Health Organization<span>Polio Immunization &amp; MEAL Officer, Vaccine Specialist</span></div>
+      <div>
+        <h3 class="case-title">Verifying coverage in hard-to-reach communities during immunization campaigns</h3>
+        <div class="case-grid">
+          <div class="case-field">
+            <h4>Context</h4>
+            <p>WHO-supported immunization campaigns in communities that standard delivery models often struggle to reach.</p>
+          </div>
+          <div class="case-field">
+            <h4>My role</h4>
+            <p>I supported campaign planning and field implementation, working alongside local health authorities and supervisors to reach children who are usually missed.</p>
+          </div>
+          <div class="case-field">
+            <h4>How I worked</h4>
+            <p>I helped plan campaign rounds, supported delivery in the field, and ran post-campaign coverage surveys, verifying results against WHO quality standards before they were reported upward.</p>
+          </div>
+          <div class="case-field">
+            <h4>Evidence</h4>
+            <p>The chain ran from planning, through field delivery, into monitoring and verification, and back into planning for the next round: a working example of the loop this whole page is describing.</p>
+          </div>
+        </div>
+        <div class="case-figures">
+          <div><div class="case-fig-num">3,000+</div><div class="case-fig-lbl">Children vaccinated</div></div>
+          <div><div class="case-fig-num">98%</div><div class="case-fig-lbl">Coverage achieved</div></div>
+          <div><div class="case-fig-num">30%</div><div class="case-fig-lbl">Increase in vaccine acceptance</div></div>
+        </div>
+        <div class="case-system">
+          <span>Workforce</span><span class="arrow">&rarr;</span><span>Service delivery</span><span class="arrow">&rarr;</span><span>Monitoring</span><span class="arrow">&rarr;</span><span>Learning</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="case rv">
+      <div class="case-org">LeafSpire<span>Founder</span></div>
+      <div>
+        <h3 class="case-title">Building a youth programme structure from the ground up</h3>
+        <div class="case-grid">
+          <div class="case-field">
+            <h4>Context</h4>
+            <p>LeafSpire is a youth-led initiative, not a registered NGO or formal health system. It focuses on mentorship, mental wellbeing, and leadership development for young people.</p>
+          </div>
+          <div class="case-field">
+            <h4>My role</h4>
+            <p>Founder. I designed the programme structure, mentorship pathways, and volunteer coordination from scratch, without an existing institution to build on.</p>
+          </div>
+          <div class="case-field">
+            <h4>How I worked</h4>
+            <p>I set up mentorship structures, coordinated volunteers, and built out youth engagement activities connected to mental health, leadership, and SDG-related themes.</p>
+          </div>
+          <div class="case-field">
+            <h4>What it demonstrates</h4>
+            <p>The same programme-design instincts as the health systems work above: turning an identified need into a structure, and a structure into something people could actually take part in.</p>
+          </div>
+        </div>
+        <div class="case-system">
+          <span>Community</span><span class="arrow">&rarr;</span><span>Workforce (volunteers)</span><span class="arrow">&rarr;</span><span>Learning</span>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ══════════════ HOW I WORK ══════════════ -->
+<section>
+  <div class="process-head">
+    <div class="kicker">Process</div>
+    <h2 class="heading">How I work</h2>
+    <p class="body-text">The same six-stage cycle runs through the programmes above, in different combinations depending on where I sat in each one.</p>
+  </div>
+
+  <div class="timeline" id="timeline">
+    <div class="timeline-spine"></div>
+    <div class="timeline-spine-fill" id="timelineFill"></div>
+
+    <div class="tl-step" data-step="0">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <span class="tl-num">01</span>
+        <h3>Assess</h3>
+        <p>Understand the programme context, examine available evidence, and work with the team to identify the operational bottlenecks behind a performance gap.</p>
+      </div>
     </div>
-    <div class="contact-right rv">
-      <h3>Connect on social</h3>
-      <div class="social-grid">
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:74px;max-width:860px;">
-
-  <!-- X -->
-  <a href="https://x.com/Leafspire" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-x-twitter"></i></a>
-
-  <!-- Facebook -->
-  <a href="https://www.facebook.com/iamescriva/" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-facebook-f"></i></a>
-
-  <!-- Instagram -->
-  <a href="https://www.instagram.com/leafspirefoundation/" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-instagram"></i></a>
-
-  <!-- LinkedIn -->
-  <a href="https://www.linkedin.com/in/josemariaescriva/" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-linkedin-in"></i></a>
-
-  <!-- GitHub -->
-  <a href="https://github.com/escrivajosemaria" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-github"></i></a>
-
-  <!-- Portfolio -->
-  <a href="https://leafspire.github.io/leafoundation/" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-solid fa-globe"></i></a>
-
-  <!-- YouTube -->
-  <a href="https://youtube.com/@escrivahypercollective?si=qVorezgzhYidVWwV" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-youtube"></i></a>
-
-  <!-- WordPress -->
-  <a href="http://esvarj.wordpress.com" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-wordpress"></i></a>
-
-</div>
+    <div class="tl-step" data-step="1">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <span class="tl-num">02</span>
+        <h3>Co-design</h3>
+        <p>Work with health workers, community actors, and programme teams to shape a practical response, one that people on the ground can actually carry out.</p>
+      </div>
+    </div>
+    <div class="tl-step" data-step="2">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <span class="tl-num">03</span>
+        <h3>Implement</h3>
+        <p>Turn the plan into coordinated activity: outreach, training, referrals, and the day-to-day workflows that keep a programme running.</p>
+      </div>
+    </div>
+    <div class="tl-step" data-step="3">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <span class="tl-num">04</span>
+        <h3>Monitor</h3>
+        <p>Track indicators, collect and verify field evidence, and gather feedback so implementation problems surface early rather than at evaluation.</p>
+      </div>
+    </div>
+    <div class="tl-step" data-step="4">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <span class="tl-num">05</span>
+        <h3>Learn and adapt</h3>
+        <p>Use what monitoring and community feedback actually show to adjust delivery, rather than sticking to a plan that the evidence no longer supports.</p>
+      </div>
+    </div>
+    <div class="tl-step" data-step="5">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <span class="tl-num">06</span>
+        <h3>Scale</h3>
+        <p>Document what worked, strengthen the underlying systems, and support the parts of an approach that are genuinely ready to be sustained or extended.</p>
       </div>
     </div>
   </div>
+</section>
 
-  <div class="footer-bar">
-    <p>&copy; Escriva Josemaria 2024</p>
-    <p>Design: escriva.https</p>
+<!-- ══════════════ WHAT I ACTUALLY DO ══════════════ -->
+<section class="capabilities">
+  <div class="cap-head">
+    <div class="kicker">Capabilities</div>
+    <h2 class="heading">What I actually do</h2>
+    <p class="body-text">Practical capabilities, each tied to the programme work above rather than treated as an abstract skill.</p>
   </div>
+  <div class="cap-list">
+    <div class="cap">
+      <h3>Programme design</h3>
+      <p>Turning an identified need, at St. Martha or at LeafSpire, into a structured intervention and a plan a team can follow.</p>
+    </div>
+    <div class="cap">
+      <h3>Programme coordination</h3>
+      <p>Aligning people, activities, timelines, and reporting requirements across multiple programmes running at once.</p>
+    </div>
+    <div class="cap">
+      <h3>Community systems</h3>
+      <p>Working with community health workers, caregivers, and local actors as part of the system, not around it.</p>
+    </div>
+    <div class="cap">
+      <h3>Monitoring and learning</h3>
+      <p>Using programme data and field feedback to find where delivery is slowing down and to correct course early.</p>
+    </div>
+    <div class="cap">
+      <h3>Health information</h3>
+      <p>DHIS2, Excel, Power BI, KoboToolbox, and ODK, used inside real programme monitoring and reporting workflows.</p>
+    </div>
+    <div class="cap">
+      <h3>Operational improvement</h3>
+      <p>Finding the specific bottleneck, in reporting, referrals, or coordination, and fixing that instead of redesigning the whole system.</p>
+    </div>
+  </div>
+</section>
 
-  <!-- ══════════════════════════════════════════════════════════════════ -->
-  <!-- SCRIPTS                                                            -->
-  <!-- ══════════════════════════════════════════════════════════════════ -->
-  <script>
-  (function () {
+<!-- ══════════════ INSIGHTS ══════════════ -->
+<section class="insights">
+  <div class="kicker">Related insights</div>
+  <h2 class="heading">Explore related insights</h2>
 
-    /* ── CURSOR ─────────────────────────────────────────────────────── */
-    const cur = document.getElementById('cursor');
-    const ring = document.getElementById('cursor-ring');
-    let mx = 0, my = 0, rx = 0, ry = 0;
+  <div class="insights-list">
+    <a class="insight" href="https://www.linkedin.com/posts/josemariaescriva_the-article-explores-why-public-health-must-activity-7411673275082215425-23ac?utm_source=share&utm_medium=member_desktop" target="_blank" rel="noopener noreferrer">
+      <span class="insight-title">Moving Beyond Vertical Interventions in Public Health</span>
+      <span class="insight-src">LinkedIn</span>
+    </a>
+    <a class="insight" href="https://medium.com/@escopy/systems-thinking-in-health-program-design-772c20b8c075" target="_blank" rel="noopener noreferrer">
+      <span class="insight-title">Systems Thinking in Health Program Design</span>
+      <span class="insight-src">Medium</span>
+    </a>
+    <a class="insight" href="https://www.linkedin.com/posts/josemariaescriva_this-article-highlights-why-community-defined-activity-7411677477418389504-XCod?utm_source=share&utm_medium=member_desktop" target="_blank" rel="noopener noreferrer">
+      <span class="insight-title">Community Measures That Define Program Success</span>
+      <span class="insight-src">LinkedIn</span>
+    </a>
+    <a class="insight" href="https://medium.com/@escopy/integrated-resilience-where-policy-meets-the-patient-b52bc25f2426" target="_blank" rel="noopener noreferrer">
+      <span class="insight-title">Integrated Resilience: Where Policy Meets the Patient</span>
+      <span class="insight-src">Medium</span>
+    </a>
+    <a class="insight" href="https://open.substack.com/pub/escopy/p/coordinating-health-stakeholders?r=73zqs0&utm_campaign=post&utm_medium=web" target="_blank" rel="noopener noreferrer">
+      <span class="insight-title">Coordinating Health Stakeholders for Sustainable Delivery</span>
+      <span class="insight-src">Substack</span>
+    </a>
+    <a class="insight" href="https://open.substack.com/pub/escopy/p/from-data-collection-to-data-use?r=73zqs0&utm_campaign=post&utm_medium=web" target="_blank" rel="noopener noreferrer">
+      <span class="insight-title">From Data Collection to Data Use in Health Systems</span>
+      <span class="insight-src">Substack</span>
+    </a>
+  </div>
+</section>
 
-    document.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      cur.style.left  = mx - 5  + 'px';
-      cur.style.top   = my - 5  + 'px';
+<!-- ══════════════ SIMPLE FOOTER ══════════════ -->
+<footer>
+  <div class="footer-social">
+<a href="https://x.com/escriva_ke" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://web.facebook.com/escriva101/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/escriva_ke/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/josemariaescriva/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="https://github.com/escrivajosemaria" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="https://leafspire.github.io/leafoundation/" target="_blank" rel="noopener noreferrer" aria-label="Portfolio"><i class="fa-solid fa-globe"></i></a>
+            <a href="https://www.youtube.com/@escriva_ke" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="https://gravatar.com/josemariaescriva82" target="_blank" rel="noopener noreferrer" aria-label="WordPress"><i class="fa-brands fa-wordpress"></i></a>
+  </div>
+  <p>&copy; Escriva Josemaria 2024</p>
+</footer>
+
+<script>
+(function(){
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // scroll progress + header solid state (matches index.html)
+  var pb = document.getElementById('prog');
+  var hdr = document.getElementById('header');
+  var heroH = document.getElementById('hero').offsetHeight;
+  function onScroll(){
+    var s = document.documentElement;
+    var max = s.scrollHeight - window.innerHeight;
+    pb.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+    hdr.classList.toggle('solid', window.scrollY > heroH - 90);
+  }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+
+  // menu open/close (matches index.html)
+  var menuEl = document.getElementById('menu');
+  document.getElementById('mt').addEventListener('click', function(e){
+    e.preventDefault();
+    menuEl.classList.add('on');
+    menuEl.setAttribute('aria-hidden','false');
+  });
+  document.getElementById('mc').addEventListener('click', function(){
+    menuEl.classList.remove('on');
+    menuEl.setAttribute('aria-hidden','true');
+  });
+
+  // reveal on scroll (case studies)
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); }
     });
-    (function animRing() {
-      rx += (mx - rx - 18) * 0.12;
-      ry += (my - ry - 18) * 0.12;
-      ring.style.left = rx + 'px';
-      ring.style.top  = ry + 'px';
-      requestAnimationFrame(animRing);
-    })();
+  }, { threshold:0.08 });
+  document.querySelectorAll('.rv').forEach(function(el){ obs.observe(el); });
 
-    document.querySelectorAll('a, button').forEach(el => {
-      el.addEventListener('mouseenter', () => { cur.style.transform = 'scale(2.5)'; ring.style.transform = 'scale(1.6)'; ring.style.borderColor = 'var(--gold)'; });
-      el.addEventListener('mouseleave', () => { cur.style.transform = 'scale(1)'; ring.style.transform = 'scale(1)'; ring.style.borderColor = 'rgba(200,151,58,0.5)'; });
+  // central timeline progress
+  var timeline = document.getElementById('timeline');
+  var fill = document.getElementById('timelineFill');
+  var steps = document.querySelectorAll('.tl-step');
+  function onTimeline(){
+    if (!timeline) return;
+    var rect = timeline.getBoundingClientRect();
+    var total = timeline.offsetHeight - window.innerHeight * 0.5;
+    var progress = Math.max(0, Math.min(1, (window.innerHeight * 0.7 - rect.top) / Math.max(total, 1)));
+    fill.style.height = (progress * 100) + '%';
+    steps.forEach(function(step, i){
+      var threshold = i / (steps.length - 1);
+      step.classList.toggle('active', progress >= threshold - 0.04);
     });
+  }
+  window.addEventListener('scroll', onTimeline, { passive:true });
+  onTimeline();
 
-    /* ── PROGRESS BAR ───────────────────────────────────────────────── */
-    const pb = document.getElementById('progress-bar');
-    window.addEventListener('scroll', () => {
-      const s = document.documentElement;
-      pb.style.width = (window.scrollY / (s.scrollHeight - window.innerHeight) * 100) + '%';
-    }, { passive: true });
+  if (reduceMotion){
+    document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
+    steps.forEach(function(step){ step.classList.add('active'); });
+  }
 
-    /* ── NAV SOLID ON SCROLL ────────────────────────────────────────── */
-    const hdr = document.getElementById('header');
-    window.addEventListener('scroll', () => {
-      hdr.classList.toggle('solid', window.scrollY > 60);
-    }, { passive: true });
-
-    /* ── MENU ───────────────────────────────────────────────────────── */
-    const menuEl  = document.getElementById('menu');
-    const overlay = document.getElementById('menu-overlay');
-    document.getElementById('menu-trigger').addEventListener('click', e => { e.preventDefault(); menuEl.classList.add('open'); overlay.classList.add('open'); });
-    document.getElementById('menu-close').addEventListener('click', () => { menuEl.classList.remove('open'); overlay.classList.remove('open'); });
-    overlay.addEventListener('click', () => { menuEl.classList.remove('open'); overlay.classList.remove('open'); });
-
-    /* ── HERO CANVAS PARTICLE NET ───────────────────────────────────── */
-    const canvas = document.getElementById('hero-canvas');
-    const ctx    = canvas.getContext('2d');
-
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    resize();
-    window.addEventListener('resize', resize);
-
-    const COUNT = 55;
-    const pts = Array.from({ length: COUNT }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      r: Math.random() * 2 + 1,
-    }));
-
-    function drawNet() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      // Overlay gradient
-      const g = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      g.addColorStop(0, 'rgba(2,13,14,0.97)');
-      g.addColorStop(0.6, 'rgba(4,71,78,0.85)');
-      g.addColorStop(1, 'rgba(2,13,14,0.97)');
-      ctx.fillStyle = g; ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      pts.forEach(p => {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-      });
-
-      // Lines
-      for (let i = 0; i < pts.length; i++) {
-        for (let j = i + 1; j < pts.length; j++) {
-          const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 140) {
-            ctx.beginPath();
-            ctx.moveTo(pts[i].x, pts[i].y);
-            ctx.lineTo(pts[j].x, pts[j].y);
-            ctx.strokeStyle = `rgba(200,151,58,${0.12 * (1 - dist/140)})`;
-            ctx.lineWidth = 0.6;
-            ctx.stroke();
-          }
-        }
-      }
-
-      // Dots
-      pts.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(200,151,58,0.35)';
-        ctx.fill();
-      });
-
-      requestAnimationFrame(drawNet);
-    }
-    drawNet();
-
-    /* ── SCROLL REVEAL ──────────────────────────────────────────────── */
-    const rvEls = document.querySelectorAll('.rv, .hex-item, .insight-item');
-    const rvObs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); rvObs.unobserve(e.target); } });
-    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
-    rvEls.forEach(el => rvObs.observe(el));
-
-    /* ── TIMELINE RAIL ──────────────────────────────────────────────── */
-    const railSection = document.querySelector('.timeline-section');
-    const railFill    = document.getElementById('rail-fill');
-    const railSteps   = document.querySelectorAll('.rail-step');
-
-    function updateRail() {
-      if (!railSection) return;
-      const rect = railSection.getBoundingClientRect();
-      const total = railSection.offsetHeight - window.innerHeight;
-      const progress = Math.max(0, Math.min(1, -rect.top / Math.max(total, 1)));
-
-      // Fill rail line
-      railFill.style.height = (progress * 100) + '%';
-
-      // Activate steps
-      railSteps.forEach((step, i) => {
-        const threshold = i / (railSteps.length - 1);
-        step.classList.toggle('active', progress >= threshold - 0.08);
-      });
-    }
-
-    window.addEventListener('scroll', updateRail, { passive: true });
-    updateRail();
-
-  })();
-  </script>
+})();
+</script>
+</body>
 </html>
