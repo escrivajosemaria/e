@@ -1,1003 +1,743 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Evaluation &amp; Impact Assessment</title>
-  <link rel="shortcut icon" href="images/favicon.ico">
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-  <style>
-  :root {
-    --teal:      #04474e;
-    --teal-deep: #020d0e;
-    --teal-mid:  #075f6a;
-    --teal-lite: #0d9db0;
-    --gold:      #c8973a;
-    --gold-lt:   #e8b65a;
-    --cream:     #faf8f4;
-    --ink:       #0d1a1b;
-    --border:    rgba(255,255,255,.07);
-    --border-d:  rgba(4,71,78,.18);
-    --ff-d:      'EB Garamond', Georgia, serif;
-    --ff-ui:     'Josefin Sans', sans-serif;
-    --ease:      cubic-bezier(0.4,0,0.2,1);
-  }
-  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
-  html { scroll-behavior:smooth; }
-  body { font-family:var(--ff-d); background:var(--teal-deep); color:#fff; overflow-x:hidden; }
-  ::-webkit-scrollbar { width:3px; }
-  ::-webkit-scrollbar-track { background:var(--teal-deep); }
-  ::-webkit-scrollbar-thumb { background:var(--gold); }
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Evaluation &amp; Impact Assessment</title>
+<link rel="shortcut icon" href="images/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,460;0,9..144,560;1,9..144,400;1,9..144,460&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+<style>
+:root{
+  --paper:#F3F1EA;
+  --paper-warm:#ECE8DE;
+  --ink:#171713;
+  --ink-70:rgba(23,23,19,.68);
+  --ink-45:rgba(23,23,19,.42);
+  --ink-25:rgba(23,23,19,.16);
+  --deep:#101B16;
+  --deep-2:#182821;
+  --paper-on-deep:#EFEDE4;
+  --paper-on-deep-70:rgba(239,237,228,.62);
+  --paper-on-deep-40:rgba(239,237,228,.28);
+  --line-deep:rgba(239,237,228,.14);
+  --accent:#4C6355;
+  --accent-deep:#8FAB98;
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Inter',-apple-system,sans-serif;
+  --ease:cubic-bezier(.4,0,.2,1);
 
-  /* PROGRESS */
-  #prog { position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--teal-lite),var(--gold));z-index:9000;width:0;transition:width .08s linear; }
+  /* tokens carried over from index.html so the header and menu are the same component */
+  --i-ink:#16181a;
+  --i-paper:#f1efe7;
+  --i-stone:#8d897e;
+  --i-line:rgba(22,24,26,.14);
+  --i-clay:#7a3320;
+  --i-serif:'Instrument Serif', Georgia, serif;
+  --i-ease:cubic-bezier(.22,.7,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);overflow-x:hidden;line-height:1.5;-webkit-font-smoothing:antialiased;}
+img{max-width:100%;display:block;}
+a{color:inherit;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--paper);}
+::-webkit-scrollbar-thumb{background:var(--ink-25);}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}
+}
 
-  /* HEADER */
-  #header { position:fixed;top:0;left:0;right:0;z-index:800;padding:1.2rem 4rem;display:flex;justify-content:flex-end;transition:background .4s; }
-  #header.solid { background:rgba(2,13,14,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border); }
-  #header nav ul { list-style:none;display:flex; }
-  #header nav ul li a { font-family:var(--ff-ui);font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);text-decoration:none;padding:.5rem 1rem;border:1px solid rgba(255,255,255,.15);border-radius:2px;transition:all .3s; }
-  #header nav ul li a:hover { color:var(--gold);border-color:var(--gold);background:rgba(200,151,58,.08); }
+/* progress */
+#prog{position:fixed;top:0;left:0;height:1px;background:var(--ink);z-index:900;width:0;}
 
-  /* SIDE MENU */
-  #mo { display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1999;backdrop-filter:blur(4px); }
-  #mo.on { display:block; }
-  #menu { position:fixed;top:0;right:-380px;width:380px;height:100vh;background:var(--teal);z-index:2000;padding:5rem 3.5rem 3rem;transition:right .45s cubic-bezier(.77,0,.18,1); }
-  #menu.on { right:0; }
-  #mc { position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:rgba(255,255,255,.6);font-size:1.4rem;cursor:pointer;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s; }
-  #mc:hover { background:rgba(255,255,255,.1);color:#fff; }
-  #menu h2 { font-family:var(--ff-ui);font-size:.58rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:2.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,.1); }
-  #menu ul { list-style:none; }
-  #menu ul li { margin-bottom:.1rem;opacity:0;transform:translateX(24px);transition:all .35s; }
-  #menu.on ul li { opacity:1;transform:translateX(0); }
-  #menu.on ul li:nth-child(1){transition-delay:.08s} #menu.on ul li:nth-child(2){transition-delay:.14s}
-  #menu.on ul li:nth-child(3){transition-delay:.2s}  #menu.on ul li:nth-child(4){transition-delay:.26s}
-  #menu ul li a { display:block;font-family:var(--ff-d);font-size:1.5rem;color:rgba(255,255,255,.82);text-decoration:none;padding:.65rem 0;border-bottom:1px solid rgba(255,255,255,.07);transition:color .3s,padding-left .3s; }
-  #menu ul li a:hover { color:var(--gold);padding-left:.5rem; }
+/* ===== HEADER AND MENU: same implementation as index.html ===== */
+#header{
+  position:fixed;top:0;left:0;right:0;z-index:700;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.6rem 6.5%;
+  color:var(--i-paper);
+  transition:color .4s var(--i-ease), background .4s var(--i-ease), border-color .4s var(--i-ease);
+  border-bottom:1px solid transparent;
+}
+#header.solid{
+  background:rgba(241,239,231,.92);
+  backdrop-filter:blur(10px);
+  color:var(--i-ink);
+  border-bottom-color:var(--i-line);
+}
+.h-logo{display:inline-flex;align-items:center;line-height:0;}
+.h-logo img{height:34px;width:auto;display:block;transition:opacity .25s;}
+.h-logo:hover img{opacity:.72;}
+#header nav a{
+  font-family:var(--sans);font-size:.82rem;font-weight:500;
+  text-decoration:none;letter-spacing:.01em;
+  border-bottom:1px solid currentColor;padding-bottom:.15rem;
+  opacity:.9;transition:opacity .25s;
+}
+#header nav a:hover{opacity:.55;}
 
-  @keyframes rise { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
-  .rv { opacity:0;transform:translateY(24px);transition:opacity .85s var(--ease),transform .85s var(--ease); }
-  .rv.vis { opacity:1;transform:translateY(0); }
-  .d1{transition-delay:.12s}.d2{transition-delay:.24s}.d3{transition-delay:.36s}.d4{transition-delay:.48s}
+#menu{
+  position:fixed;inset:0;background:var(--i-paper);z-index:1000;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:6% 8%;
+  clip-path:inset(0 0 100% 0);
+  transition:clip-path .55s var(--i-ease);
+}
+#menu.on{clip-path:inset(0 0 0 0);}
+#mc{
+  position:absolute;top:1.6rem;right:6.5%;background:none;border:none;
+  font-family:var(--sans);font-size:.85rem;color:var(--i-ink);cursor:pointer;
+}
+#menu ul{list-style:none;}
+#menu ul li a{
+  display:block;font-family:var(--i-serif);font-size:clamp(2.4rem,7vw,4.2rem);
+  font-style:italic;color:var(--i-ink);text-decoration:none;
+  padding:.25rem 0;line-height:1.15;
+  border-bottom:1px solid var(--i-line);
+  transition:padding-left .3s var(--i-ease), color .3s;
+}
+#menu ul li:last-child a{border-bottom:none;}
+#menu ul li a:hover{padding-left:.6rem;color:var(--i-clay);}
+#menu .menu-foot{margin-top:2.5rem;font-size:.78rem;color:var(--i-stone);}
 
-  /* ═══ BROADSHEET HERO ═══════════════════════════════════════════════
-     Three-column newspaper layout with a large ruled headline
-  ══════════════════════════════════════════════════════════════════════ */
-  .broadsheet-hero {
-    padding-top:90px;
-    background:var(--teal-deep);
-    border-bottom:1px solid var(--border);
-  }
+.rv{opacity:0;transform:translateY(18px);transition:opacity .8s var(--ease),transform .8s var(--ease);}
+.rv.vis{opacity:1;transform:translateY(0);}
 
-  /* Top rule bar — like a newspaper masthead */
-  .masthead-bar {
-    display:flex; align-items:center; justify-content:space-between;
-    padding:.6rem 6%; border-bottom:3px double rgba(255,255,255,.1);
-  }
-  .masthead-left {
-    font-family:var(--ff-ui); font-size:.52rem; font-weight:700;
-    letter-spacing:.3em; text-transform:uppercase; color:rgba(255,255,255,.25);
-  }
-  .masthead-center {
-    font-family:var(--ff-d); font-style:italic; font-size:.88rem;
-    color:rgba(255,255,255,.2); letter-spacing:.04em;
-  }
-  .masthead-right {
-    font-family:var(--ff-ui); font-size:.52rem; font-weight:600;
-    letter-spacing:.18em; text-transform:uppercase; color:var(--gold);
-  }
+/* ============ HERO ============ */
+.hero{padding:9rem 6% 0;background:var(--paper);}
+.hero-eyebrow{font-family:var(--sans);font-size:.78rem;font-weight:500;color:var(--ink-45);margin-bottom:1.6rem;}
+.hero-title{font-family:var(--serif);font-weight:400;font-size:clamp(2.6rem,6vw,5.2rem);line-height:1.02;letter-spacing:-.01em;color:var(--ink);max-width:15ch;margin-bottom:2.6rem;}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:4rem;padding-bottom:3.4rem;border-bottom:1px solid var(--ink-25);align-items:end;}
+.hero-lede{font-family:var(--serif);font-style:italic;font-size:clamp(1.15rem,1.9vw,1.5rem);line-height:1.5;color:var(--ink);}
+.hero-side{font-size:.94rem;line-height:1.75;color:var(--ink-70);max-width:44ch;}
+.hero-side strong{color:var(--ink);font-weight:600;}
+.hero-side p+p{margin-top:1rem;}
 
-  /* Mega headline */
-  .hero-headline-block {
-    padding:3.5rem 6% 0;
-    position:relative; overflow:hidden;
-  }
-  /* Ghost text watermark */
-  .hero-headline-block::before {
-    content:'E&I';
-    position:absolute; right:3%; bottom:-2rem;
-    font-family:var(--ff-d); font-size:clamp(10rem,18vw,20rem);
-    font-weight:700; color:rgba(255,255,255,.022);
-    letter-spacing:-.04em; line-height:1; pointer-events:none; user-select:none;
-  }
+/* stat line */
+.stat-line{display:flex;flex-wrap:wrap;padding:2.6rem 0 3.4rem;gap:0;}
+.stat{flex:1;min-width:200px;padding:0 2.4rem;border-left:1px solid var(--ink-25);}
+.stat:first-child{padding-left:0;border-left:none;}
+.stat-num{font-family:var(--serif);font-size:clamp(2.1rem,4vw,3.1rem);font-weight:400;color:var(--ink);line-height:1;}
+.stat-label{font-size:.82rem;color:var(--ink-45);margin-top:.5rem;line-height:1.45;max-width:26ch;}
 
-  .hero-kicker {
-    font-family:var(--ff-ui); font-size:.56rem; font-weight:700;
-    letter-spacing:.4em; text-transform:uppercase; color:var(--gold);
-    display:flex; align-items:center; gap:.8rem; margin-bottom:1.8rem;
-    opacity:0; animation:rise .8s var(--ease) .2s forwards;
-  }
-  .hero-kicker::before { content:''; display:block; width:32px; height:1px; background:var(--gold); }
+/* shared section furniture */
+.section-head{display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;align-items:end;margin-bottom:3.4rem;padding-bottom:2rem;border-bottom:1px solid var(--ink-25);}
+.eyebrow{font-size:.78rem;font-weight:500;color:var(--ink-45);margin-bottom:1.1rem;}
+.section-title{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,3.6vw,3.1rem);line-height:1.05;letter-spacing:-.01em;color:var(--ink);}
+.section-note{font-size:.94rem;line-height:1.7;color:var(--ink-70);max-width:42ch;}
+.eyebrow-deep{font-size:.78rem;font-weight:500;color:var(--paper-on-deep-40);margin-bottom:1.4rem;}
 
-  .hero-headline {
-    font-family:var(--ff-d); font-weight:700;
-    font-size:clamp(4rem,8.5vw,9rem); line-height:.88;
-    letter-spacing:-.025em; color:#fff;
-    border-bottom:1px solid rgba(255,255,255,.08); padding-bottom:2.5rem; margin-bottom:0;
-    opacity:0; animation:rise 1s var(--ease) .35s forwards;
-  }
-  .hero-headline em { font-style:italic; color:var(--gold); }
+/* ============ WORKFLOW RAIL ============ */
+.flow{background:var(--paper-warm);padding:6.5rem 6%;}
+.flow-rail{display:flex;border-top:1px solid var(--ink-25);border-bottom:1px solid var(--ink-25);min-height:330px;}
+.wf{flex:1 1 0;min-width:0;border-left:1px solid var(--ink-25);padding:2.2rem 1.6rem 2.4rem;background:none;text-align:left;font-family:var(--sans);cursor:pointer;color:inherit;
+    transition:flex-grow .55s var(--ease),background .4s var(--ease);appearance:none;border-top:none;border-right:none;border-bottom:none;}
+.wf:first-child{border-left:none;}
+.wf.on{flex-grow:3.1;background:var(--paper);}
+.wf-num{font-family:var(--serif);font-style:italic;font-size:1rem;color:var(--ink-45);transition:color .3s;}
+.wf.on .wf-num{color:var(--accent);}
+.wf-title{font-family:var(--serif);font-size:1.22rem;font-weight:400;line-height:1.2;color:var(--ink);margin-top:1.1rem;}
+.wf-body{font-size:.92rem;line-height:1.75;color:var(--ink-70);max-width:44ch;margin-top:1.1rem;opacity:0;transition:opacity .45s var(--ease) .1s;pointer-events:none;height:0;overflow:hidden;}
+.wf.on .wf-body{opacity:1;height:auto;pointer-events:auto;}
+.flow-foot{margin-top:1.6rem;font-size:.85rem;color:var(--ink-45);}
 
-  /* Three-column sub-hero */
-  .hero-cols {
-    display:grid; grid-template-columns:2fr 1px 1.2fr 1px 1fr;
-    padding:2.5rem 6% 3.5rem; gap:0;
-    opacity:0; animation:rise .9s var(--ease) .6s forwards;
-  }
-  .hero-col { padding:0 2.5rem; }
-  .hero-col:first-child { padding-left:0; }
-  .hero-col:last-child { padding-right:0; }
-  .col-divider { background:rgba(255,255,255,.07); }
+/* ============ TOOLKIT RAIL ============ */
+.kit{background:var(--deep);color:var(--paper-on-deep);padding:6rem 0;overflow:hidden;}
+.kit-head{padding:0 6%;display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;align-items:end;padding-bottom:2rem;border-bottom:1px solid var(--line-deep);margin-bottom:3.2rem;}
+.kit-head .section-title{color:var(--paper-on-deep);}
+.kit-head .section-note{color:var(--paper-on-deep-70);}
+.kit-window{overflow:hidden;width:100%;position:relative;
+  -webkit-mask-image:linear-gradient(to right,transparent,#000 6%,#000 94%,transparent);
+  mask-image:linear-gradient(to right,transparent,#000 6%,#000 94%,transparent);}
+.kit-track{display:flex;width:max-content;animation:kitslide 52s linear infinite;}
+.kit-window:hover .kit-track{animation-play-state:paused;}
+@keyframes kitslide{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.kit-item{width:clamp(250px,26vw,330px);padding:0 2.4rem;border-left:1px solid var(--line-deep);flex:0 0 auto;}
+.kit-name{font-family:var(--serif);font-size:1.5rem;font-weight:400;color:var(--paper-on-deep);line-height:1.1;}
+.kit-use{font-size:.88rem;line-height:1.65;color:var(--paper-on-deep-70);margin-top:.7rem;}
+.kit-note{padding:2.8rem 6% 0;font-size:.88rem;line-height:1.7;color:var(--paper-on-deep-70);max-width:62ch;}
+@media (prefers-reduced-motion:reduce){
+  .kit-track{animation:none;flex-wrap:wrap;width:100%;gap:2rem 0;}
+  .kit-item{width:50%;}
+}
 
-  .hero-col-label {
-    font-family:var(--ff-ui); font-size:.5rem; font-weight:700;
-    letter-spacing:.25em; text-transform:uppercase; color:rgba(255,255,255,.25);
-    margin-bottom:.8rem; padding-bottom:.5rem; border-bottom:1px solid rgba(255,255,255,.06);
-  }
-  .hero-col-body {
-    font-family:var(--ff-d); font-style:italic; font-size:1rem;
-    line-height:1.8; color:rgba(255,255,255,.55);
-  }
-  .hero-col-body strong { font-style:normal; color:rgba(255,255,255,.8); font-weight:600; }
+/* ============ EVIDENCE IN PRACTICE ============ */
+.evid{background:var(--paper);padding:6.5rem 6%;}
+.ev{display:grid;grid-template-columns:.42fr 1fr;gap:2.6rem;padding:2.8rem 0;border-top:1px solid var(--ink-25);}
+.ev:last-of-type{border-bottom:1px solid var(--ink-25);}
+.ev-figure{font-family:var(--serif);font-size:clamp(1.9rem,3.2vw,2.6rem);line-height:1;color:var(--ink);}
+.ev-figure span{display:block;font-family:var(--sans);font-size:.8rem;color:var(--ink-45);margin-top:.6rem;line-height:1.5;max-width:22ch;}
+.ev-title{font-family:var(--serif);font-size:1.4rem;font-weight:400;line-height:1.2;margin-bottom:1rem;}
+.ev-grid{display:grid;grid-template-columns:6.5rem 1fr;gap:.55rem 1rem;font-size:.9rem;}
+.ev-k{color:var(--ink-45);}
+.ev-v{color:var(--ink-70);line-height:1.65;}
+.ev-read{margin-top:1.3rem;padding-top:1.1rem;border-top:1px solid var(--ink-25);font-family:var(--serif);font-style:italic;font-size:1.02rem;line-height:1.55;color:var(--ink);max-width:56ch;}
 
-  /* ═══ METRICS STRIP ══ */
-  .metrics-strip {
-    background:var(--teal);
-    border-top:1px solid rgba(255,255,255,.06);
-    border-bottom:1px solid rgba(255,255,255,.06);
-    display:grid; grid-template-columns:repeat(3,1fr);
-  }
-  .metric-cell {
-    padding:2.5rem 3.5rem; position:relative; overflow:hidden;
-    border-right:1px solid rgba(255,255,255,.06);
-    display:flex; align-items:center; gap:2rem;
-    opacity:0; transform:translateY(20px);
-    transition:opacity .8s var(--ease), transform .8s var(--ease);
-  }
-  .metric-cell.vis { opacity:1; transform:translateY(0); }
-  .metric-cell:last-child { border-right:none; }
+/* ============ LOGIC CHAIN ============ */
+.chain{background:var(--deep);color:var(--paper-on-deep);padding:6.5rem 6%;}
+.chain .section-title{color:var(--paper-on-deep);}
+.chain .section-note{color:var(--paper-on-deep-70);}
+.chain .section-head{border-bottom-color:var(--line-deep);}
+.chain-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line-deep);border-bottom:1px solid var(--line-deep);}
+.ch{padding:2.2rem 1.8rem;border-left:1px solid var(--line-deep);}
+.ch:first-child{border-left:none;padding-left:0;}
+.ch-k{font-family:var(--sans);font-size:.75rem;font-weight:500;color:var(--accent-deep);margin-bottom:.9rem;}
+.ch-t{font-family:var(--serif);font-size:1.25rem;font-weight:400;margin-bottom:.7rem;}
+.ch-d{font-size:.88rem;line-height:1.7;color:var(--paper-on-deep-70);}
+.ch-ex{font-size:.86rem;line-height:1.7;color:var(--paper-on-deep);margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--line-deep);}
+.chain-caveat{margin-top:2.4rem;font-size:.92rem;line-height:1.8;color:var(--paper-on-deep-70);max-width:62ch;}
 
-  /* Animated ring */
-  .ring-wrap { position:relative; width:80px; height:80px; flex-shrink:0; }
-  .ring-wrap svg { transform:rotate(-90deg); }
-  .ring-bg { fill:none; stroke:rgba(255,255,255,.06); stroke-width:4; }
-  .ring-fg { fill:none; stroke:var(--gold); stroke-width:4; stroke-linecap:round;
-    stroke-dasharray:220; stroke-dashoffset:220;
-    transition:stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1); }
-  .ring-label {
-    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-    font-family:var(--ff-d); font-size:1.3rem; font-weight:700; color:#fff;
-  }
+/* ============ QUALITY CHECKS ============ */
+.qual{background:var(--paper-warm);padding:6.5rem 6%;}
+.qlist{list-style:none;counter-reset:q;border-top:1px solid var(--ink-25);}
+.qlist li{counter-increment:q;display:grid;grid-template-columns:3rem 1fr;gap:1.4rem;align-items:baseline;padding:1.15rem 0;border-bottom:1px solid var(--ink-25);
+  opacity:0;transform:translateY(10px);transition:opacity .6s var(--ease),transform .6s var(--ease);}
+.qlist li.vis{opacity:1;transform:translateY(0);}
+.qlist li::before{content:counter(q,decimal-leading-zero);font-family:var(--serif);font-style:italic;font-size:.9rem;color:var(--ink-45);}
+.q-q{font-family:var(--serif);font-size:1.12rem;line-height:1.4;color:var(--ink);}
+.q-w{font-size:.88rem;line-height:1.65;color:var(--ink-70);margin-top:.35rem;max-width:62ch;}
+.qual-foot{margin-top:2.4rem;font-size:.94rem;line-height:1.8;color:var(--ink-70);max-width:60ch;}
 
-  .metric-val {
-    font-family:var(--ff-d); font-size:2.4rem; font-weight:700;
-    color:var(--gold); line-height:1; letter-spacing:-.02em;
-  }
-  .metric-desc {
-    font-family:var(--ff-ui); font-size:.52rem; font-weight:600;
-    letter-spacing:.14em; text-transform:uppercase;
-    color:rgba(255,255,255,.35); margin-top:.3rem; line-height:1.5;
-  }
+/* ============ PHILOSOPHY / FRAMEWORK ============ */
+.phi{display:grid;grid-template-columns:1fr 1fr;background:var(--deep);color:var(--paper-on-deep);}
+.phi-pane{padding:5.5rem 6%;}
+.phi-left{border-right:1px solid var(--line-deep);}
+.phi-h{font-family:var(--serif);font-weight:400;font-size:clamp(1.8rem,3vw,2.6rem);line-height:1.1;margin-bottom:1.6rem;max-width:14ch;}
+.phi-body{font-size:.97rem;line-height:1.85;color:var(--paper-on-deep-70);max-width:46ch;}
+.phi-body+.phi-body{margin-top:1.1rem;}
+.phi-body strong{color:var(--paper-on-deep);font-weight:600;}
+.fw-list{margin-top:2.2rem;}
+.fw-row{display:grid;grid-template-columns:2.6rem 1fr;gap:1.2rem;padding:1.5rem 0;border-top:1px solid var(--line-deep);opacity:0;transform:translateY(14px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.fw-row.vis{opacity:1;transform:translateY(0);}
+.fw-row:last-child{border-bottom:1px solid var(--line-deep);}
+.fw-num{font-family:var(--serif);font-style:italic;font-size:1rem;color:var(--accent-deep);padding-top:.15rem;}
+.fw-title{font-family:var(--sans);font-size:.92rem;font-weight:600;margin-bottom:.4rem;}
+.fw-body{font-size:.88rem;line-height:1.68;color:var(--paper-on-deep-70);max-width:44ch;}
 
-  /* ═══ PHILOSOPHY + FRAMEWORK (TWO-COLUMN) ═══ */
-  .phi-section {
-    display:grid; grid-template-columns:1fr 1fr;
-    border-bottom:1px solid var(--border);
-  }
-  .phi-left {
-    background:var(--teal-deep); padding:6rem 6% 6rem 6%;
-    border-right:1px solid var(--border);
-  }
-  .phi-right { background:rgba(4,71,78,.25); padding:6rem 6%; }
+/* ============ AREAS OF PRACTICE ============ */
+.areas{background:var(--paper);padding:6.5rem 6% 5rem;}
+.area-row{display:grid;grid-template-columns:3rem 1.1fr 1.4fr;gap:2rem;padding:2.1rem 0;border-top:1px solid var(--ink-25);align-items:baseline;opacity:0;transform:translateY(16px);transition:opacity .75s var(--ease),transform .75s var(--ease);}
+.area-row.vis{opacity:1;transform:translateY(0);}
+.area-row:last-child{border-bottom:1px solid var(--ink-25);}
+.area-idx{font-family:var(--serif);font-style:italic;font-size:.95rem;color:var(--ink-45);}
+.area-title{font-family:var(--serif);font-size:1.4rem;font-weight:400;color:var(--ink);line-height:1.2;}
+.area-body{font-size:.93rem;line-height:1.75;color:var(--ink-70);}
 
-  .section-eyebrow {
-    font-family:var(--ff-ui); font-size:.52rem; font-weight:700;
-    letter-spacing:.35em; text-transform:uppercase; color:var(--gold);
-    display:flex; align-items:center; gap:.7rem; margin-bottom:1.5rem;
-  }
-  .section-eyebrow::before { content:''; display:block; width:28px; height:1px; background:var(--gold); }
+/* ============ CASE SNAPSHOTS ============ */
+.cases{background:var(--paper-warm);padding:6.5rem 6%;}
+.case-list{display:flex;flex-direction:column;margin-top:3rem;}
+.case{display:grid;grid-template-columns:.9fr 1.1fr;gap:3rem;padding:3.2rem 0;border-top:1px solid var(--ink-25);opacity:0;transform:translateY(18px);transition:opacity .8s var(--ease),transform .8s var(--ease);}
+.case.vis{opacity:1;transform:translateY(0);}
+.case:last-child{border-bottom:1px solid var(--ink-25);}
+.case.rev{grid-template-columns:1.1fr .9fr;}
+.case.rev .case-media{order:2;}
+.case.rev .case-body{order:1;}
+.case-media img{width:100%;height:260px;object-fit:cover;filter:grayscale(.18) saturate(.9);}
+.case-cat{font-size:.72rem;font-weight:500;letter-spacing:.03em;color:var(--accent);margin-top:.7rem;}
+.case-title{font-family:var(--serif);font-weight:400;font-size:1.5rem;color:var(--ink);line-height:1.2;margin-bottom:1.1rem;}
+.case-meta{display:grid;grid-template-columns:5.5rem 1fr;gap:.3rem .8rem;font-size:.85rem;margin-bottom:.4rem;}
+.case-key{color:var(--ink-45);}
+.case-val{color:var(--ink-70);line-height:1.55;}
+.case-quote{font-family:var(--serif);font-style:italic;font-size:1.02rem;line-height:1.55;color:var(--ink);margin-top:1.2rem;padding-top:1.1rem;border-top:1px solid var(--ink-25);}
 
-  .phi-heading {
-    font-family:var(--ff-d); font-size:clamp(2rem,3.5vw,3.2rem);
-    font-weight:600; color:#fff; letter-spacing:-.01em; line-height:1.05;
-    margin-bottom:1.8rem;
-  }
-  .phi-heading em { font-style:italic; color:var(--gold); }
+/* ============ FOOTER ============ */
+.site-foot{background:var(--deep);padding:3.2rem 6% 2.6rem;text-align:center;}
+.foot-icons{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:1.9rem;}
+.foot-icons a{color:var(--paper-on-deep-70);font-size:1rem;line-height:1;transition:color .3s;}
+.foot-icons a:hover{color:var(--accent-deep);}
+.site-foot p{margin-top:2rem;font-size:.74rem;color:var(--paper-on-deep-40);}
 
-  .phi-body {
-    font-family:var(--ff-d); font-size:1.02rem; line-height:1.88;
-    color:rgba(255,255,255,.58); margin-bottom:1.2rem;
-  }
-  .phi-body strong { color:rgba(255,255,255,.85); font-weight:600; }
-
-  /* Framework four-quadrant grid */
-  .fw-grid {
-    display:grid; grid-template-columns:1fr 1fr; gap:1px;
-    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.06);
-    border-radius:4px; overflow:hidden; margin-top:1rem;
-  }
-  .fw-cell {
-    background:var(--teal-deep); padding:1.8rem 1.5rem;
-    position:relative; overflow:hidden;
-    transition:background .3s;
-    opacity:0; transform:translateY(16px);
-    transition:opacity .7s var(--ease), transform .7s var(--ease), background .3s;
-  }
-  .fw-cell.vis { opacity:1; transform:translateY(0); }
-  .fw-cell:hover { background:rgba(4,71,78,.7); }
-  .fw-cell-num {
-    font-family:var(--ff-d); font-size:3rem; font-weight:700;
-    color:rgba(200,151,58,.1); line-height:1;
-    position:absolute; top:.4rem; right:.8rem; letter-spacing:-.04em;
-  }
-  .fw-cell-title {
-    font-family:var(--ff-ui); font-size:.6rem; font-weight:700;
-    letter-spacing:.2em; text-transform:uppercase; color:var(--gold);
-    margin-bottom:.7rem;
-  }
-  .fw-cell-body {
-    font-family:var(--ff-d); font-style:italic; font-size:.92rem;
-    line-height:1.75; color:rgba(255,255,255,.5);
-  }
-
-  /* ═══ AREAS OF PRACTICE — NUMBERED LIST ═══ */
-  .areas-section { background:var(--cream); color:var(--ink); padding:7rem 6%; }
-  .areas-section .section-eyebrow { color:var(--teal); }
-  .areas-section .section-eyebrow::before { background:var(--gold); }
-
-  .areas-heading {
-    font-family:var(--ff-d); font-size:clamp(2.5rem,5vw,5rem);
-    font-weight:700; color:var(--teal); letter-spacing:-.02em; line-height:.9;
-    margin-bottom:4rem;
-  }
-  .areas-heading em { font-style:italic; color:var(--gold); }
-
-  .areas-list { display:flex; flex-direction:column; }
-  .area-item {
-    display:grid; grid-template-columns:80px 1fr 1fr;
-    gap:0; border-top:1px solid var(--border-d);
-    padding:2rem 0; align-items:start;
-    opacity:0; transform:translateX(-20px);
-    transition:opacity .8s var(--ease), transform .8s var(--ease);
-  }
-  .area-item.vis { opacity:1; transform:translateX(0); }
-  .area-item:last-child { border-bottom:1px solid var(--border-d); }
-  .area-item:hover .area-title { color:var(--teal-lite); }
-
-  .area-num {
-    font-family:var(--ff-ui); font-size:.55rem; font-weight:700;
-    letter-spacing:.2em; color:rgba(4,71,78,.3); padding-top:.3rem;
-  }
-  .area-title {
-    font-family:var(--ff-d); font-size:1.4rem; font-weight:600;
-    color:var(--teal); line-height:1.2; transition:color .3s; padding-right:2rem;
-  }
-  .area-body {
-    font-family:var(--ff-d); font-style:italic; font-size:.95rem;
-    line-height:1.75; color:#4a5e60;
-  }
-
-  /* ═══ EVALUATION PROCESS — HORIZONTAL TIMELINE ═══ */
-  .process-section {
-    background:var(--teal-deep); padding:7rem 6%;
-    position:relative; overflow:hidden;
-  }
-  /* Horizontal rule watermark */
-  .process-section::before {
-    content:''; position:absolute; top:50%; left:6%; right:6%; height:1px;
-    background:rgba(255,255,255,.04); transform:translateY(-50%); pointer-events:none;
-  }
-
-  .process-track {
-    display:grid; grid-template-columns:repeat(5,1fr);
-    gap:0; position:relative; margin-top:4rem;
-  }
-  /* Connecting line between steps */
-  .process-track::before {
-    content:''; position:absolute;
-    top:28px; left:calc(10% + 14px); right:calc(10% + 14px);
-    height:1px; background:linear-gradient(90deg, var(--gold), var(--teal-lite));
-    opacity:.3; z-index:0;
-  }
-
-  .process-step {
-    display:flex; flex-direction:column; align-items:center;
-    text-align:center; padding:0 1rem; position:relative; z-index:1;
-    opacity:0; transform:translateY(24px);
-    transition:opacity .7s var(--ease), transform .7s var(--ease);
-  }
-  .process-step.vis { opacity:1; transform:translateY(0); }
-
-  .step-dot {
-    width:56px; height:56px; border-radius:50%;
-    background:var(--teal); border:1px solid rgba(200,151,58,.4);
-    display:flex; align-items:center; justify-content:center;
-    font-family:var(--ff-ui); font-size:.52rem; font-weight:700;
-    letter-spacing:.14em; color:var(--gold); text-transform:uppercase;
-    margin-bottom:1.4rem; flex-shrink:0;
-    transition:background .35s, border-color .35s;
-  }
-  .process-step:hover .step-dot { background:rgba(200,151,58,.15); border-color:var(--gold); }
-
-  .step-title {
-    font-family:var(--ff-d); font-size:1rem; font-weight:600;
-    color:#fff; margin-bottom:.5rem;
-  }
-  .step-sub {
-    font-family:var(--ff-d); font-style:italic; font-size:.82rem;
-    color:rgba(255,255,255,.38); line-height:1.6;
-  }
-
-  /* ═══ CASE STUDY GRID ═══ */
-  .cases-section { background:var(--teal); padding:7rem 6%; }
-
-  .cases-grid {
-    display:grid; grid-template-columns:repeat(3,1fr);
-    gap:1px; background:rgba(255,255,255,.06);
-    border:1px solid rgba(255,255,255,.06);
-    border-radius:4px; overflow:hidden; margin-top:3rem;
-  }
-
-  .case-card {
-    background:var(--teal); position:relative; overflow:hidden;
-    display:flex; flex-direction:column;
-    opacity:0; transform:translateY(24px);
-    transition:opacity .8s var(--ease), transform .8s var(--ease);
-  }
-  .case-card.vis { opacity:1; transform:translateY(0); }
-  .case-card:hover .case-img-wrap img { transform:scale(1.05); }
-  .case-card:hover { background:rgba(4,71,78,.5); }
-
-  .case-img-wrap {
-    height:180px; overflow:hidden; position:relative; flex-shrink:0;
-  }
-  .case-img-wrap img {
-    width:100%; height:100%; object-fit:cover;
-    display:block; transition:transform .6s var(--ease);
-    filter:saturate(.7);
-  }
-  /* Gold gradient overlay */
-  .case-img-wrap::after {
-    content:''; position:absolute; inset:0;
-    background:linear-gradient(to top, rgba(4,71,78,.85) 0%, rgba(4,71,78,.2) 60%, transparent 100%);
-  }
-  /* Insight badge overlaid on image */
-  .case-tag {
-    position:absolute; bottom:1rem; left:1.2rem; z-index:2;
-    font-family:var(--ff-ui); font-size:.48rem; font-weight:700;
-    letter-spacing:.18em; text-transform:uppercase;
-    padding:.28rem .7rem; background:rgba(200,151,58,.2);
-    border:1px solid rgba(200,151,58,.4); color:var(--gold); border-radius:2px;
-  }
-
-  .case-body { padding:1.6rem 1.6rem 2rem; flex:1; display:flex; flex-direction:column; }
-  .case-title {
-    font-family:var(--ff-d); font-size:1.05rem; font-weight:600;
-    color:#fff; line-height:1.25; margin-bottom:.8rem;
-  }
-  .case-row {
-    display:flex; gap:.5rem; margin-bottom:.35rem; align-items:flex-start;
-  }
-  .case-key {
-    font-family:var(--ff-ui); font-size:.48rem; font-weight:700;
-    letter-spacing:.14em; text-transform:uppercase; color:var(--gold);
-    flex-shrink:0; padding-top:.18rem; min-width:60px;
-  }
-  .case-val {
-    font-family:var(--ff-d); font-size:.88rem; font-style:italic;
-    color:rgba(255,255,255,.55); line-height:1.5;
-  }
-  .case-insight {
-    margin-top:1rem; padding-top:1rem; border-top:1px solid rgba(255,255,255,.06);
-    font-family:var(--ff-d); font-size:.85rem; line-height:1.6;
-    color:rgba(255,255,255,.35);
-  }
-
-  /* Wide card — spans 2 cols */
-  .case-card.wide { grid-column:span 2; }
-  .case-card.wide .case-img-wrap { height:220px; }
-
-  /* ═══ COLLABORATION CTA ═══ */
-  .eval-cta {
-    background:var(--cream); color:var(--ink);
-    display:grid; grid-template-columns:1fr 1fr;
-    align-items:stretch; min-height:380px;
-  }
-  .eval-cta-left {
-    background:var(--teal-deep); padding:6rem 6%;
-    display:flex; flex-direction:column; justify-content:center;
-    position:relative; overflow:hidden;
-  }
-  /* Diagonal stripe decoration */
-  .eval-cta-left::after {
-    content:''; position:absolute; inset:0; pointer-events:none;
-    background:repeating-linear-gradient(
-      -55deg, transparent, transparent 38px,
-      rgba(255,255,255,.012) 39px, transparent 40px
-    );
-  }
-  .eval-cta-left h2 {
-    font-family:var(--ff-d); font-size:clamp(2rem,4vw,4rem);
-    font-weight:700; line-height:.92; letter-spacing:-.02em; color:#fff;
-    margin-bottom:1.5rem; position:relative; z-index:1;
-  }
-  .eval-cta-left h2 em { font-style:italic; color:var(--gold); display:block; }
-  .eval-cta-left p {
-    font-family:var(--ff-d); font-style:italic; font-size:1rem;
-    color:rgba(255,255,255,.5); line-height:1.8; max-width:380px;
-    position:relative; z-index:1; margin-bottom:2rem;
-  }
-  .cta-link {
-    display:inline-flex; align-items:center; gap:.6rem;
-    font-family:var(--ff-ui); font-size:.65rem; font-weight:700;
-    letter-spacing:.2em; text-transform:uppercase;
-    color:var(--gold); text-decoration:none;
-    padding:.85rem 2rem; border:1px solid rgba(200,151,58,.4);
-    border-radius:2px; transition:all .35s; position:relative; z-index:1;
-    width:fit-content;
-  }
-  .cta-link:hover { background:rgba(200,151,58,.12); border-color:var(--gold); transform:translateX(6px); }
-
-  .eval-cta-right {
-    background:#fff; padding:4rem 5%;
-    display:flex; flex-direction:column; justify-content:center; gap:1.2rem;
-  }
-  .offer-row {
-    display:flex; align-items:flex-start; gap:1rem;
-    padding:1.2rem 1.4rem; border:1px solid var(--border-d); border-radius:3px;
-    transition:all .35s; border-left:3px solid transparent;
-  }
-  .offer-row:hover { border-left-color:var(--gold); transform:translateX(4px); box-shadow:0 4px 18px rgba(4,71,78,.07); }
-  .offer-icon { font-size:1rem; flex-shrink:0; padding-top:.1rem; }
-  .offer-title { font-family:var(--ff-d); font-size:.95rem; font-weight:600; color:var(--teal); margin-bottom:.2rem; }
-  .offer-desc { font-family:var(--ff-d); font-style:italic; font-size:.85rem; color:#5a6a6b; line-height:1.5; }
-
-  /* ═══ CONTACT ═══ */
-  .contact-section { background:var(--teal-deep); display:grid; grid-template-columns:1fr 1fr; }
-  .contact-left { padding:6rem 5% 6rem 8%; border-right:1px solid rgba(255,255,255,.05); }
-  .contact-left h2 { font-family:var(--ff-d);font-size:2.5rem;font-weight:700;color:#fff;margin-bottom:.4rem;letter-spacing:-.01em; }
-  .contact-left .sub { font-family:var(--ff-d);font-style:italic;font-size:.95rem;color:rgba(255,255,255,.3);margin-bottom:2.5rem; }
-  .ff { margin-bottom:1.4rem; }
-  .ff input,.ff textarea { width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.12);padding:.7rem 0;color:#fff;font-family:var(--ff-d);font-size:1rem;outline:none;transition:border-color .3s; }
-  .ff input::placeholder,.ff textarea::placeholder { color:rgba(255,255,255,.2); }
-  .ff input:focus,.ff textarea:focus { border-bottom-color:var(--gold); }
-  .ff textarea { resize:none;min-height:90px; }
-  .ff-row { display:grid;grid-template-columns:1fr 1fr;gap:1.2rem; }
-  .send-btn { background:var(--gold);color:var(--teal-deep);border:none;padding:.85rem 2.2rem;cursor:pointer;font-family:var(--ff-ui);font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;border-radius:2px;transition:all .3s; }
-  .send-btn:hover { background:var(--gold-lt);transform:translateY(-2px);box-shadow:0 8px 20px rgba(200,151,58,.3); }
-  .contact-right { padding:6rem 8% 6rem 5%;display:flex;flex-direction:column;justify-content:center; }
-  .contact-right h3 { font-family:var(--ff-d);font-style:italic;font-size:1.1rem;color:rgba(255,255,255,.3);margin-bottom:1.8rem; }
-  .socials { display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:2.5rem; }
-  .sc { display:flex;align-items:center;justify-content:center;height:46px;border:1px solid rgba(255,255,255,.08);border-radius:3px;color:rgba(255,255,255,.4);text-decoration:none;font-size:.8rem;font-weight:500;transition:all .3s; }
-  .sc:hover { border-color:var(--gold);color:var(--gold);background:rgba(200,151,58,.07); }
-  .footer-bar { background:#000;padding:1.2rem 8%;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.04); }
-  .footer-bar p { font-family:var(--ff-ui);font-size:.58rem;color:rgba(255,255,255,.15);letter-spacing:.05em; }
-
-  /* RESPONSIVE */
-  @media(max-width:1100px){
-    .hero-cols { grid-template-columns:1fr; gap:2rem; }
-    .col-divider { display:none; }
-    .hero-col { padding:0; }
-    .phi-section { grid-template-columns:1fr; }
-    .phi-left { border-right:none; border-bottom:1px solid var(--border); }
-    .areas-section .area-item { grid-template-columns:60px 1fr; }
-    .area-body { grid-column:2; margin-top:.5rem; }
-    .process-track { grid-template-columns:1fr 1fr; gap:2rem; }
-    .process-track::before { display:none; }
-    .cases-grid { grid-template-columns:1fr 1fr; }
-    .case-card.wide { grid-column:span 2; }
-    .eval-cta { grid-template-columns:1fr; }
-    .contact-section { grid-template-columns:1fr; }
-    .contact-right { border-top:1px solid rgba(255,255,255,.05); padding:3rem 5%; }
-    .contact-left { border-right:none; padding:5rem 5%; }
-    .ff-row { grid-template-columns:1fr; }
-    .metrics-strip { grid-template-columns:1fr; }
-    .metric-cell { border-right:none; border-bottom:1px solid rgba(255,255,255,.06); }
-  }
-  @media(max-width:700px){
-    #header { padding:1.2rem 5%; }
-    .cases-grid { grid-template-columns:1fr; }
-    .case-card.wide { grid-column:span 1; }
-    .areas-section .area-item { grid-template-columns:1fr; }
-    .area-num { display:none; }
-    .process-track { grid-template-columns:1fr; }
-    .broadsheet-hero .masthead-center { display:none; }
-  }
-  </style>
+/* ============ RESPONSIVE ============ */
+@media(max-width:1080px){
+  .hero-grid{grid-template-columns:1fr;gap:1.6rem;}
+  .phi{grid-template-columns:1fr;}
+  .phi-left{border-right:none;border-bottom:1px solid var(--line-deep);}
+  .section-head,.kit-head{grid-template-columns:1fr;gap:1rem;}
+  .area-row{grid-template-columns:2.4rem 1fr;}
+  .area-body{grid-column:2;}
+  .chain-grid{grid-template-columns:1fr 1fr;}
+  .ch:nth-child(3){border-left:none;padding-left:0;}
+  .ch:nth-child(3),.ch:nth-child(4){border-top:1px solid var(--line-deep);}
+  .case,.case.rev{grid-template-columns:1fr;gap:1.4rem;}
+  .case.rev .case-media,.case.rev .case-body{order:initial;}
+  .ev{grid-template-columns:1fr;gap:1.4rem;}
+}
+@media(max-width:860px){
+  .flow-rail{display:block;min-height:0;}
+  .wf{display:block;width:100%;border-left:none;border-top:1px solid var(--ink-25);padding:1.8rem 0;cursor:default;}
+  .wf:first-child{border-top:none;}
+  .wf.on{background:none;}
+  .wf-body{opacity:1;height:auto;pointer-events:auto;max-width:100%;}
+  .wf-title{margin-top:.6rem;}
+  .kit-item{width:clamp(220px,66vw,300px);padding:0 1.6rem;}
+}
+@media(max-width:640px){
+  .hero{padding-top:7.5rem;}
+  .stat-line{flex-direction:column;}
+  .stat{border-left:none;border-top:1px solid var(--ink-25);padding:1.4rem 0 0;}
+  .stat:first-child{border-top:none;padding-top:0;}
+  .chain-grid{grid-template-columns:1fr;}
+  .ch{border-left:none;padding-left:0;border-top:1px solid var(--line-deep);}
+  .ch:first-child{border-top:none;}
+  .qlist li{grid-template-columns:2.2rem 1fr;gap:.9rem;}
+  #header{padding:1.3rem 5%;}
+  .h-logo img{height:26px;}
+  @media (prefers-reduced-motion:reduce){.kit-item{width:100%;}}
+}
+</style>
 </head>
 <body>
 
 <div id="prog"></div>
-<div id="mo"></div>
-<nav id="menu">
-  <button id="mc">✕</button>
-  <h2>Navigation</h2>
+
+<nav id="menu" aria-hidden="true">
+  <button id="mc" aria-label="Close menu">Close</button>
   <ul>
     <li><a href="index.html">Home</a></li>
     <li><a href="about.html">About</a></li>
-    <li><a href="http://esvarj.wordpress.com">Health Articles</a></li>
+    <li><a href="https://gravatar.com/josemariaescriva82">Health Articles</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
+  <div class="menu-foot">Nairobi, Kenya, open to collaboration &amp; consulting</div>
 </nav>
 
-<header id="header">
-  <nav><ul><li><a href="#" id="mt">Menu</a></li></ul></nav>
+<header id="header" class="solid">
+  <a class="h-logo" href="index.html" aria-label="Escriva Josemaria, homepage">
+    <img src="images/B.webp" alt="Escriva Josemaria">
+  </a>
+  <nav><a href="#" id="mt">Menu</a></nav>
 </header>
 
-<!-- ═══ BROADSHEET HERO ═══ -->
-<section class="broadsheet-hero">
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-eyebrow">Applied public health, Kenya</div>
+  <h1 class="hero-title">Evaluation and impact assessment</h1>
 
-  <div class="masthead-bar">
-    <span class="masthead-left">Applied Public Health · Kenya</span>
-    <span class="masthead-center">Evaluation &amp; Evidence Portfolio</span>
-    <span class="masthead-right">Evidence · Action · Impact</span>
-  </div>
-
-  <div class="hero-headline-block">
-    <div class="hero-kicker">Evaluation Series · Field Practice</div>
-    <h1 class="hero-headline">
-      Evaluation &amp;<br>
-      <em>Impact</em>
-    </h1>
-  </div>
-
-  <div class="hero-cols">
-    <div class="hero-col">
-      <div class="hero-col-label">Overview</div>
-      <p class="hero-col-body">
-        <strong>Evaluation and impact assessment</strong> are critical to understanding whether health programs are achieving their intended outcomes and delivering value to the populations they serve. Effective evaluation goes beyond measuring activities and outputs — it examines relevance, effectiveness, efficiency, and contribution to change, providing decision-makers with evidence that informs learning, accountability, and program improvement.
-      </p>
-    </div>
-    <div class="col-divider"></div>
-    <div class="hero-col">
-      <div class="hero-col-label">Approach</div>
-      <p class="hero-col-body">
-        Work here is grounded in <strong>applied public health and development practice</strong>, where methodological rigour must be balanced with operational realities. The focus is on credible, decision-relevant evidence that supports adaptive management, strengthens accountability, and improves health system performance.
-      </p>
-    </div>
-    <div class="col-divider"></div>
-    <div class="hero-col">
-      <div class="hero-col-label">Core Principle</div>
-      <p class="hero-col-body">
-        Evidence is most influential when <strong>designed with use in mind</strong> — from the first question to the final report. Evaluation is approached as a learning and decision-support function, not a compliance exercise.
-      </p>
+  <div class="hero-grid">
+    <p class="hero-lede">Evidence carries weight when it is designed with a decision in mind, from the first question asked to the moment a team changes how it works.</p>
+    <div class="hero-side">
+      <p>My evaluation work sits inside programme delivery rather than beside it. Most of what I do begins with a practical question from a health team: is coverage where we think it is, why are these households missing services, what is slowing our reporting.</p>
+      <p>The pages below set out how I move from that question to evidence, which tools I use, what the work has looked like in immunization, community health and MEAL settings, and the checks I run before I trust a number.</p>
     </div>
   </div>
 
+  <div class="stat-line">
+    <div class="stat rv"><div class="stat-num">3,000+</div><div class="stat-label">Children tracked through immunization monitoring and coverage reporting</div></div>
+    <div class="stat rv"><div class="stat-num">800+</div><div class="stat-label">Household and family surveys supported, from tool design to clean data</div></div>
+    <div class="stat rv"><div class="stat-num">500+</div><div class="stat-label">Client feedback responses collected and analysed for programme review</div></div>
+  </div>
 </section>
 
-<!-- ═══ METRICS STRIP ═══ -->
-<div class="metrics-strip">
-
-  <div class="metric-cell" data-ring="80" style="transition-delay:.05s">
-    <div class="ring-wrap">
-      <svg width="80" height="80" viewBox="0 0 80 80">
-        <circle class="ring-bg" cx="40" cy="40" r="33"/>
-        <circle class="ring-fg" cx="40" cy="40" r="33"/>
-      </svg>
-      <div class="ring-label">18</div>
+<!-- ============ WORKFLOW ============ -->
+<section class="flow">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow rv">How I work</div>
+      <h2 class="section-title rv">From question to evidence</h2>
     </div>
-    <div class="metric-text">
-      <div class="metric-val">18</div>
-      <div class="metric-desc">Indicators tracked<br>across programs</div>
+    <p class="section-note rv">Six stages that describe an evaluation as it actually runs. Select a stage to read what happens there.</p>
+  </div>
+
+  <div class="flow-rail" id="flowRail" role="tablist" aria-label="Evaluation stages">
+    <button class="wf on" role="tab" aria-selected="true" tabindex="0">
+      <div class="wf-num">01</div>
+      <div class="wf-title">Define the question</div>
+      <div class="wf-body">Every evaluation starts with a decision someone has to make. I work with the programme team to write the question down plainly, agree who will use the answer, and set the boundary of what the evaluation can reasonably cover. A vague question produces data nobody acts on.</div>
+    </button>
+    <button class="wf" role="tab" aria-selected="false" tabindex="-1">
+      <div class="wf-num">02</div>
+      <div class="wf-title">Build the framework</div>
+      <div class="wf-body">Outcomes, indicators, definitions, denominators, data sources and the assumptions holding them together go into one framework before any data moves. This is also where I record what the evidence will not be able to tell us, so expectations are set early.</div>
+    </button>
+    <button class="wf" role="tab" aria-selected="false" tabindex="-1">
+      <div class="wf-num">03</div>
+      <div class="wf-title">Collect and verify</div>
+      <div class="wf-body">Forms are built in KoboToolbox or ODK with validation and skip logic, enumerators are briefed on the definitions, and routine data is pulled from DHIS2. Verification runs alongside collection: spot checks in the field, register reviews, and comparison of submitted totals against source documents.</div>
+    </button>
+    <button class="wf" role="tab" aria-selected="false" tabindex="-1">
+      <div class="wf-num">04</div>
+      <div class="wf-title">Analyse the evidence</div>
+      <div class="wf-body">Cleaning first, then disaggregation by location, age group and time. I look for patterns that hold across sources, compare performance between sites and periods, and treat a single unusual figure as a question about the data before it becomes a finding.</div>
+    </button>
+    <button class="wf" role="tab" aria-selected="false" tabindex="-1">
+      <div class="wf-num">05</div>
+      <div class="wf-title">Interpret with context</div>
+      <div class="wf-body">Numbers rarely explain themselves. Field visits, conversations with community health workers and client feedback tell me why a figure looks the way it does, whether it reflects a real change in service delivery, or whether it reflects how the data was recorded.</div>
+    </button>
+    <button class="wf" role="tab" aria-selected="false" tabindex="-1">
+      <div class="wf-num">06</div>
+      <div class="wf-title">Turn findings into action</div>
+      <div class="wf-body">Findings become a short set of recommendations tied to specific decisions: adjust a micro-plan, retrain on a form, change a reporting deadline, follow up a cluster of missed households. I then agree how the change will be tracked, which makes the next round of evidence easier to read.</div>
+    </button>
+  </div>
+  <p class="flow-foot">The sequence is rarely clean. Stage 3 often sends the framework back for revision, and that is a sign the process is working.</p>
+</section>
+
+<!-- ============ TOOLKIT ============ -->
+<section class="kit">
+  <div class="kit-head">
+    <div>
+      <div class="eyebrow-deep rv">Working tools</div>
+      <h2 class="section-title rv">Evaluation toolkit</h2>
+    </div>
+    <p class="section-note rv">The software I use day to day, and the point in the evaluation where each one carries its weight.</p>
+  </div>
+
+  <div class="kit-window" aria-label="Tools used across evaluation work">
+    <div class="kit-track" id="kitTrack">
+      <div class="kit-item"><div class="kit-name">DHIS2</div><div class="kit-use">Routine health information and programme data, indicator review and coverage reporting</div></div>
+      <div class="kit-item"><div class="kit-name">KoboToolbox</div><div class="kit-use">Structured field data collection, survey forms with validation and skip logic</div></div>
+      <div class="kit-item"><div class="kit-name">ODK</div><div class="kit-use">Mobile survey and field data capture, including offline collection</div></div>
+      <div class="kit-item"><div class="kit-name">Microsoft Excel</div><div class="kit-use">Cleaning, cross checks, analysis tables and reporting templates</div></div>
+      <div class="kit-item"><div class="kit-name">Power BI</div><div class="kit-use">Dashboards that put findings in front of programme teams and stakeholders</div></div>
+      <div class="kit-item" aria-hidden="true"><div class="kit-name">DHIS2</div><div class="kit-use">Routine health information and programme data, indicator review and coverage reporting</div></div>
+      <div class="kit-item" aria-hidden="true"><div class="kit-name">KoboToolbox</div><div class="kit-use">Structured field data collection, survey forms with validation and skip logic</div></div>
+      <div class="kit-item" aria-hidden="true"><div class="kit-name">ODK</div><div class="kit-use">Mobile survey and field data capture, including offline collection</div></div>
+      <div class="kit-item" aria-hidden="true"><div class="kit-name">Microsoft Excel</div><div class="kit-use">Cleaning, cross checks, analysis tables and reporting templates</div></div>
+      <div class="kit-item" aria-hidden="true"><div class="kit-name">Power BI</div><div class="kit-use">Dashboards that put findings in front of programme teams and stakeholders</div></div>
+    </div>
+  </div>
+  <p class="kit-note">Tool choice follows the question. A coverage review usually lives in DHIS2 and Excel, a household survey runs on Kobo or ODK, and Power BI comes in when several people need to read the same evidence without asking for a new extract.</p>
+</section>
+
+<!-- ============ EVIDENCE IN PRACTICE ============ -->
+<section class="evid">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow rv">From the field</div>
+      <h2 class="section-title rv">Evidence in practice</h2>
+    </div>
+    <p class="section-note rv">Three areas where monitoring and evaluation work shaped what a programme did next.</p>
+  </div>
+
+  <div class="ev rv">
+    <div class="ev-figure">3,000+<span>Children covered by monitoring and verification activity, with coverage reported at 98 percent</span></div>
+    <div>
+      <h3 class="ev-title">Immunization monitoring</h3>
+      <div class="ev-grid">
+        <div class="ev-k">Question</div><div class="ev-v">Was reported coverage holding up against what was happening at session sites, and where were children being missed</div>
+        <div class="ev-k">Method</div><div class="ev-v">Daily tally and register review, field monitoring visits during outreach, verification of session totals against reporting forms, coverage summaries compiled for programme review</div>
+        <div class="ev-k">Tools</div><div class="ev-v">DHIS2, Excel, paper registers and tally sheets</div>
+      </div>
+      <p class="ev-read">High coverage on its own says little. The useful part was checking whether the denominator matched the target population on the ground, and tracing where the remaining children sat.</p>
     </div>
   </div>
 
-  <div class="metric-cell" data-ring="58" style="transition-delay:.15s">
-    <div class="ring-wrap">
-      <svg width="80" height="80" viewBox="0 0 80 80">
-        <circle class="ring-bg" cx="40" cy="40" r="33"/>
-        <circle class="ring-fg" cx="40" cy="40" r="33"/>
-      </svg>
-      <div class="ring-label">7</div>
-    </div>
-    <div class="metric-text">
-      <div class="metric-val">7</div>
-      <div class="metric-desc">Community &amp; facility<br>evaluations</div>
-    </div>
-  </div>
-
-  <div class="metric-cell" data-ring="90" style="transition-delay:.25s">
-    <div class="ring-wrap">
-      <svg width="80" height="80" viewBox="0 0 80 80">
-        <circle class="ring-bg" cx="40" cy="40" r="33"/>
-        <circle class="ring-fg" cx="40" cy="40" r="33"/>
-      </svg>
-      <div class="ring-label">10K</div>
-    </div>
-    <div class="metric-text">
-      <div class="metric-val">10K+</div>
-      <div class="metric-desc">Population reached through<br>assessed interventions</div>
+  <div class="ev rv">
+    <div class="ev-figure">800+<span>Family surveys, alongside 500+ client feedback responses</span></div>
+    <div>
+      <h3 class="ev-title">Community health data</h3>
+      <div class="ev-grid">
+        <div class="ev-k">Question</div><div class="ev-v">What did households actually need from community health services, and how did clients experience the services they received</div>
+        <div class="ev-k">Method</div><div class="ev-v">Structured household surveys with digital forms, enumerator briefing on question definitions, client feedback collection, cleaning and analysis of responses for programme review</div>
+        <div class="ev-k">Tools</div><div class="ev-v">KoboToolbox, ODK, Excel</div>
+      </div>
+      <p class="ev-read">Feedback and survey data read together were more informative than either alone. Where the two disagreed, the gap usually pointed at something worth investigating in the field.</p>
     </div>
   </div>
 
+  <div class="ev rv">
+    <div class="ev-figure">30%<span>Approximate reduction in reporting delays after reporting workflows were reviewed</span></div>
+    <div>
+      <h3 class="ev-title">Programme monitoring and learning</h3>
+      <div class="ev-grid">
+        <div class="ev-k">Question</div><div class="ev-v">Why were programme reports arriving late, and what was that doing to decisions that depended on them</div>
+        <div class="ev-k">Method</div><div class="ev-v">Mapping of the reporting flow from field team to programme level, review of indicator definitions and templates, follow up on the steps where data was stalling, regular monitoring reports built into the MEAL routine</div>
+        <div class="ev-k">Tools</div><div class="ev-v">Excel, Power BI, DHIS2</div>
+      </div>
+      <p class="ev-read">The delay was structural rather than a matter of effort. Simplifying what had to be submitted, and making clear who submitted it, moved reports forward by roughly a third of the usual lag.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LOGIC CHAIN ============ -->
+<section class="chain">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow-deep rv">Evaluation logic</div>
+      <h2 class="section-title rv">Activity, output, outcome, impact</h2>
+    </div>
+    <p class="section-note rv">Programme reporting often stops at the first two. Evaluation exists to ask about the last two, carefully.</p>
+  </div>
+
+  <div class="chain-grid">
+    <div class="ch">
+      <div class="ch-k">Activity</div>
+      <div class="ch-t">What the programme does</div>
+      <div class="ch-d">The work itself, planned and carried out by the team.</div>
+      <div class="ch-ex">Outreach immunization sessions are held in selected villages, with community mobilisation before each session.</div>
+    </div>
+    <div class="ch">
+      <div class="ch-k">Output</div>
+      <div class="ch-t">What was delivered</div>
+      <div class="ch-d">Countable results of the activity, usually available from routine records.</div>
+      <div class="ch-ex">Sessions held, children vaccinated, doses administered, households visited.</div>
+    </div>
+    <div class="ch">
+      <div class="ch-k">Outcome</div>
+      <div class="ch-t">What changed</div>
+      <div class="ch-d">A shift in coverage, behaviour or service use that the outputs were meant to produce.</div>
+      <div class="ch-ex">A higher share of children in the catchment completing the schedule on time, and fewer defaulters between doses.</div>
+    </div>
+    <div class="ch">
+      <div class="ch-k">Impact</div>
+      <div class="ch-t">The longer term difference</div>
+      <div class="ch-d">Change in health status over time, shaped by many factors beyond one programme.</div>
+      <div class="ch-ex">Reduced incidence of vaccine preventable illness in the population served.</div>
+    </div>
+  </div>
+
+  <p class="chain-caveat">The further right the chain goes, the harder attribution becomes. Outputs belong to the programme. Outcomes are influenced by it. Impact sits inside a wider system of services, seasons, migration and household circumstances, so I report contribution and describe the other plausible explanations rather than claiming a programme caused a population level change.</p>
+</section>
+
+<!-- ============ QUALITY CHECKS ============ -->
+<section class="qual">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow rv">Data quality</div>
+      <h2 class="section-title rv">Before I trust the number</h2>
+    </div>
+    <p class="section-note rv">The checks that run before a figure enters a report. Most weak findings fail at one of these.</p>
+  </div>
+
+  <ul class="qlist">
+    <li><div><div class="q-q">Is the indicator clearly defined?</div><div class="q-w">Everyone collecting the data should be counting the same thing in the same way.</div></div></li>
+    <li><div><div class="q-q">Is the denominator right?</div><div class="q-w">Target population estimates age quickly, and a wrong denominator can manufacture impressive coverage.</div></div></li>
+    <li><div><div class="q-q">Is the source appropriate for the question?</div><div class="q-w">Routine data answers different questions from a survey, and mixing them without saying so is misleading.</div></div></li>
+    <li><div><div class="q-q">What is missing, and is the missingness patterned?</div><div class="q-w">Gaps clustered in one site or one week usually mean something other than random error.</div></div></li>
+    <li><div><div class="q-q">Has the data been verified against source records?</div><div class="q-w">Registers, tally sheets and submitted totals should agree before analysis begins.</div></div></li>
+    <li><div><div class="q-q">Is the time period consistent?</div><div class="q-w">Comparisons break quietly when reporting periods or cut off dates shift between sites.</div></div></li>
+    <li><div><div class="q-q">Are there anomalies worth explaining?</div><div class="q-w">Sudden jumps, duplicates and impossible values get traced before they are interpreted.</div></div></li>
+    <li><div><div class="q-q">Does the result make sense to people in the field?</div><div class="q-w">If the figure surprises the team that produced it, the reason needs finding first.</div></div></li>
+    <li><div><div class="q-q">Can the evidence actually support the conclusion?</div><div class="q-w">Where it cannot, the honest answer is a narrower finding and a note on what would be needed to go further.</div></div></li>
+  </ul>
+
+  <p class="qual-foot">This list is short by design. It is the review I run on my own work before anyone else sees it, and the same questions I ask when reviewing data produced by a wider team.</p>
+</section>
+
+<!-- ============ PHILOSOPHY + FRAMEWORK ============ -->
+<div class="phi">
+  <div class="phi-pane phi-left">
+    <div class="eyebrow-deep rv">Philosophy</div>
+    <h2 class="phi-h rv">Evidence designed for use</h2>
+    <p class="phi-body rv">Evaluation works best as a <strong>learning and decision support function</strong> rather than a compliance exercise. The strongest evaluations begin with clarity on why the evidence is needed, who will use it, and what will be done differently once it arrives.</p>
+    <p class="phi-body rv"><strong>Methodological care, ethical standards and contextual relevance</strong> matter equally. Designs stay feasible, transparent and honest about their limits, because a method that cannot be executed properly in the field produces findings nobody can defend.</p>
+  </div>
+  <div class="phi-pane">
+    <div class="eyebrow-deep rv">Framework</div>
+    <h2 class="phi-h rv">Four stages of design</h2>
+    <p class="phi-body rv" style="max-width:48ch;">Evaluations are structured so that programme objectives connect to results that can actually be measured.</p>
+    <div class="fw-list">
+      <div class="fw-row"><div class="fw-num">01</div><div><div class="fw-title">Framework design</div><div class="fw-body">Questions, criteria and indicators are agreed at the outset so they align with programme goals, stakeholder priorities and reporting requirements. A simple theory of change makes the assumptions visible.</div></div></div>
+      <div class="fw-row"><div class="fw-num">02</div><div><div class="fw-title">Data collection</div><div class="fw-body">Quantitative and qualitative methods are combined to capture both performance trends and the context around them, using surveys, interviews, group discussions and document review.</div></div></div>
+      <div class="fw-row"><div class="fw-num">03</div><div><div class="fw-title">Analysis</div><div class="fw-body">The emphasis falls on interpretation rather than description. Patterns, trends, disparities and unintended effects are examined to explain what is driving performance.</div></div></div>
+      <div class="fw-row"><div class="fw-num">04</div><div><div class="fw-title">Reporting and use</div><div class="fw-body">Findings are synthesised into clear outputs that support decisions, with the emphasis on implications, recommendations and practical options for adaptation.</div></div></div>
+    </div>
+  </div>
 </div>
 
-<!-- ═══ PHILOSOPHY + FRAMEWORK ═══ -->
-<div class="phi-section">
-
-  <div class="phi-left">
-    <div class="section-eyebrow rv">Philosophy</div>
-    <h2 class="phi-heading rv d1">
-      Evidence Designed<br>for <em>Use</em>
-    </h2>
-    <p class="phi-body rv d2">
-      Evaluation is approached as a <strong>learning and decision-support function</strong> rather than a compliance exercise. Strong evaluations begin with clarity on why evidence is needed, who will use it, and how it will inform action. This perspective reflects widely accepted principles in utilization-focused evaluation.
-    </p>
-    <p class="phi-body rv d2">
-      <strong>Methodological rigour, ethical standards, and contextual relevance</strong> are treated as equally important. Evaluation designs prioritize feasibility, data quality, and transparency, recognizing that overly complex methodologies can undermine both data credibility and practical use in real-world health programs.
-    </p>
+<!-- ============ AREAS OF PRACTICE ============ -->
+<section class="areas">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow rv">Areas of practice</div>
+      <h2 class="section-title rv">Five core domains</h2>
+    </div>
+    <p class="section-note rv">Where evaluation, monitoring and evidence translation meet programme decision making.</p>
   </div>
 
-  <div class="phi-right">
-    <div class="section-eyebrow rv">Framework</div>
-    <h2 class="phi-heading rv d1">Four Stages of<br><em>Rigorous</em> Design</h2>
-    <p class="phi-body rv d2" style="margin-bottom:1.8rem;">Evaluations are structured using clear frameworks that link program objectives to measurable results.</p>
+  <div class="area-row">
+    <div class="area-idx">1</div>
+    <div class="area-title">Programme evaluation</div>
+    <div class="area-body">Assessing the relevance, effectiveness and efficiency of health programmes against their objectives and the populations they serve, with attention to what the evidence means for practice.</div>
+  </div>
+  <div class="area-row">
+    <div class="area-idx">2</div>
+    <div class="area-title">Impact assessment</div>
+    <div class="area-body">Examining short and longer term outcomes to understand how interventions contribute to changes in health behaviour, service use and system performance at community and facility level.</div>
+  </div>
+  <div class="area-row">
+    <div class="area-idx">3</div>
+    <div class="area-title">Monitoring and performance analysis</div>
+    <div class="area-body">Using routine data and indicators to track progress, flag risks and guide timely corrective action, so programmes can respond while there is still time to respond.</div>
+  </div>
+  <div class="area-row">
+    <div class="area-idx">4</div>
+    <div class="area-title">Evidence based recommendations</div>
+    <div class="area-body">Translating findings into practical actions that inform planning, resource allocation and implementation, closing the distance between what the data shows and what decision makers need.</div>
+  </div>
+  <div class="area-row">
+    <div class="area-idx">5</div>
+    <div class="area-title">Capacity building in evaluation</div>
+    <div class="area-body">Strengthening monitoring and evaluation skills among teams and stakeholders so that data quality, learning and accountability become part of routine programme culture.</div>
+  </div>
+</section>
 
-    <div class="fw-grid">
-      <div class="fw-cell" style="transition-delay:.05s">
-        <div class="fw-cell-num">01</div>
-        <div class="fw-cell-title">Framework Design</div>
-        <div class="fw-cell-body">Evaluation questions, criteria, and indicators are defined at the outset to align with program goals, stakeholder priorities, and reporting requirements. Theories of change clarify assumptions.</div>
-      </div>
-      <div class="fw-cell" style="transition-delay:.12s">
-        <div class="fw-cell-num">02</div>
-        <div class="fw-cell-title">Data Collection</div>
-        <div class="fw-cell-body">Quantitative and qualitative methods are combined to capture performance trends and contextual factors — surveys, interviews, FGDs, and document review.</div>
-      </div>
-      <div class="fw-cell" style="transition-delay:.2s">
-        <div class="fw-cell-num">03</div>
-        <div class="fw-cell-title">Analysis</div>
-        <div class="fw-cell-body">Focus is on interpretation rather than description alone. Patterns, trends, disparities, and unintended effects are examined to explain results and identify drivers of performance.</div>
-      </div>
-      <div class="fw-cell" style="transition-delay:.28s">
-        <div class="fw-cell-num">04</div>
-        <div class="fw-cell-title">Reporting &amp; Use</div>
-        <div class="fw-cell-body">Findings are synthesized into clear, actionable outputs that support decisions. Reports emphasize implications, recommendations, and options for adaptation.</div>
-      </div>
+<!-- ============ CASE SNAPSHOTS ============ -->
+<section class="cases">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow rv">Applied scenarios</div>
+      <h2 class="section-title rv">Evaluation snapshots</h2>
     </div>
+    <p class="section-note rv">Illustrative examples of the questions that come up in community, facility and campaign work, and how evidence is used to answer them.</p>
   </div>
 
-</div>
+  <div class="case-list">
 
-<!-- ═══ AREAS OF PRACTICE ═══ -->
-<div class="areas-section">
-  <div class="section-eyebrow rv">Areas of Practice</div>
-  <h2 class="areas-heading rv d1">
-    Five Core<br><em>Domains</em>
-  </h2>
-
-  <div class="areas-list">
-
-    <div class="area-item" style="transition-delay:.04s">
-      <div class="area-num">01</div>
-      <div class="area-title">Program Evaluation</div>
-      <div class="area-body">Assessing relevance, effectiveness, efficiency, and coherence of health programs in relation to their objectives and target populations — with a clear eye on what the evidence means for practice.</div>
-    </div>
-
-    <div class="area-item" style="transition-delay:.1s">
-      <div class="area-num">02</div>
-      <div class="area-title">Impact Assessment</div>
-      <div class="area-body">Examining short- and long-term outcomes to understand how interventions contribute to observed changes in health behaviors, service utilization, or system performance at community and facility levels.</div>
-    </div>
-
-    <div class="area-item" style="transition-delay:.16s">
-      <div class="area-num">03</div>
-      <div class="area-title">Monitoring &amp; Performance Analysis</div>
-      <div class="area-body">Using routine data and indicators to track progress, identify risks, and guide timely corrective action — ensuring that programs stay on course and respond to emerging realities.</div>
-    </div>
-
-    <div class="area-item" style="transition-delay:.22s">
-      <div class="area-num">04</div>
-      <div class="area-title">Evidence-Based Recommendations</div>
-      <div class="area-body">Translating findings into practical actions that inform planning, resource allocation, and implementation strategies — bridging the gap between what data shows and what decision-makers need.</div>
-    </div>
-
-    <div class="area-item" style="transition-delay:.28s">
-      <div class="area-num">05</div>
-      <div class="area-title">Capacity Building in Evaluation</div>
-      <div class="area-body">Strengthening evaluation skills among teams and stakeholders to support sustainable monitoring, learning, and accountability — so that evidence use becomes embedded in program culture.</div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ═══ PROCESS TIMELINE ═══ -->
-<div class="process-section">
-  <div class="section-eyebrow rv">Methodology</div>
-  <h2 class="rv d1" style="font-family:var(--ff-d);font-size:clamp(2rem,4vw,3.5rem);font-weight:600;color:#fff;letter-spacing:-.01em;margin-bottom:.5rem;">How Evaluation<br><em style="font-style:italic;color:var(--gold);">Is Conducted</em></h2>
-  <p class="rv d2" style="font-family:var(--ff-d);font-style:italic;font-size:1rem;color:rgba(255,255,255,.4);line-height:1.7;max-width:560px;">A five-stage process designed to move from questions to decisions — with rigour at every step.</p>
-
-  <div class="process-track">
-
-    <div class="process-step" style="transition-delay:.05s">
-      <div class="step-dot">01</div>
-      <div class="step-title">Assessment</div>
-      <div class="step-sub">Define key questions &amp; understand the context and stakeholder needs</div>
-    </div>
-
-    <div class="process-step" style="transition-delay:.13s">
-      <div class="step-dot">02</div>
-      <div class="step-title">Design</div>
-      <div class="step-sub">Build frameworks, select indicators, establish evaluation criteria</div>
-    </div>
-
-    <div class="process-step" style="transition-delay:.21s">
-      <div class="step-dot">03</div>
-      <div class="step-title">Data</div>
-      <div class="step-sub">Mixed-method collection — quantitative surveys, qualitative inquiry</div>
-    </div>
-
-    <div class="process-step" style="transition-delay:.29s">
-      <div class="step-dot">04</div>
-      <div class="step-title">Analysis</div>
-      <div class="step-sub">Interpret trends, outcomes, disparities &amp; unintended effects</div>
-    </div>
-
-    <div class="process-step" style="transition-delay:.37s">
-      <div class="step-dot">05</div>
-      <div class="step-title">Use</div>
-      <div class="step-sub">Translate findings into decisions, program adaptations &amp; learning</div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ═══ CASE STUDY GRID ═══ -->
-<div class="cases-section">
-  <div class="section-eyebrow rv">Field Evidence</div>
-  <h2 class="rv d1" style="font-family:var(--ff-d);font-size:clamp(2rem,4vw,3.5rem);font-weight:600;color:#fff;letter-spacing:-.01em;margin-bottom:.5rem;">Evaluation <em style="font-style:italic;color:var(--gold);">Snapshots</em></h2>
-  <p class="rv d2" style="font-family:var(--ff-d);font-style:italic;font-size:1rem;color:rgba(255,255,255,.4);line-height:1.7;max-width:560px;margin-bottom:0;">Selected examples from community, facility, and campaign-level evaluation work.</p>
-
-  <div class="cases-grid">
-
-    <!-- WIDE — Malaria -->
-    <div class="case-card wide" style="transition-delay:.04s">
-      <div class="case-img-wrap">
-        <img src="https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=800&q=80" alt="Malaria prevention nets">
-        <span class="case-tag">Prevention</span>
-      </div>
+    <div class="case">
+      <div class="case-media"><img src="https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=800&q=80" alt="Malaria prevention nets"><div class="case-cat">Prevention</div></div>
       <div class="case-body">
-        <div class="case-title">Malaria Prevention Evaluation</div>
-        <div class="case-row"><span class="case-key">Context</span><span class="case-val">Community mosquito net distribution in high-burden areas</span></div>
-        <div class="case-row"><span class="case-key">Methods</span><span class="case-val">Household surveys, observation, routine health data</span></div>
-        <div class="case-row"><span class="case-key">Key Insight</span><span class="case-val">Ownership was high, but consistent use lagged significantly</span></div>
-        <div class="case-insight">Findings supported redesign of follow-up visits and targeted behavior change messaging.</div>
+        <div class="case-title">Malaria prevention evaluation</div>
+        <div class="case-meta"><span class="case-key">Context</span><span class="case-val">Community net distribution in high burden areas</span></div>
+        <div class="case-meta"><span class="case-key">Methods</span><span class="case-val">Household surveys, observation, routine health data</span></div>
+        <div class="case-meta"><span class="case-key">Insight</span><span class="case-val">Ownership was high while consistent use lagged well behind</span></div>
+        <p class="case-quote">The gap between having a net and using one points follow up visits and messaging at the right problem.</p>
       </div>
     </div>
 
-    <!-- NCD Campaign -->
-    <div class="case-card" style="transition-delay:.1s">
-      <div class="case-img-wrap">
-        <img src="https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=500&q=80" alt="NCD awareness">
-        <span class="case-tag">NCD · Awareness</span>
-      </div>
+    <div class="case rev">
+      <div class="case-media"><img src="https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=500&q=80" alt="NCD awareness"><div class="case-cat">NCD awareness</div></div>
       <div class="case-body">
-        <div class="case-title">NCD Awareness Campaign</div>
-        <div class="case-row"><span class="case-key">Context</span><span class="case-val">Youth and community outreach on NCD prevention</span></div>
-        <div class="case-row"><span class="case-key">Methods</span><span class="case-val">Pre- and post-intervention surveys, referral tracking</span></div>
-        <div class="case-row"><span class="case-key">Insight</span><span class="case-val">Awareness improved rapidly, but service uptake required system linkage</span></div>
-        <div class="case-insight">Results informed integration of screening days with outreach activities.</div>
+        <div class="case-title">NCD awareness campaign</div>
+        <div class="case-meta"><span class="case-key">Context</span><span class="case-val">Youth and community outreach on prevention of non communicable disease</span></div>
+        <div class="case-meta"><span class="case-key">Methods</span><span class="case-val">Surveys before and after the intervention, referral tracking</span></div>
+        <div class="case-meta"><span class="case-key">Insight</span><span class="case-val">Awareness rose quickly, but service uptake needed a working referral link</span></div>
+        <p class="case-quote">An output measured in people reached tells you nothing until you follow what happened at the clinic door.</p>
       </div>
     </div>
 
-    <!-- PHC -->
-    <div class="case-card" style="transition-delay:.16s">
-      <div class="case-img-wrap">
-        <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=500&q=80" alt="Primary health facility">
-        <span class="case-tag">Facility Quality</span>
-      </div>
+    <div class="case">
+      <div class="case-media"><img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=500&q=80" alt="Primary health facility"><div class="case-cat">Facility quality</div></div>
       <div class="case-body">
-        <div class="case-title">Facility Service Quality Review</div>
-        <div class="case-row"><span class="case-key">Context</span><span class="case-val">Primary health care facilities</span></div>
-        <div class="case-row"><span class="case-key">Methods</span><span class="case-val">Data quality audits, staff interviews, register reviews</span></div>
-        <div class="case-row"><span class="case-key">Insight</span><span class="case-val">Reporting gaps driven by workflow constraints, not capacity alone</span></div>
-        <div class="case-insight">Informed adjustments to reporting timelines and supervision practices.</div>
+        <div class="case-title">Facility service quality review</div>
+        <div class="case-meta"><span class="case-key">Context</span><span class="case-val">Primary health care facilities</span></div>
+        <div class="case-meta"><span class="case-key">Methods</span><span class="case-val">Data quality checks, staff interviews, register reviews</span></div>
+        <div class="case-meta"><span class="case-key">Insight</span><span class="case-val">Reporting gaps were driven by workflow constraints rather than capacity alone</span></div>
+        <p class="case-quote">Adjusting reporting timelines and supervision proved more useful than another round of training.</p>
       </div>
     </div>
 
-    <!-- Immunization -->
-    <div class="case-card" style="transition-delay:.22s">
-      <div class="case-img-wrap">
-        <img src="https://images.unsplash.com/photo-1576671081837-49000212a370?w=500&q=80" alt="Immunization campaign">
-        <span class="case-tag">Immunization</span>
-      </div>
+    <div class="case rev">
+      <div class="case-media"><img src="https://images.unsplash.com/photo-1576671081837-49000212a370?w=500&q=80" alt="Immunization campaign"><div class="case-cat">Immunization</div></div>
       <div class="case-body">
-        <div class="case-title">Immunization Campaign Monitoring</div>
-        <div class="case-row"><span class="case-key">Context</span><span class="case-val">Mass vaccination in underserved communities</span></div>
-        <div class="case-row"><span class="case-key">Methods</span><span class="case-val">Daily coverage tracking, field supervision, rapid feedback loops</span></div>
-        <div class="case-row"><span class="case-key">Insight</span><span class="case-val">Missed children clustered around mobility and timing barriers</span></div>
-        <div class="case-insight">Data supported micro-planning adjustments during campaign implementation.</div>
+        <div class="case-title">Immunization campaign monitoring</div>
+        <div class="case-meta"><span class="case-key">Context</span><span class="case-val">Vaccination activity in underserved communities</span></div>
+        <div class="case-meta"><span class="case-key">Methods</span><span class="case-val">Daily coverage tracking, field supervision, rapid feedback to team leads</span></div>
+        <div class="case-meta"><span class="case-key">Insight</span><span class="case-val">Missed children clustered around household mobility and session timing</span></div>
+        <p class="case-quote">Daily data is only worth collecting if the micro plan can still be changed the next morning.</p>
       </div>
     </div>
 
-    <!-- Community Outreach -->
-    <div class="case-card" style="transition-delay:.28s">
-      <div class="case-img-wrap">
-        <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=500&q=80" alt="Community outreach">
-        <span class="case-tag">Community</span>
-      </div>
+    <div class="case">
+      <div class="case-media"><img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=500&q=80" alt="Community outreach"><div class="case-cat">Community</div></div>
       <div class="case-body">
-        <div class="case-title">Community Health Outreach Assessment</div>
-        <div class="case-row"><span class="case-key">Context</span><span class="case-val">Community-led health education activities</span></div>
-        <div class="case-row"><span class="case-key">Methods</span><span class="case-val">Focus group discussions, attendance tracking</span></div>
-        <div class="case-row"><span class="case-key">Insight</span><span class="case-val">Trust and messenger credibility strongly influenced participation</span></div>
-        <div class="case-insight">Findings reinforced the role of local facilitators and peer educators.</div>
+        <div class="case-title">Community health outreach assessment</div>
+        <div class="case-meta"><span class="case-key">Context</span><span class="case-val">Community led health education activities</span></div>
+        <div class="case-meta"><span class="case-key">Methods</span><span class="case-val">Group discussions, attendance tracking</span></div>
+        <div class="case-meta"><span class="case-key">Insight</span><span class="case-val">Trust in the messenger influenced participation more than the content did</span></div>
+        <p class="case-quote">Attendance figures made sense only once we asked who had done the inviting.</p>
       </div>
     </div>
 
-    <!-- Wide — Emergency -->
-    <div class="case-card wide" style="transition-delay:.34s">
-      <div class="case-img-wrap">
-        <img src="https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=800&q=80" alt="Emergency health response">
-        <span class="case-tag">Emergency Response</span>
-      </div>
+    <div class="case rev">
+      <div class="case-media"><img src="https://images.unsplash.com/photo-1551190822-a9333d879b1f?w=500&q=80" alt="Health data systems"><div class="case-cat">Data systems</div></div>
       <div class="case-body">
-        <div class="case-title">Emergency Health Response Review</div>
-        <div class="case-row"><span class="case-key">Context</span><span class="case-val">Rapid response health interventions during emergency phases</span></div>
-        <div class="case-row"><span class="case-key">Methods</span><span class="case-val">Rapid assessments, daily situation reports</span></div>
-        <div class="case-row"><span class="case-key">Insight</span><span class="case-val">Speed of coordination outweighed technical complexity as a success factor</span></div>
-        <div class="case-insight">Evidence supported simplified reporting tools during emergency phases — reducing burden and increasing real-time data use.</div>
-      </div>
-    </div>
-
-    <!-- Hospital Data -->
-    <div class="case-card" style="transition-delay:.4s">
-      <div class="case-img-wrap">
-        <img src="https://images.unsplash.com/photo-1551190822-a9333d879b1f?w=500&q=80" alt="Hospital data systems">
-        <span class="case-tag">Data Systems</span>
-      </div>
-      <div class="case-body">
-        <div class="case-title">Hospital Data Systems Review</div>
-        <div class="case-row"><span class="case-key">Context</span><span class="case-val">Facility-level reporting and health information systems</span></div>
-        <div class="case-row"><span class="case-key">Methods</span><span class="case-val">Data flow mapping, record reviews, staff consultations</span></div>
-        <div class="case-row"><span class="case-key">Insight</span><span class="case-val">Parallel reporting systems reduced data use at facility level</span></div>
-        <div class="case-insight">Supported streamlining of indicators and reporting responsibilities.</div>
+        <div class="case-title">Facility data systems review</div>
+        <div class="case-meta"><span class="case-key">Context</span><span class="case-val">Facility level reporting and health information flows</span></div>
+        <div class="case-meta"><span class="case-key">Methods</span><span class="case-val">Data flow mapping, record reviews, staff consultations</span></div>
+        <div class="case-meta"><span class="case-key">Insight</span><span class="case-val">Parallel reporting systems reduced the use of data at facility level</span></div>
+        <p class="case-quote">Fewer indicators, clearly owned, gave staff something they could actually read and act on.</p>
       </div>
     </div>
 
   </div>
-</div>
+</section>
 
-<!-- ═══ COLLABORATION CTA ═══ -->
-<div class="eval-cta">
-  <div class="eval-cta-left rv">
-    <div class="section-eyebrow" style="color:var(--gold);">Collaborate</div>
-    <h2>
-      Open to<br>
-      <em>Evaluation</em><br>
-      Partnership
-    </h2>
-    <p>Open to consulting roles, co-evaluation partnerships, and research collaborations focused on evidence-driven health programs across East Africa and beyond.</p>
-    <a class="cta-link" href="https://www.linkedin.com/in/josemariaescriva/" target="_blank" rel="noopener">↗ Connect on LinkedIn</a>
+<!-- ============ FOOTER ============ -->
+<footer class="site-foot">
+  <div class="foot-icons">
+<a href="https://x.com/escriva_ke" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://web.facebook.com/escriva101/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/escriva_ke/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/josemariaescriva/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="https://github.com/escrivajosemaria" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="https://leafspire.github.io/leafoundation/" target="_blank" rel="noopener noreferrer" aria-label="Portfolio"><i class="fa-solid fa-globe"></i></a>
+            <a href="https://www.youtube.com/@escriva_ke" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="https://gravatar.com/josemariaescriva82" target="_blank" rel="noopener noreferrer" aria-label="WordPress"><i class="fa-brands fa-wordpress"></i></a>
   </div>
-  <div class="eval-cta-right rv d2">
-    <div class="offer-row">
-      <span class="offer-icon">📋</span>
-      <div>
-        <div class="offer-title">Program Evaluation &amp; Design</div>
-        <div class="offer-desc">End-to-end evaluation design — from question framing and framework development to data collection and reporting.</div>
-      </div>
-    </div>
-    <div class="offer-row">
-      <span class="offer-icon">📊</span>
-      <div>
-        <div class="offer-title">Monitoring &amp; Performance Analysis</div>
-        <div class="offer-desc">Building indicator frameworks, reviewing routine data systems, and supporting performance review processes.</div>
-      </div>
-    </div>
-    <div class="offer-row">
-      <span class="offer-icon">✍️</span>
-      <div>
-        <div class="offer-title">Evidence Synthesis &amp; Reporting</div>
-        <div class="offer-desc">Translating complex data into clear, decision-ready outputs for practitioners, funders, and policy audiences.</div>
-      </div>
-    </div>
-    <div class="offer-row">
-      <span class="offer-icon">🌍</span>
-      <div>
-        <div class="offer-title">East Africa Field Evaluation</div>
-        <div class="offer-desc">On-the-ground evaluation support for community, facility, and campaign-level programs in Kenya and the region.</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ CONTACT ═══ -->
-<div class="contact-section">
-  <div class="contact-left">
-    <div class="rv" style="font-family:var(--ff-ui);font-size:.58rem;font-weight:600;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;"><span style="display:block;width:24px;height:1px;background:var(--gold)"></span>Get in Touch</div>
-    <h2 class="rv d1">Research Enquiries</h2>
-    <p class="sub rv d2">Available for evaluation consulting, co-authorship, or applied research support.</p>
-    <form method="POST" action="https://formspree.io/f/xwvpkvzl" class="rv d2">
-      <div class="ff-row ff"><div><input type="text" name="name" placeholder="Name" required></div><div><input type="email" name="email" placeholder="Email" required></div></div>
-      <div class="ff"><textarea name="message" placeholder="Your message or evaluation proposal…" rows="4"></textarea></div>
-      <button type="submit" class="send-btn">Submit Enquiry →</button>
-    </form>
-  </div>
-  <div class="contact-right rv">
-    <h3>Connect &amp; follow the research</h3>
-    <div class="socials">
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:74px;max-width:860px;">
-
-  <!-- X -->
-  <a href="https://x.com/Leafspire" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-x-twitter"></i></a>
-
-  <!-- Facebook -->
-  <a href="https://www.facebook.com/iamescriva/" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-facebook-f"></i></a>
-
-  <!-- Instagram -->
-  <a href="https://www.instagram.com/leafspirefoundation/" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-instagram"></i></a>
-
-  <!-- LinkedIn -->
-  <a href="https://www.linkedin.com/in/josemariaescriva/" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-linkedin-in"></i></a>
-
-  <!-- GitHub -->
-  <a href="https://github.com/escrivajosemaria" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-github"></i></a>
-
-  <!-- Portfolio -->
-  <a href="https://leafspire.github.io/leafoundation/" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-solid fa-globe"></i></a>
-
-  <!-- YouTube -->
-  <a href="https://youtube.com/@escrivahypercollective?si=qVorezgzhYidVWwV" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-youtube"></i></a>
-
-  <!-- WordPress -->
-  <a href="http://esvarj.wordpress.com" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-wordpress"></i></a>
-
-</div>
-    </div>
-  </div>
-</div>
-
-<div class="footer-bar">
-  <p>&copy; Escriva Josemaria 2024</p>
-  <p>Design: escriva.https</p>
-</div>
+  <p>&copy; Escriva Josemaria, 2024</p>
+</footer>
 
 <script>
 (function(){
-  /* Progress bar */
-  const pb=document.getElementById('prog');
-  window.addEventListener('scroll',()=>{
-    const s=document.documentElement;
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* scroll progress */
+  var pb=document.getElementById('prog');
+  window.addEventListener('scroll',function(){
+    var s=document.documentElement;
     pb.style.width=(window.scrollY/(s.scrollHeight-window.innerHeight)*100)+'%';
   },{passive:true});
 
-  /* Sticky header */
-  const hdr=document.getElementById('header');
-  window.addEventListener('scroll',()=>hdr.classList.toggle('solid',window.scrollY>60),{passive:true});
+  /* menu, same behaviour as index.html */
+  var menuEl=document.getElementById('menu');
+  function openMenu(e){ if(e) e.preventDefault(); menuEl.classList.add('on'); menuEl.setAttribute('aria-hidden','false'); }
+  function closeMenu(){ menuEl.classList.remove('on'); menuEl.setAttribute('aria-hidden','true'); }
+  document.getElementById('mt').addEventListener('click',openMenu);
+  document.getElementById('mc').addEventListener('click',closeMenu);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeMenu(); });
 
-  /* Menu */
-  const menuEl=document.getElementById('menu'),ov=document.getElementById('mo');
-  document.getElementById('mt').addEventListener('click',e=>{e.preventDefault();menuEl.classList.add('on');ov.classList.add('on');});
-  document.getElementById('mc').addEventListener('click',()=>{menuEl.classList.remove('on');ov.classList.remove('on');});
-  ov.addEventListener('click',()=>{menuEl.classList.remove('on');ov.classList.remove('on');});
+  /* evaluation workflow rail */
+  var rail=document.getElementById('flowRail');
+  if(rail){
+    var stages=Array.prototype.slice.call(rail.querySelectorAll('.wf'));
+    function select(i){
+      stages.forEach(function(s,n){
+        var on=(n===i);
+        s.classList.toggle('on',on);
+        s.setAttribute('aria-selected',on?'true':'false');
+        s.tabIndex=on?0:-1;
+      });
+    }
+    stages.forEach(function(s,i){
+      s.addEventListener('click',function(){select(i);});
+      s.addEventListener('mouseenter',function(){
+        if(window.matchMedia('(min-width:861px)').matches && !reduceMotion) select(i);
+      });
+      s.addEventListener('keydown',function(e){
+        if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();var n=(i+1)%stages.length;select(n);stages[n].focus();}
+        if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();var p=(i-1+stages.length)%stages.length;select(p);stages[p].focus();}
+      });
+    });
+  }
 
-  /* Intersection observer — reveal + rings + process steps + areas */
-  const obs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
+  /* reveal on scroll */
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
       if(!e.isIntersecting) return;
-      const el=e.target;
-      el.classList.add('vis');
-
-      /* Animate SVG ring if metric cell */
-      if(el.classList.contains('metric-cell')){
-        const pct=parseInt(el.dataset.ring)||70;
-        const circ=2*Math.PI*33; /* r=33 */
-        const fg=el.querySelector('.ring-fg');
-        if(fg) setTimeout(()=>{
-          fg.style.strokeDasharray=circ;
-          fg.style.strokeDashoffset=circ-(pct/100)*circ;
-        },200);
-      }
-      obs.unobserve(el);
+      e.target.classList.add('vis');
+      obs.unobserve(e.target);
     });
   },{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.rv,.fw-row,.area-row,.case').forEach(function(el){obs.observe(el);});
 
-  document.querySelectorAll(
-    '.rv,.metric-cell,.fw-cell,.process-step,.case-card,.area-item'
-  ).forEach(el=>obs.observe(el));
+  /* quality checklist reveals in sequence */
+  var qitems=document.querySelectorAll('.qlist li');
+  var qobs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return;
+      var idx=Array.prototype.indexOf.call(qitems,e.target);
+      e.target.style.transitionDelay=reduceMotion?'0ms':(Math.min(idx,8)*90)+'ms';
+      e.target.classList.add('vis');
+      qobs.unobserve(e.target);
+    });
+  },{threshold:.2});
+  qitems.forEach(function(el){qobs.observe(el);});
 })();
 </script>
 </body>
