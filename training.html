@@ -1,1069 +1,583 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Training & Capacity Building</title>
-  <link rel="shortcut icon" href="images/favicon.ico">
-  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-  <style>
-  :root {
-    --teal:      #04474e;
-    --teal-deep: #020d0e;
-    --teal-mid:  #075f6a;
-    --teal-lite: #0d9db0;
-    --gold:      #c8973a;
-    --gold-lt:   #e8b65a;
-    --cream:     #faf8f4;
-    --ink:       #0d1a1b;
-    --border:    rgba(255,255,255,.07);
-    --border-d:  rgba(4,71,78,.15);
-    --ff-d:      'EB Garamond', Georgia, serif;
-    --ff-ui:     'Josefin Sans', sans-serif;
-    --ease:      cubic-bezier(0.4,0,0.2,1);
-  }
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Training &amp; Capacity Building | Escriva Josemaria</title>
+<meta name="description" content="Training and capacity building in public health: frontline worker training, community health literacy sessions, and leadership development, and what four years of running them has taught us.">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Escriva Josemaria">
+<meta property="og:title" content="Training &amp; Capacity Building | Escriva Josemaria">
+<meta property="og:description" content="Frontline health worker training, community health literacy, and program leadership.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Training &amp; Capacity Building | Escriva Josemaria">
+<meta name="twitter:description" content="Frontline health worker training, community health literacy, and program leadership.">
+<link rel="shortcut icon" href="images/favicon.ico">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,340;0,9..144,440;0,9..144,560;0,9..144,600;1,9..144,400;1,9..144,440&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/fontawesome.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/brands.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/solid.min.css"/>
+<style>
+:root{
+  --paper:#F2EEE3;
+  --paper-2:#EAE3D2;
+  --ink:#1C1A14;
+  --ink-70:rgba(28,26,20,.72);
+  --ink-45:rgba(28,26,20,.46);
+  --line:rgba(28,26,20,.18);
+  --line-soft:rgba(28,26,20,.10);
+  --green:#3E5B3A;
+  --green-deep:#28401F;
+  --night:#181510;
+  --night-2:#221D15;
+  --paper-on-night:rgba(242,238,227,.86);
+  --paper-on-night-60:rgba(242,238,227,.56);
+  --night-line:rgba(242,238,227,.16);
+  --clay:#7a3320;
+  --clay-soft:#a85a3f;
+  --ff-serif:'Fraunces', Georgia, serif;
+  --ff-sans:'Inter', -apple-system, sans-serif;
+  --ff-menu-serif:'Instrument Serif', Georgia, serif;
+  --ease:cubic-bezier(.5,0,.15,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--ff-serif);
+  font-optical-sizing:auto;
+  background:var(--paper);
+  color:var(--ink);
+  font-size:18px;
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block;}
+::-webkit-scrollbar{width:10px;}
+::-webkit-scrollbar-track{background:var(--paper);}
+::-webkit-scrollbar-thumb{background:var(--line);border-radius:0;}
 
-  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
-  html { scroll-behavior:smooth; }
-  body { font-family:var(--ff-d); background:var(--teal-deep); color:#fff; overflow-x:hidden; }
-  ::-webkit-scrollbar { width:3px; }
-  ::-webkit-scrollbar-track { background:var(--teal-deep); }
-  ::-webkit-scrollbar-thumb { background:var(--gold); }
+.skip-link{
+  position:absolute;top:-100px;left:1rem;z-index:9999;
+  background:var(--ink);color:var(--paper);
+  font-family:var(--ff-sans);font-size:.8rem;font-weight:600;
+  padding:.8rem 1.3rem;text-decoration:none;
+  transition:top .25s var(--ease);
+}
+.skip-link:focus{top:1rem;}
+a{color:inherit;}
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
+  outline:2px solid var(--green);outline-offset:3px;
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}
+}
 
-  /* PROGRESS */
-  #prog { position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--teal-lite),var(--gold));z-index:9000;width:0;transition:width .08s linear; }
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 
-  /* HEADER */
-  #header { position:fixed;top:0;left:0;right:0;z-index:800;padding:1.2rem 4rem;display:flex;justify-content:flex-end;transition:background .4s; }
-  #header.solid { background:rgba(2,13,14,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border); }
-  #header nav ul { list-style:none;display:flex; }
-  #header nav ul li a { font-family:var(--ff-ui);font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);text-decoration:none;padding:.5rem 1rem;border:1px solid rgba(255,255,255,.15);border-radius:2px;transition:all .3s; }
-  #header nav ul li a:hover { color:var(--gold);border-color:var(--gold);background:rgba(200,151,58,.08); }
+/* ── Global header / menu (matches index.html design system) ── */
+#header{
+  position:sticky;top:0;z-index:900;
+  background:rgba(242,238,227,.92);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:1.6rem 6.5%;
+  display:flex;align-items:center;justify-content:space-between;
+  color:var(--ink);
+}
+.h-logo{display:inline-flex;align-items:center;line-height:0;}
+.h-logo img{height:34px;width:auto;display:block;transition:opacity .25s;}
+.h-logo:hover img{opacity:.72;}
+#header nav a{
+  font-family:var(--ff-sans);font-size:.82rem;font-weight:500;color:var(--ink);
+  text-decoration:none;letter-spacing:.01em;
+  border-bottom:1px solid currentColor;padding-bottom:.15rem;
+  opacity:.9;transition:opacity .25s;
+}
+#header nav a:hover{opacity:.55;}
 
-  /* SIDE MENU */
-  #mo { display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1999;backdrop-filter:blur(4px); }
-  #mo.on { display:block; }
-  #menu { position:fixed;top:0;right:-380px;width:380px;height:100vh;background:var(--teal);z-index:2000;padding:5rem 3.5rem 3rem;transition:right .45s cubic-bezier(.77,0,.18,1); }
-  #menu.on { right:0; }
-  #mc { position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:rgba(255,255,255,.6);font-size:1.4rem;cursor:pointer;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s; }
-  #mc:hover { background:rgba(255,255,255,.1);color:#fff; }
-  #menu h2 { font-family:var(--ff-ui);font-size:.58rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:2.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,.1); }
-  #menu ul { list-style:none; }
-  #menu ul li { margin-bottom:.1rem;opacity:0;transform:translateX(24px);transition:all .35s; }
-  #menu.on ul li { opacity:1;transform:translateX(0); }
-  #menu.on ul li:nth-child(1){transition-delay:.08s} #menu.on ul li:nth-child(2){transition-delay:.14s}
-  #menu.on ul li:nth-child(3){transition-delay:.2s}  #menu.on ul li:nth-child(4){transition-delay:.26s}
-  #menu ul li a { display:block;font-family:var(--ff-d);font-size:1.5rem;color:rgba(255,255,255,.82);text-decoration:none;padding:.65rem 0;border-bottom:1px solid rgba(255,255,255,.07);transition:color .3s,padding-left .3s; }
-  #menu ul li a:hover { color:var(--gold);padding-left:.5rem; }
+#menu{
+  position:fixed;inset:0;background:var(--paper);z-index:2000;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:6% 8%;
+  clip-path:inset(0 0 100% 0);
+  transition:clip-path .55s var(--ease);
+}
+#menu.on{clip-path:inset(0 0 0 0);}
+#mc{
+  position:absolute;top:1.6rem;right:6.5%;background:none;border:none;
+  font-family:var(--ff-sans);font-size:.85rem;color:var(--ink);cursor:pointer;
+}
+#menu ul{list-style:none;}
+#menu ul li a{
+  display:block;font-family:var(--ff-menu-serif);font-size:clamp(2.4rem,7vw,4.2rem);
+  font-style:italic;color:var(--ink);text-decoration:none;
+  padding:.25rem 0;line-height:1.15;
+  border-bottom:1px solid var(--line);
+  transition:padding-left .3s var(--ease), color .3s;
+}
+#menu ul li:last-child a{border-bottom:none;}
+#menu ul li a:hover{padding-left:.6rem;color:var(--clay);}
+#menu .menu-foot{margin-top:2.5rem;font-family:var(--ff-sans);font-size:.78rem;color:var(--ink-45);}
 
-  /* ── MASTHEAD ──────────────────────────────────────────────────── */
-  .masthead {
-    padding-top: 6rem;
-    background: var(--teal-deep);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    min-height: 88vh;
-    position: relative;
-    overflow: hidden;
-  }
+/* ── Hero ──────────────────────────────────────────────────── */
+.hero{padding:4.5rem 6% 0;}
+.hero-grid{
+  display:grid;grid-template-columns:1.5fr 1fr;gap:4rem;
+  align-items:end;padding-bottom:3.5rem;
+}
+.hero-kicker{
+  font-family:var(--ff-sans);font-size:.78rem;font-weight:500;color:var(--green-deep);
+  margin-bottom:1.6rem;
+}
+.hero h1{
+  font-family:var(--ff-serif);font-weight:340;font-size:clamp(2.6rem,6.2vw,5.4rem);
+  line-height:.98;letter-spacing:-.015em;color:var(--ink);margin-bottom:2rem;
+  opacity:0;animation:rise 1s var(--ease) .15s forwards;
+}
+.hero h1 i{font-style:italic;font-weight:440;}
+.hero-intro{
+  font-family:var(--ff-serif);font-style:italic;font-weight:400;font-size:1.2rem;
+  line-height:1.7;color:var(--ink-70);max-width:46ch;
+  opacity:0;animation:rise 1s var(--ease) .35s forwards;
+}
+@keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-  /* Large decorative text watermark */
-  .masthead-watermark {
-    position: absolute;
-    bottom: -2rem;
-    left: 4%;
-    font-family: var(--ff-d);
-    font-size: clamp(8rem, 18vw, 18rem);
-    font-weight: 700;
-    color: rgba(255,255,255,.025);
-    line-height: 1;
-    pointer-events: none;
-    letter-spacing: -.04em;
-    user-select: none;
-  }
+.hero-figure{position:relative;opacity:0;animation:rise 1.1s var(--ease) .3s forwards;}
+.hero-figure .frame{position:relative;overflow:hidden;aspect-ratio:4/5;}
+.hero-figure img{width:100%;height:100%;object-fit:cover;filter:grayscale(55%) contrast(1.08) brightness(.98);}
+.hero-figure .frame::after{content:'';position:absolute;inset:0;background:var(--green-deep);mix-blend-mode:multiply;opacity:.22;}
+.hero-figure figcaption{
+  font-family:var(--ff-sans);font-size:.7rem;color:var(--ink-45);
+  margin-top:.7rem;line-height:1.5;
+}
 
-  .masthead-left {
-    padding: 5rem 4rem 5rem 8%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    position: relative;
-    z-index: 2;
-    border-right: 1px solid var(--border);
-  }
+.hero-stats{
+  display:flex;gap:2.6rem;flex-wrap:wrap;
+  padding:2rem 0 2.6rem;border-top:1px solid var(--line);
+  opacity:0;animation:rise 1s var(--ease) .55s forwards;
+}
+.stat-item{display:flex;align-items:baseline;gap:.6rem;}
+.stat-num{font-family:var(--ff-serif);font-weight:560;font-size:1.9rem;color:var(--green-deep);}
+.stat-label{font-family:var(--ff-sans);font-size:.76rem;color:var(--ink-70);max-width:16ch;line-height:1.4;}
 
-  .masthead-label {
-    font-family: var(--ff-ui);
-    font-size: .55rem;
-    font-weight: 600;
-    letter-spacing: .4em;
-    text-transform: uppercase;
-    color: var(--gold);
-    display: flex;
-    align-items: center;
-    gap: .8rem;
-    margin-bottom: 2rem;
-    opacity: 0;
-    animation: rise .8s var(--ease) .2s forwards;
-  }
-  .masthead-label::before { content: ''; display: block; width: 28px; height: 1px; background: var(--gold); }
+/* ── Contents ──────────────────────────────────────────────── */
+.contents{border-top:1px solid var(--ink);}
+.contents-row{
+  display:flex;align-items:baseline;gap:1.2rem;
+  padding:1.05rem 0;border-bottom:1px solid var(--line-soft);
+  text-decoration:none;color:var(--ink);
+}
+.contents-row .no{font-family:var(--ff-sans);font-size:.78rem;color:var(--ink-45);width:2.2rem;flex-shrink:0;}
+.contents-row .ti{font-family:var(--ff-serif);font-size:1.15rem;font-weight:400;flex-shrink:0;transition:color .25s;}
+.contents-row .fill{flex:1;border-bottom:1px dotted var(--line);transform:translateY(-.35em);}
+.contents-row .go{font-family:var(--ff-sans);font-size:.78rem;color:var(--ink-45);transition:transform .25s var(--ease),color .25s;}
+.contents-row:hover .ti{color:var(--green-deep);}
+.contents-row:hover .go{color:var(--green-deep);transform:translateX(4px);}
 
-  .masthead-title {
-    font-family: var(--ff-d);
-    font-size: clamp(3.2rem, 6.5vw, 6.5rem);
-    font-weight: 700;
-    line-height: .9;
-    letter-spacing: -.02em;
-    color: #fff;
-    margin-bottom: 2.5rem;
-    opacity: 0;
-    animation: rise 1s var(--ease) .4s forwards;
-  }
-  .masthead-title em { font-style: italic; color: var(--gold); }
+/* ── Section scaffolding ───────────────────────────────────── */
+.chapter{padding:6.5rem 6%;}
+.chapter-mark{
+  display:flex;align-items:center;gap:.9rem;margin-bottom:1.6rem;
+  font-family:var(--ff-sans);font-size:.78rem;font-weight:500;color:var(--green-deep);
+}
+.chapter-mark .n{font-family:var(--ff-serif);font-weight:560;font-size:1.05rem;color:var(--ink-45);}
+.chapter-mark::after{content:'';flex:1;max-width:60px;height:1px;background:var(--line);}
 
-  .masthead-intro {
-    font-family: var(--ff-d);
-    font-size: 1.05rem;
-    font-style: italic;
-    line-height: 1.85;
-    color: rgba(255,255,255,.5);
-    border-left: 3px solid var(--gold);
-    padding-left: 1.2rem;
-    max-width: 480px;
-    opacity: 0;
-    animation: rise .9s var(--ease) .65s forwards;
-  }
+/* ── Approach (01) ─────────────────────────────────────────── */
+#approach{border-top:1px solid var(--line);}
+.approach-grid{display:grid;grid-template-columns:220px minmax(0,700px) 1fr;gap:3rem;}
+.approach-grid h2{
+  font-family:var(--ff-serif);font-weight:400;font-size:clamp(1.9rem,3.2vw,2.7rem);
+  line-height:1.14;letter-spacing:-.01em;margin-bottom:1.8rem;grid-column:2;
+}
+.approach-grid h2 i{font-style:italic;color:var(--green-deep);}
+.approach-margin{grid-row:2;}
+.approach-body{grid-column:2;}
+.pull{
+  font-family:var(--ff-serif);font-style:italic;font-weight:400;font-size:1.3rem;
+  line-height:1.6;color:var(--ink);
+  padding:1.6rem 0 1.6rem 1.4rem;border-left:2px solid var(--green);
+  margin-bottom:1.8rem;
+}
+.body-copy{font-size:1.06rem;line-height:1.85;color:var(--ink-70);max-width:68ch;margin-bottom:1.3rem;}
+.body-copy a{color:var(--green-deep);text-decoration-color:var(--line);text-underline-offset:3px;}
+.body-copy a:hover{text-decoration-color:var(--green-deep);}
+.source-note{
+  font-family:var(--ff-sans);font-size:.78rem;color:var(--ink-45);line-height:1.7;
+  padding-top:1.5rem;margin-top:1.8rem;border-top:1px solid var(--line-soft);
+}
+.source-note strong{color:var(--ink-70);font-weight:500;}
+.cta-link{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-family:var(--ff-sans);font-size:.85rem;font-weight:600;color:var(--ink);
+  text-decoration:none;padding-bottom:.25rem;border-bottom:1.5px solid var(--ink);
+  margin-top:1.4rem;transition:gap .3s var(--ease),color .3s,border-color .3s;
+}
+.cta-link:hover{gap:.9rem;color:var(--green-deep);border-color:var(--green-deep);}
 
-  .masthead-right {
-    position: relative;
-    overflow: hidden;
-    opacity: 0;
-    animation: rise 1s var(--ease) .5s forwards;
-  }
-  .masthead-right img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    filter: brightness(.55) saturate(.8);
-  }
-  /* Overlay gradient */
-  .masthead-right::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to right, var(--teal-deep) 0%, transparent 30%),
-                linear-gradient(to top, var(--teal-deep) 0%, transparent 30%);
-  }
+/* ── Session themes (02) ───────────────────────────────────── */
+#sessions{background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.theme-list{border-top:1px solid var(--ink);}
+.theme-row{
+  display:grid;grid-template-columns:70px minmax(0,1fr) minmax(0,1.3fr);
+  gap:2.5rem;padding:2.1rem 0;border-bottom:1px solid var(--line-soft);
+}
+.theme-row .no{font-family:var(--ff-serif);font-weight:560;font-size:1.3rem;color:var(--ink-45);}
+.theme-row h3{font-family:var(--ff-serif);font-weight:440;font-size:1.28rem;line-height:1.25;}
+.theme-row p{font-family:var(--ff-serif);font-style:italic;font-size:1rem;color:var(--ink-70);line-height:1.7;}
 
-  /* Floating stat chips on image */
-  .masthead-chips {
-    position: absolute;
-    bottom: 3rem;
-    right: 2rem;
-    z-index: 3;
-    display: flex;
-    flex-direction: column;
-    gap: .8rem;
-    align-items: flex-end;
-    opacity: 0;
-    animation: rise .9s var(--ease) 1s forwards;
-  }
-  .chip {
-    background: rgba(4,71,78,.85);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(200,151,58,.3);
-    border-radius: 3px;
-    padding: .6rem 1.1rem;
-    display: flex;
-    align-items: baseline;
-    gap: .5rem;
-  }
-  .chip-val {
-    font-family: var(--ff-d);
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--gold);
-  }
-  .chip-label {
-    font-family: var(--ff-ui);
-    font-size: .52rem;
-    font-weight: 600;
-    letter-spacing: .15em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,.5);
-  }
+/* ── Module case pages (03/04/05) ──────────────────────────── */
+.module{border-top:1px solid var(--line);padding:6.5rem 6%;}
+.module-grid{display:grid;grid-template-columns:44% 1fr;gap:4.5rem;align-items:start;}
+.module.flip .module-grid{grid-template-columns:1fr 44%;}
+.module.flip .module-figure{order:2;}
+.module-figure{position:relative;}
+.module-figure .frame{position:relative;overflow:hidden;aspect-ratio:5/6;}
+.module-figure img{width:100%;height:100%;object-fit:cover;filter:grayscale(55%) contrast(1.08) brightness(.98);}
+.module-figure .frame::after{content:'';position:absolute;inset:0;background:var(--green-deep);mix-blend-mode:multiply;opacity:.2;}
+.module-figure figcaption{font-family:var(--ff-sans);font-size:.72rem;color:var(--ink-45);margin-top:.8rem;line-height:1.5;}
+.module-body h2{
+  font-family:var(--ff-serif);font-weight:400;font-size:clamp(1.7rem,2.6vw,2.3rem);
+  line-height:1.18;letter-spacing:-.01em;margin-bottom:1.5rem;max-width:20ch;
+}
+.module-stat{
+  display:flex;align-items:baseline;gap:1.2rem;margin-top:2.2rem;
+  padding-top:1.6rem;border-top:1px solid var(--line);
+}
+.module-stat .num{font-family:var(--ff-serif);font-weight:560;font-size:2.4rem;color:var(--green-deep);line-height:1;}
+.module-stat .lbl{font-family:var(--ff-sans);font-size:.78rem;color:var(--ink-70);max-width:26ch;line-height:1.5;}
 
-  @keyframes rise { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+/* ── Closing lessons (06) — inverted pause ────────────────── */
+#lessons{
+  background:var(--night);color:var(--paper-on-night);
+  padding:7rem 6%;border-top:1px solid var(--line);
+}
+.lessons-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;}
+#lessons .chapter-mark{color:#9EB690;}
+#lessons .chapter-mark .n{color:var(--paper-on-night-60);}
+#lessons .chapter-mark::after{background:var(--night-line);}
+.lessons-grid h2{
+  font-family:var(--ff-serif);font-weight:380;font-size:clamp(1.9rem,3.4vw,2.7rem);
+  line-height:1.2;letter-spacing:-.01em;margin-bottom:1.6rem;color:var(--paper);
+}
+.lessons-grid h2 i{font-style:italic;color:#9EB690;}
+.lessons-grid p{font-size:1.03rem;line-height:1.85;color:var(--paper-on-night-60);max-width:56ch;margin-bottom:1.1rem;}
+.lesson-list{border-top:1px solid var(--night-line);}
+.lesson-row{display:flex;gap:1.6rem;padding:1.7rem 0;border-bottom:1px solid var(--night-line);}
+.lesson-row .no{font-family:var(--ff-serif);font-weight:560;font-size:1.05rem;color:#9EB690;width:1.8rem;flex-shrink:0;}
+.lesson-row h4{font-family:var(--ff-serif);font-weight:440;font-size:1.1rem;margin-bottom:.4rem;color:var(--paper);}
+.lesson-row p{font-family:var(--ff-serif);font-style:italic;font-size:.95rem;color:var(--paper-on-night-60);line-height:1.65;}
 
-  /* ── INDEX BAR ─────────────────────────────────────────────────── */
-  .index-bar {
-    background: var(--teal);
-    border-bottom: 1px solid rgba(255,255,255,.08);
-    display: flex;
-    overflow-x: auto;
-  }
-  .index-bar::-webkit-scrollbar { height: 0; }
-  .index-link {
-    font-family: var(--ff-ui);
-    font-size: .54rem;
-    font-weight: 600;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,.4);
-    text-decoration: none;
-    padding: 1rem 2rem;
-    white-space: nowrap;
-    border-right: 1px solid rgba(255,255,255,.06);
-    transition: all .3s;
-    position: relative;
-  }
-  .index-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--gold);
-    transform: scaleX(0);
-    transition: transform .3s;
-  }
-  .index-link:hover { color: var(--gold); }
-  .index-link:hover::after { transform: scaleX(1); }
+#lessons .rv-node{opacity:0;transform:translateY(22px);transition:opacity .9s var(--ease),transform .9s var(--ease);}
+#lessons .rv-node.vis{opacity:1;transform:translateY(0);}
 
-  /* ── COLLECTIVE SECTION ────────────────────────────────────────── */
-  /* Full-width pull quote / highlight opener */
-  .collective-opener {
-    background: var(--teal);
-    padding: 7rem 8%;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 5rem;
-    align-items: start;
-    border-bottom: 1px solid rgba(255,255,255,.08);
-  }
+/* ── Join strip ────────────────────────────────────────────── */
+.join{
+  background:var(--paper);border-bottom:1px solid var(--line);
+  padding:3.2rem 6%;display:flex;align-items:center;justify-content:space-between;
+  gap:2.5rem;flex-wrap:wrap;
+}
+.join h3{font-family:var(--ff-serif);font-weight:400;font-size:1.5rem;}
+.join h3 i{font-style:italic;color:var(--green-deep);}
+.join p{font-family:var(--ff-serif);font-style:italic;font-size:.98rem;color:var(--ink-70);margin-top:.3rem;max-width:38ch;}
+.join-btn{
+  font-family:var(--ff-sans);font-size:.82rem;font-weight:600;color:var(--paper);
+  background:var(--ink);text-decoration:none;padding:.9rem 1.8rem;
+  display:inline-flex;align-items:center;gap:.6rem;flex-shrink:0;transition:background .3s,gap .3s var(--ease);
+}
+.join-btn:hover{background:var(--green-deep);gap:1rem;}
 
-  .col-left-label {
-    position: sticky;
-    top: 100px;
-  }
-  .section-number {
-    font-family: var(--ff-d);
-    font-size: clamp(5rem, 10vw, 9rem);
-    font-weight: 700;
-    color: rgba(255,255,255,.06);
-    line-height: 1;
-    letter-spacing: -.04em;
-    margin-bottom: .5rem;
-  }
-  .section-tag {
-    font-family: var(--ff-ui);
-    font-size: .54rem;
-    font-weight: 700;
-    letter-spacing: .3em;
-    text-transform: uppercase;
-    color: var(--gold);
-    display: flex;
-    align-items: center;
-    gap: .6rem;
-  }
-  .section-tag::before { content: ''; display: block; width: 20px; height: 1px; background: var(--gold); }
+/* ── Simple footer ─────────────────────────────────────────── */
+.site-footer{
+  padding:3rem 6%;border-top:1px solid var(--line);
+  display:flex;flex-direction:column;align-items:center;gap:1.3rem;text-align:center;
+}
+.footer-socials{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:1.5rem;}
+.footer-socials a{
+  display:inline-flex;align-items:center;justify-content:center;
+  color:var(--ink-45);font-size:1.05rem;text-decoration:none;transition:color .25s;
+}
+.footer-socials a:hover{color:var(--green-deep);}
+.footer-copy{font-family:var(--ff-sans);font-size:.72rem;color:var(--ink-45);}
 
-  .col-right h2 {
-    font-family: var(--ff-d);
-    font-size: clamp(2rem, 3.5vw, 3rem);
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: 1.5rem;
-    line-height: 1.1;
-    letter-spacing: -.01em;
-  }
-  .col-right h2 em { font-style: italic; color: var(--gold); }
-
-  .pull-quote {
-    font-family: var(--ff-d);
-    font-size: 1.35rem;
-    font-style: italic;
-    font-weight: 400;
-    color: rgba(255,255,255,.8);
-    line-height: 1.65;
-    border-top: 1px solid rgba(255,255,255,.15);
-    border-bottom: 1px solid rgba(255,255,255,.15);
-    padding: 1.5rem 0;
-    margin: 2rem 0;
-  }
-
-  .body-text {
-    font-family: var(--ff-d);
-    font-size: 1rem;
-    line-height: 1.9;
-    color: rgba(255,255,255,.55);
-    margin-bottom: 1.2rem;
-  }
-  .body-text a { color: var(--teal-lite); text-decoration: none; border-bottom: 1px solid rgba(13,157,176,.3); transition: border-color .3s; }
-  .body-text a:hover { border-color: var(--teal-lite); }
-
-  .cta-link {
-    display: inline-flex;
-    align-items: center;
-    gap: .5rem;
-    font-family: var(--ff-ui);
-    font-size: .65rem;
-    font-weight: 700;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    color: var(--gold);
-    text-decoration: none;
-    padding: .75rem 1.5rem;
-    border: 1px solid rgba(200,151,58,.4);
-    border-radius: 2px;
-    transition: all .35s;
-    margin-top: 1rem;
-    display: inline-flex;
-  }
-  .cta-link:hover { background: rgba(200,151,58,.1); border-color: var(--gold); transform: translateX(4px); }
-
-  /* ── SESSIONS GRID ─────────────────────────────────────────────── */
-  .sessions-section {
-    background: var(--teal-deep);
-    padding: 7rem 8%;
-  }
-
-  .sessions-header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    margin-bottom: 4rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border);
-    gap: 2rem;
-    flex-wrap: wrap;
-  }
-  .sessions-header h2 {
-    font-family: var(--ff-d);
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    font-weight: 600;
-    color: #fff;
-    letter-spacing: -.01em;
-    line-height: 1.05;
-  }
-  .sessions-header h2 em { font-style: italic; color: var(--gold); }
-  .session-count {
-    font-family: var(--ff-d);
-    font-size: 4rem;
-    font-weight: 700;
-    color: rgba(255,255,255,.08);
-    line-height: 1;
-    flex-shrink: 0;
-  }
-
-  /* Masonry-like alternating layout */
-  .topic-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1px;
-    background: var(--border);
-  }
-  .topic-cell {
-    background: var(--teal-deep);
-    padding: 2.5rem;
-    position: relative;
-    overflow: hidden;
-    transition: background .35s;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity .7s var(--ease), transform .7s var(--ease), background .35s;
-  }
-  .topic-cell.vis { opacity: 1; transform: translateY(0); }
-  .topic-cell:hover { background: rgba(4,71,78,.4); }
-  .topic-cell.featured {
-    grid-column: span 2;
-    background: rgba(4,71,78,.3);
-  }
-  .topic-cell.featured:hover { background: rgba(4,71,78,.5); }
-
-  .topic-num {
-    font-family: var(--ff-d);
-    font-size: 5rem;
-    font-weight: 700;
-    color: rgba(255,255,255,.04);
-    line-height: 1;
-    position: absolute;
-    top: 1rem;
-    right: 1.5rem;
-  }
-  .topic-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: rgba(200,151,58,.1);
-    border: 1px solid rgba(200,151,58,.25);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: .9rem;
-    margin-bottom: 1.2rem;
-  }
-  .topic-title {
-    font-family: var(--ff-d);
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: .5rem;
-    line-height: 1.25;
-  }
-  .topic-desc {
-    font-family: var(--ff-d);
-    font-size: .9rem;
-    color: rgba(255,255,255,.4);
-    line-height: 1.7;
-    font-style: italic;
-  }
-
-  /* ── TRAINING MODULES — EDITORIAL SPREAD ──────────────────────── */
-  /* Each module is a full-bleed "editorial spread" alternating image/text */
-  .module-spread {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    min-height: 70vh;
-    border-bottom: 1px solid var(--border);
-    overflow: hidden;
-  }
-  .module-spread.reverse { direction: rtl; }
-  .module-spread.reverse > * { direction: ltr; }
-
-  .module-image {
-    position: relative;
-    overflow: hidden;
-    min-height: 400px;
-  }
-  .module-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 1.2s var(--ease), filter .8s;
-    filter: brightness(.55) saturate(.7);
-  }
-  .module-spread:hover .module-image img {
-    transform: scale(1.04);
-    filter: brightness(.65) saturate(.9);
-  }
-  /* Tinted overlay */
-  .module-image::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-  }
-  .module-spread:nth-child(odd) .module-image::before {
-    background: linear-gradient(to right, transparent 60%, rgba(2,13,14,1) 100%);
-  }
-  .module-spread:nth-child(even) .module-image::before {
-    background: linear-gradient(to left, transparent 60%, rgba(4,71,78,.95) 100%);
-  }
-
-  /* Module number badge on image */
-  .module-badge {
-    position: absolute;
-    top: 2rem;
-    left: 2rem;
-    z-index: 2;
-    font-family: var(--ff-d);
-    font-size: 5rem;
-    font-weight: 700;
-    color: rgba(255,255,255,.12);
-    line-height: 1;
-  }
-
-  .module-content {
-    padding: 5rem 6%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background: var(--teal-deep);
-    position: relative;
-  }
-  .module-spread:nth-child(even) .module-content {
-    background: var(--teal);
-  }
-
-  .module-tag {
-    font-family: var(--ff-ui);
-    font-size: .52rem;
-    font-weight: 700;
-    letter-spacing: .28em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1.2rem;
-    display: flex;
-    align-items: center;
-    gap: .6rem;
-  }
-  .module-tag::before { content: ''; display: block; width: 18px; height: 1px; background: var(--gold); }
-
-  .module-title {
-    font-family: var(--ff-d);
-    font-size: clamp(1.5rem, 2.5vw, 2.2rem);
-    font-weight: 600;
-    color: #fff;
-    line-height: 1.15;
-    letter-spacing: -.01em;
-    margin-bottom: 1.5rem;
-  }
-
-  .module-body {
-    font-family: var(--ff-d);
-    font-size: 1rem;
-    line-height: 1.9;
-    color: rgba(255,255,255,.55);
-    margin-bottom: 1rem;
-  }
-  .module-body a { color: var(--teal-lite); text-decoration: none; border-bottom: 1px solid rgba(13,157,176,.3); }
-
-  .module-stat {
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-  }
-  .module-stat-num {
-    font-family: var(--ff-d);
-    font-size: 2.8rem;
-    font-weight: 700;
-    color: var(--gold);
-    line-height: 1;
-  }
-  .module-stat-label {
-    font-family: var(--ff-ui);
-    font-size: .58rem;
-    font-weight: 600;
-    letter-spacing: .15em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,.3);
-    line-height: 1.4;
-    max-width: 180px;
-  }
-
-  /* ── CLOSING LESSON ────────────────────────────────────────────── */
-  .closing-section {
-    background: var(--cream);
-    color: var(--ink);
-    padding: 7rem 8%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
-    align-items: center;
-  }
-
-  .closing-left {
-    position: relative;
-  }
-  .closing-left::before {
-    content: '"';
-    position: absolute;
-    top: -3rem;
-    left: -1rem;
-    font-family: var(--ff-d);
-    font-size: 12rem;
-    line-height: 1;
-    color: rgba(4,71,78,.08);
-    font-weight: 700;
-    pointer-events: none;
-  }
-  .closing-left h2 {
-    font-family: var(--ff-d);
-    font-size: clamp(1.8rem, 3.5vw, 3rem);
-    font-weight: 700;
-    color: var(--teal);
-    line-height: 1.15;
-    letter-spacing: -.02em;
-    margin-bottom: 1.5rem;
-  }
-  .closing-left h2 em { font-style: italic; color: var(--gold); }
-  .closing-left p {
-    font-family: var(--ff-d);
-    font-size: 1.05rem;
-    line-height: 1.85;
-    color: #3a4a4b;
-    margin-bottom: 1.2rem;
-  }
-  .closing-right {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--border-d);
-  }
-  .lesson-cell {
-    background: #fff;
-    padding: 2rem 1.8rem;
-    position: relative;
-    opacity: 0;
-    transform: translateY(16px);
-    transition: opacity .7s var(--ease), transform .7s var(--ease);
-  }
-  .lesson-cell.vis { opacity: 1; transform: translateY(0); }
-  .lesson-cell:hover { background: #f5f8f5; }
-  .lesson-num {
-    font-family: var(--ff-d);
-    font-size: 2rem;
-    font-weight: 700;
-    color: rgba(4,71,78,.1);
-    line-height: 1;
-    margin-bottom: .8rem;
-  }
-  .lesson-title {
-    font-family: var(--ff-d);
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--teal);
-    margin-bottom: .4rem;
-    line-height: 1.25;
-  }
-  .lesson-desc {
-    font-family: var(--ff-d);
-    font-size: .88rem;
-    color: #5a6a6b;
-    line-height: 1.6;
-    font-style: italic;
-  }
-
-  /* ── COLLECTIVE JOIN STRIP ─────────────────────────────────────── */
-  .join-strip {
-    background: var(--teal-mid);
-    padding: 4rem 8%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 3rem;
-    flex-wrap: wrap;
-    border-top: 1px solid rgba(255,255,255,.08);
-    border-bottom: 1px solid rgba(255,255,255,.08);
-  }
-  .join-strip h3 {
-    font-family: var(--ff-d);
-    font-size: clamp(1.5rem, 3vw, 2.5rem);
-    font-weight: 600;
-    color: #fff;
-    letter-spacing: -.01em;
-    line-height: 1.1;
-  }
-  .join-strip h3 em { font-style: italic; color: var(--gold); }
-  .join-strip p {
-    font-family: var(--ff-d);
-    font-size: 1rem;
-    color: rgba(255,255,255,.5);
-    font-style: italic;
-    margin-top: .4rem;
-    max-width: 420px;
-  }
-  .join-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: .6rem;
-    font-family: var(--ff-ui);
-    font-size: .65rem;
-    font-weight: 700;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    background: var(--gold);
-    color: var(--teal-deep);
-    text-decoration: none;
-    padding: 1rem 2rem;
-    border-radius: 2px;
-    transition: all .35s;
-    flex-shrink: 0;
-  }
-  .join-btn:hover { background: var(--gold-lt); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,151,58,.25); }
-
-  /* ── CONTACT ──────────────────────────────────────────────────── */
-  .contact-section { background:var(--teal-deep); display:grid; grid-template-columns:1fr 1fr; }
-  .contact-left { padding:6rem 5% 6rem 8%; border-right:1px solid rgba(255,255,255,.05); }
-  .contact-left h2 { font-family:var(--ff-d);font-size:2.5rem;font-weight:700;color:#fff;margin-bottom:.4rem;letter-spacing:-.01em; }
-  .contact-left .sub { font-family:var(--ff-d);font-style:italic;font-size:.95rem;color:rgba(255,255,255,.3);margin-bottom:2.5rem; }
-  .ff { margin-bottom:1.4rem; }
-  .ff input,.ff textarea { width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.12);padding:.7rem 0;color:#fff;font-family:var(--ff-d);font-size:1rem;font-weight:400;outline:none;transition:border-color .3s; }
-  .ff input::placeholder,.ff textarea::placeholder { color:rgba(255,255,255,.2); }
-  .ff input:focus,.ff textarea:focus { border-bottom-color:var(--gold); }
-  .ff textarea { resize:none;min-height:90px; }
-  .ff-row { display:grid;grid-template-columns:1fr 1fr;gap:1.2rem; }
-  .send-btn { background:var(--gold);color:var(--teal-deep);border:none;padding:.85rem 2.2rem;cursor:pointer;font-family:var(--ff-ui);font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;border-radius:2px;transition:all .3s; }
-  .send-btn:hover { background:var(--gold-lt);transform:translateY(-2px);box-shadow:0 8px 20px rgba(200,151,58,.3); }
-  .contact-right { padding:6rem 8% 6rem 5%;display:flex;flex-direction:column;justify-content:center; }
-  .contact-right h3 { font-family:var(--ff-d);font-style:italic;font-size:1.1rem;color:rgba(255,255,255,.3);margin-bottom:1.8rem; }
-  .socials { display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:2.5rem; }
-  .sc { display:flex;align-items:center;justify-content:center;height:46px;border:1px solid rgba(255,255,255,.08);border-radius:3px;color:rgba(255,255,255,.4);text-decoration:none;font-size:.8rem;font-weight:500;transition:all .3s; }
-  .sc:hover { border-color:var(--gold);color:var(--gold);background:rgba(200,151,58,.07); }
-  .footer-bar { background:#000;padding:1.2rem 8%;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.04); }
-  .footer-bar p { font-family:var(--ff-ui);font-size:.58rem;color:rgba(255,255,255,.15);letter-spacing:.05em; }
-
-  /* REVEAL */
-  .rv { opacity:0;transform:translateY(24px);transition:opacity .85s var(--ease),transform .85s var(--ease); }
-  .rv.vis { opacity:1;transform:translateY(0); }
-  .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
-
-  /* RESPONSIVE */
-  @media(max-width:1100px) {
-    .masthead { grid-template-columns: 1fr; min-height: auto; }
-    .masthead-right { min-height: 50vw; }
-    .collective-opener { grid-template-columns: 1fr; gap: 3rem; }
-    .col-left-label { position: static; }
-    .topic-grid { grid-template-columns: 1fr 1fr; }
-    .topic-cell.featured { grid-column: span 2; }
-    .module-spread { grid-template-columns: 1fr; min-height: auto; direction: ltr !important; }
-    .module-spread.reverse .module-image { order: -1; }
-    .module-image { min-height: 55vw; }
-    .closing-section { grid-template-columns: 1fr; gap: 3rem; }
-    .closing-right { grid-template-columns: 1fr 1fr; }
-  }
-  @media(max-width:700px) {
-    #header { padding: 1.2rem 5%; }
-    .topic-grid { grid-template-columns: 1fr; }
-    .topic-cell.featured { grid-column: span 1; }
-    .closing-right { grid-template-columns: 1fr; }
-    .contact-section { grid-template-columns: 1fr; }
-    .contact-right { padding: 3rem 5%; }
-    .contact-left { border-right: none; padding: 5rem 5%; }
-    .ff-row { grid-template-columns: 1fr; }
-    .join-strip { flex-direction: column; align-items: flex-start; }
-    .masthead-left { padding: 3rem 5%; }
-  }
-  </style>
+/* ── Responsive ────────────────────────────────────────────── */
+@media(max-width:980px){
+  .hero-grid{grid-template-columns:1fr;gap:2.5rem;}
+  .hero-figure{max-width:340px;}
+  .approach-grid{grid-template-columns:1fr;gap:1.2rem;}
+  .approach-grid h2,.approach-body{grid-column:1;}
+  .approach-margin{grid-row:auto;}
+  .theme-row{grid-template-columns:44px 1fr;}
+  .theme-row p{grid-column:2;}
+  .module-grid{grid-template-columns:1fr;gap:2.2rem;}
+  .module.flip .module-grid{grid-template-columns:1fr;}
+  .module.flip .module-figure{order:0;}
+  .module-figure{max-width:420px;}
+  .lessons-grid{grid-template-columns:1fr;gap:2.5rem;}
+}
+@media(max-width:640px){
+  body{font-size:16.5px;}
+  #header{padding:1.1rem 5.5%;}
+  .hero{padding:3rem 5.5% 0;}
+  .chapter,.module,#lessons{padding-left:5.5%;padding-right:5.5%;}
+  .join{padding:2.6rem 5.5%;flex-direction:column;align-items:flex-start;}
+  .hero-stats{gap:1.6rem;}
+  .h-logo img{height:28px;}
+  .site-footer{padding:2.4rem 5.5%;}
+}
+</style>
 </head>
 <body>
 
-<div id="prog"></div>
-<div id="mo"></div>
-<nav id="menu">
-  <button id="mc">✕</button>
-  <h2>Navigation</h2>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<nav id="menu" aria-hidden="true">
+  <button id="mc" aria-label="Close menu">Close</button>
   <ul>
     <li><a href="index.html">Home</a></li>
     <li><a href="about.html">About</a></li>
-    <li><a href="http://esvarj.wordpress.com">Health Articles</a></li>
+    <li><a href="https://gravatar.com/josemariaescriva82">Health Articles</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
+  <div class="menu-foot">Nairobi, Kenya, open to collaboration &amp; consulting</div>
 </nav>
 
 <header id="header">
-  <nav><ul><li><a href="#" id="mt">Menu</a></li></ul></nav>
+  <a class="h-logo" href="index.html" aria-label="Escriva Josemaria, homepage">
+    <img src="images/B.webp" alt="Escriva Josemaria">
+  </a>
+  <nav><a href="#" id="mt">Menu</a></nav>
 </header>
 
-<!-- ═══ MASTHEAD ═══════════════════════════════════════════════════════ -->
-<section class="masthead">
-  <div class="masthead-watermark" aria-hidden="true">Train</div>
+<main id="main">
 
-  <div class="masthead-left">
-    <div class="masthead-label">Capacity Building · Community Health</div>
-    <h1 class="masthead-title">
-      Training &amp;<br>
-      <em>Capacity</em><br>
-      Building
-    </h1>
-    <p class="masthead-intro">
-      Sustainable impact emerges when people understand not just what to do, but why it matters and how to adapt it within their own context. These are the stories, sessions, and systems behind that learning.
-    </p>
-  </div>
-
-  <div class="masthead-right">
-    <img src="images/communityact.webp" alt="Training session in progress">
-    <div class="masthead-chips">
-      <div class="chip">
-        <span class="chip-val">70+</span>
-        <span class="chip-label">Community participants<br>per session</span>
-      </div>
-      <div class="chip">
-        <span class="chip-val">3</span>
-        <span class="chip-label">Training domains</span>
-      </div>
-      <div class="chip">
-        <span class="chip-val">LeafSpire</span>
-        <span class="chip-label">Youth-centered<br>social impact</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- INDEX BAR -->
-<nav class="index-bar" aria-label="Page sections">
-  <a class="index-link" href="#collective">Training Approach</a>
-  <a class="index-link" href="#sessions">Session Themes</a>
-  <a class="index-link" href="#frontline">Frontline Workers</a>
-  <a class="index-link" href="#community">Community</a>
-  <a class="index-link" href="#leadership">Leadership</a>
-  <a class="index-link" href="#lessons">What We Learned</a>
-</nav>
-
-<!-- ═══ LEAFSPIRE & TRAINING APPROACH ═════════════════════════════════════ -->
-<section id="collective" class="collective-opener rv">
-  <div class="col-left-label">
-    <div class="section-number">01</div>
-    <div class="section-tag">Training Approach</div>
-  </div>
-  <div class="col-right">
-    <h2>A Space for <em>Learning,</em> Mentorship &amp; Professional Growth</h2>
-    <div class="pull-quote">
-      Learning is treated as a shared process — where lived experience, field realities, and evidence inform discussion together.
-    </div>
-    <p class="body-text">
-      LeafSpire is a youth-centered social impact initiative founded by Escriva Josemaria, focused on mentorship, mental wellbeing, leadership development, and community action. Through structured learning sessions and mentorship engagements, LeafSpire brings together young health professionals, students, early-career practitioners, and experienced health workers around topics that are both technical and career-oriented.
-    </p>
-    <p class="body-text">
-      The approach is deliberately interactive rather than lecture-driven. Sessions encourage dialogue, questions, and reflection, allowing participants to engage directly with speakers and with each other. This model aligns with adult learning research, which emphasizes peer exchange and relevance as key drivers of meaningful professional development —
-      <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6179375/" target="_blank" rel="noopener">National Institutes of Health</a>.
-    </p>
-    <p class="body-text">
-      Alongside the on-ground work, the Escriva Hyper Collective YouTube channel serves as a knowledge-sharing platform where training insights, mentorship conversations, and public health discussions are shared openly — extending the reach of learning beyond in-person settings. Global health literature increasingly recognizes sustained knowledge-sharing as an effective mechanism for strengthening workforce capacity —
-      <a href="https://www.who.int/publications/i/item/WHO-HIS-HWF-2010.3" target="_blank" rel="noopener">World Health Organization</a>.
-    </p>
-    <a class="cta-link" href="https://leafspire.github.io/leafoundation/">Explore LeafSpire →</a>
-  </div>
-</section>
-
-<!-- ═══ SESSION THEMES GRID ════════════════════════════════════════════ -->
-<section id="sessions" class="sessions-section">
-  <div class="sessions-header rv">
+<!-- ═══ HERO ═══════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-grid">
     <div>
-      <div style="font-family:var(--ff-ui);font-size:.54rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;"><span style="display:block;width:20px;height:1px;background:var(--gold)"></span>Session Themes</div>
-      <h2>What We <em>Cover</em></h2>
+      <h1>Training &amp;<br><i>Capacity</i><br>Building</h1>
+      <p class="hero-intro">Sustainable impact emerges when people understand not just what to do, but why it matters and how to adapt it within their own context. These are the stories, sessions, and systems behind that learning.</p>
     </div>
-    <div class="session-count">02</div>
+    <figure class="hero-figure">
+      <div class="frame">
+        <img src="images/communityact.webp" alt="Facilitator leading a community health training session with participants seated in discussion" loading="eager" fetchpriority="high" decoding="async">
+      </div>
+      <figcaption>A facilitator leading a community health training session.</figcaption>
+    </figure>
   </div>
 
-  <div class="topic-grid">
-    <div class="topic-cell featured" style="transition-delay:.05s">
-      <div class="topic-num">01</div>
-      <div class="topic-icon">⚕</div>
-      <div class="topic-title">Career Pathways in Public Health &amp; Clinical Practice</div>
-      <div class="topic-desc">Navigating the breadth of health careers — from community-facing roles to research, policy, and systems leadership. Exposure to multiple trajectories strengthens professional adaptability.</div>
-    </div>
-    <div class="topic-cell" style="transition-delay:.1s">
-      <div class="topic-num">02</div>
-      <div class="topic-icon">🦠</div>
-      <div class="topic-title">Emerging &amp; Re-emerging Diseases</div>
-      <div class="topic-desc">Outbreak patterns, surveillance, and the practitioner's role in early detection and response.</div>
-    </div>
-    <div class="topic-cell" style="transition-delay:.15s">
-      <div class="topic-num">03</div>
-      <div class="topic-icon">📱</div>
-      <div class="topic-title">Digital Health &amp; Health Technology</div>
-      <div class="topic-desc">mHealth, data systems, and the tools reshaping service delivery across the region.</div>
-    </div>
-    <div class="topic-cell" style="transition-delay:.2s">
-      <div class="topic-num">04</div>
-      <div class="topic-icon">🧠</div>
-      <div class="topic-title">Mental Health in Practice</div>
-      <div class="topic-desc">From recognition to referral — embedding mental health into everyday professional practice.</div>
-    </div>
-    <div class="topic-cell" style="transition-delay:.25s">
-      <div class="topic-num">05</div>
-      <div class="topic-icon">📊</div>
-      <div class="topic-title">Research Skills for Practitioners</div>
-      <div class="topic-desc">Demystifying research methods, data use, and evidence appraisal for non-academic health workers.</div>
-    </div>
-    <div class="topic-cell" style="transition-delay:.3s">
-      <div class="topic-num">06</div>
-      <div class="topic-icon">🌍</div>
-      <div class="topic-title">Health Systems Leadership</div>
-      <div class="topic-desc">Understanding systems, policy environments, and leadership in complex health contexts.</div>
+  <div class="hero-stats">
+    <div class="stat-item"><span class="stat-num">70+</span><span class="stat-label">Community participants per session</span></div>
+    <div class="stat-item"><span class="stat-num">3</span><span class="stat-label">Training domains</span></div>
+  </div>
+
+  <nav class="contents" aria-label="Page contents">
+    <a class="contents-row" href="#approach"><span class="no">01</span><span class="ti">Training Approach</span><span class="fill" aria-hidden="true"></span><span class="go">Read →</span></a>
+    <a class="contents-row" href="#sessions"><span class="no">02</span><span class="ti">Session Themes</span><span class="fill" aria-hidden="true"></span><span class="go">Read →</span></a>
+    <a class="contents-row" href="#frontline"><span class="no">03</span><span class="ti">Frontline Workers</span><span class="fill" aria-hidden="true"></span><span class="go">Read →</span></a>
+    <a class="contents-row" href="#community"><span class="no">04</span><span class="ti">Community</span><span class="fill" aria-hidden="true"></span><span class="go">Read →</span></a>
+    <a class="contents-row" href="#leadership"><span class="no">05</span><span class="ti">Leadership</span><span class="fill" aria-hidden="true"></span><span class="go">Read →</span></a>
+    <a class="contents-row" href="#lessons"><span class="no">06</span><span class="ti">What We Learned</span><span class="fill" aria-hidden="true"></span><span class="go">Read →</span></a>
+  </nav>
+</section>
+
+<!-- ═══ 01 APPROACH ════════════════════════════════════════════ -->
+<section id="approach" class="chapter" aria-labelledby="approach-heading">
+  <div class="chapter-mark"><span class="n">01</span> Training Approach</div>
+  <div class="approach-grid">
+    <h2 id="approach-heading">A space for <i>learning</i>, mentorship &amp; professional growth</h2>
+    <div class="approach-margin"></div>
+    <div class="approach-body">
+      <p class="pull">Learning is treated as a shared process, where lived experience, field realities, and evidence inform discussion together.</p>
+      <p class="body-copy">LeafSpire is a youth-centered social impact initiative founded by Escriva Josemaria, focused on mentorship, mental wellbeing, leadership development, and community action. Through structured learning sessions and mentorship engagements, LeafSpire brings together young health professionals, students, early-career practitioners, and experienced health workers around topics that are both technical and career-oriented.</p>
+      <p class="body-copy">The approach is deliberately interactive rather than lecture-driven. Sessions encourage dialogue, questions, and reflection, allowing participants to engage directly with speakers and with each other. This model aligns with adult learning research, which emphasizes peer exchange and relevance as key drivers of meaningful professional development, according to the <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6179375/" target="_blank" rel="noopener">National Institutes of Health</a>.</p>
+      <p class="body-copy">Alongside the on-ground work, the Escriva Hyper Collective YouTube channel serves as a knowledge-sharing platform where training insights, mentorship conversations, and public health discussions are shared openly, extending the reach of learning beyond in-person settings. Global health literature increasingly recognizes sustained knowledge-sharing as an effective mechanism for strengthening workforce capacity, according to the <a href="https://www.who.int/publications/i/item/WHO-HIS-HWF-2010.3" target="_blank" rel="noopener">World Health Organization</a>.</p>
+      <a class="cta-link" href="https://leafspire.github.io/leafoundation/">Explore LeafSpire <span aria-hidden="true">→</span></a>
     </div>
   </div>
 </section>
 
-<!-- ═══ MODULE SPREADS ═════════════════════════════════════════════════ -->
-
-<!-- MODULE 1: Frontline -->
-<div id="frontline" class="module-spread rv">
-  <div class="module-image">
-    <div class="module-badge" aria-hidden="true">03</div>
-    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=900&q=75" alt="Frontline health worker training">
-  </div>
-  <div class="module-content">
-    <div class="module-tag">Frontline Workers</div>
-    <h2 class="module-title">Turning Guidelines into Practice on the Ground</h2>
-    <p class="module-body">
-      Training frontline health workers consistently reveals the gap between policy guidance and operational reality. Sessions with nurses, community health workers, and facility staff focused on translating national guidelines into practical actions within resource-constrained settings — covering service delivery standards, infection prevention, documentation, and basic data use.
-    </p>
-    <p class="module-body">
-      Rather than relying on lecture-based methods, training emphasized case discussions, scenario-based problem solving, and peer reflection — reflecting evidence that experiential learning significantly improves retention and knowledge application in health settings <a href="https://www.who.int/publications/i/item/WHO-HIS-HWF-2016.1" target="_blank" rel="noopener">World Health Organization</a>.
-    </p>
-    <div class="module-stat">
-      <div class="module-stat-num">20–30</div>
-      <div class="module-stat-label">Health workers per facility-based training session</div>
+<!-- ═══ 02 SESSION THEMES ══════════════════════════════════════ -->
+<section id="sessions" class="chapter" aria-labelledby="sessions-heading">
+  <div class="chapter-mark"><span class="n">02</span> Session Themes</div>
+  <h2 id="sessions-heading" class="sr-only">What we cover</h2>
+  <div class="theme-list">
+    <div class="theme-row">
+      <span class="no">1</span>
+      <h3>Career Pathways in Public Health &amp; Clinical Practice</h3>
+      <p>Navigating the breadth of health careers, from community-facing roles to research, policy, and systems leadership. Exposure to multiple trajectories strengthens professional adaptability.</p>
     </div>
-  </div>
-</div>
-
-<!-- MODULE 2: Community -->
-<div id="community" class="module-spread reverse rv">
-  <div class="module-image">
-    <div class="module-badge" aria-hidden="true">04</div>
-    <img src="images/empowerwomen.webp" alt="Community health session">
-  </div>
-  <div class="module-content">
-    <div class="module-tag">Community Level</div>
-    <h2 class="module-title">Building Knowledge Where Services Meet People</h2>
-    <p class="module-body">
-      Community training sessions strengthened health literacy, disease prevention, and service utilization among community members and local volunteers. Topics included vaccination awareness, malaria prevention, non-communicable disease risk factors, and early care-seeking behaviors. Sessions were participatory — using dialogue, demonstrations, and locally relevant examples.
-    </p>
-    <p class="module-body">
-      Evidence shows that informed and engaged communities are more likely to use preventive services and hold health systems accountable <a href="https://www.unicef.org/health/community-health" target="_blank" rel="noopener">UNICEF</a>. Community capacity building plays a critical role particularly in underserved settings.
-    </p>
-    <div class="module-stat">
-      <div class="module-stat-num">40–70</div>
-      <div class="module-stat-label">Participants per community session, often with local leaders</div>
+    <div class="theme-row">
+      <span class="no">2</span>
+      <h3>Emerging &amp; Re-emerging Diseases</h3>
+      <p>Outbreak patterns, surveillance, and the practitioner's role in early detection and response.</p>
     </div>
-  </div>
-</div>
-
-<!-- MODULE 3: Leadership -->
-<div id="leadership" class="module-spread rv">
-  <div class="module-image">
-    <div class="module-badge" aria-hidden="true">05</div>
-    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=900&q=75" alt="Leadership and program management training">
-  </div>
-  <div class="module-content">
-    <div class="module-tag">Leadership &amp; Management</div>
-    <h2 class="module-title">Strengthening the People Who Run the Programs</h2>
-    <p class="module-body">
-      Capacity building extended beyond frontline service delivery to include supervisors, program managers, and coordinators. Sessions focused on leadership, planning, monitoring and evaluation, and the use of data for adaptive management — with emphasis on understanding roles, mandates, and accountability structures within health systems.
-    </p>
-    <p class="module-body">
-      Strengthening leadership and management capacity is widely recognized as a key determinant of health system performance. Capable managers significantly improve service efficiency and program sustainability <a href="https://www.worldbank.org/en/topic/health" target="_blank" rel="noopener">World Bank</a>.
-    </p>
-    <div class="module-stat">
-      <div class="module-stat-num">15–25</div>
-      <div class="module-stat-label">Participants per cohort — smaller groups for deeper applied planning</div>
+    <div class="theme-row">
+      <span class="no">3</span>
+      <h3>Digital Health &amp; Health Technology</h3>
+      <p>mHealth, data systems, and the tools reshaping service delivery across the region.</p>
     </div>
-  </div>
-</div>
-
-<!-- ═══ CLOSING LESSONS ════════════════════════════════════════════════ -->
-<section id="lessons" class="closing-section">
-  <div class="closing-left rv">
-    <div style="font-family:var(--ff-ui);font-size:.54rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--teal);display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;"><span style="display:block;width:20px;height:2px;background:var(--gold)"></span>06 · What We Learned</div>
-    <h2>Capacity building is not about delivering <em>information</em></h2>
-    <p>
-      Across facilities, communities, and leadership spaces, training consistently reinforced one lesson: capacity building is about enabling confidence, judgment, and problem-solving within real constraints.
-    </p>
-    <p>
-      Sustainable impact emerges when people understand not just what to do, but why it matters — and how to adapt it to their context. These experiences continue to shape how every training is designed and delivered.
-    </p>
-    <p>
-      This reflects a growing consensus in global health that learning systems, not isolated trainings, are what ultimately strengthen health systems over time.
-    </p>
-  </div>
-  <div class="closing-right">
-    <div class="lesson-cell" style="transition-delay:.05s">
-      <div class="lesson-num">01</div>
-      <div class="lesson-title">Relevance over content</div>
-      <div class="lesson-desc">Training lands when it connects directly to the participant's daily reality and challenges.</div>
+    <div class="theme-row">
+      <span class="no">4</span>
+      <h3>Mental Health in Practice</h3>
+      <p>From recognition to referral: embedding mental health into everyday professional practice.</p>
     </div>
-    <div class="lesson-cell" style="transition-delay:.1s">
-      <div class="lesson-num">02</div>
-      <div class="lesson-title">Participation over lecture</div>
-      <div class="lesson-desc">People remember what they discuss and apply, not what they are told passively.</div>
+    <div class="theme-row">
+      <span class="no">5</span>
+      <h3>Research Skills for Practitioners</h3>
+      <p>Demystifying research methods, data use, and evidence appraisal for non-academic health workers.</p>
     </div>
-    <div class="lesson-cell" style="transition-delay:.15s">
-      <div class="lesson-num">03</div>
-      <div class="lesson-title">Follow-up compounds gains</div>
-      <div class="lesson-desc">One-off events fade. Reinforcement through supervision and peer check-ins sustains change.</div>
-    </div>
-    <div class="lesson-cell" style="transition-delay:.2s">
-      <div class="lesson-num">04</div>
-      <div class="lesson-title">Context shapes everything</div>
-      <div class="lesson-desc">Guidelines must be interpreted through local resources, culture, and system realities.</div>
+    <div class="theme-row">
+      <span class="no">6</span>
+      <h3>Health Systems Leadership</h3>
+      <p>Understanding systems, policy environments, and leadership in complex health contexts.</p>
     </div>
   </div>
 </section>
 
-<!-- ═══ JOIN STRIP ════════════════════════════════════════════════════ -->
-<div class="join-strip rv">
+<!-- ═══ 03 FRONTLINE ═══════════════════════════════════════════ -->
+<section id="frontline" class="module" aria-labelledby="frontline-heading">
+  <div class="chapter-mark"><span class="n">03</span> Frontline Workers</div>
+  <div class="module-grid">
+    <figure class="module-figure">
+      <div class="frame">
+        <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=900&q=75" alt="Nurse and community health worker reviewing training materials at a health facility" loading="lazy" decoding="async">
+      </div>
+      <figcaption>A nurse and community health worker reviewing training materials at a health facility.</figcaption>
+    </figure>
+    <div class="module-body">
+      <h2 id="frontline-heading">Turning guidelines into practice on the ground</h2>
+      <p class="body-copy">Training frontline health workers consistently reveals the gap between policy guidance and operational reality. Sessions with nurses, community health workers, and facility staff focused on translating national guidelines into practical actions within resource-constrained settings: covering service delivery standards, infection prevention, documentation, and basic data use.</p>
+      <p class="body-copy">Rather than relying on lecture-based methods, training emphasized case discussions, scenario-based problem solving, and peer reflection, reflecting evidence that experiential learning significantly improves retention and knowledge application in health settings, according to the <a href="https://www.who.int/publications/i/item/WHO-HIS-HWF-2016.1" target="_blank" rel="noopener">World Health Organization</a>.</p>
+      <div class="module-stat">
+        <span class="num">20–30</span>
+        <span class="lbl">Health workers per facility-based training session</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 04 COMMUNITY ═══════════════════════════════════════════ -->
+<section id="community" class="module flip" aria-labelledby="community-heading">
+  <div class="chapter-mark"><span class="n">04</span> Community Level</div>
+  <div class="module-grid">
+    <figure class="module-figure">
+      <div class="frame">
+        <img src="images/empowerwomen.webp" alt="Community health literacy session with local participants and facilitator" loading="lazy" decoding="async">
+      </div>
+      <figcaption>A community health literacy session with local participants.</figcaption>
+    </figure>
+    <div class="module-body">
+      <h2 id="community-heading">Building knowledge where services meet people</h2>
+      <p class="body-copy">Community training sessions strengthened health literacy, disease prevention, and service utilization among community members and local volunteers. Topics included vaccination awareness, malaria prevention, non-communicable disease risk factors, and early care-seeking behaviors. Sessions were participatory, using dialogue, demonstrations, and locally relevant examples.</p>
+      <p class="body-copy">Evidence shows that informed and engaged communities are more likely to use preventive services and hold health systems accountable, according to <a href="https://www.unicef.org/health/community-health" target="_blank" rel="noopener">UNICEF</a>. Community capacity building plays a critical role particularly in underserved settings.</p>
+      <div class="module-stat">
+        <span class="num">40–70</span>
+        <span class="lbl">Participants per community session, often with local leaders</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 05 LEADERSHIP ══════════════════════════════════════════ -->
+<section id="leadership" class="module" aria-labelledby="leadership-heading">
+  <div class="chapter-mark"><span class="n">05</span> Leadership &amp; Management</div>
+  <div class="module-grid">
+    <figure class="module-figure">
+      <div class="frame">
+        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=900&q=75" alt="Program managers in a leadership and planning training session" loading="lazy" decoding="async">
+      </div>
+      <figcaption>Program managers in a leadership and planning training session.</figcaption>
+    </figure>
+    <div class="module-body">
+      <h2 id="leadership-heading">Strengthening the people who run the programs</h2>
+      <p class="body-copy">Capacity building extended beyond frontline service delivery to include supervisors, program managers, and coordinators. Sessions focused on leadership, planning, monitoring and evaluation, and the use of data for adaptive management, with emphasis on understanding roles, mandates, and accountability structures within health systems.</p>
+      <p class="body-copy">Strengthening leadership and management capacity is widely recognized as a key determinant of health system performance. Capable managers significantly improve service efficiency and program sustainability, according to the <a href="https://www.worldbank.org/en/topic/health" target="_blank" rel="noopener">World Bank</a>.</p>
+      <div class="module-stat">
+        <span class="num">15–25</span>
+        <span class="lbl">Participants per cohort: smaller groups for deeper applied planning</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 06 WHAT WE LEARNED ═════════════════════════════════════ -->
+<section id="lessons" aria-labelledby="lessons-heading">
+  <div class="chapter-mark rv-node"><span class="n">06</span> What We Learned</div>
+  <div class="lessons-grid">
+    <div class="rv-node">
+      <h2 id="lessons-heading">Capacity building is not about delivering <i>information</i></h2>
+      <p>Across facilities, communities, and leadership spaces, training consistently reinforced one lesson: capacity building is about enabling confidence, judgment, and problem-solving within real constraints.</p>
+      <p>Sustainable impact emerges when people understand not just what to do, but why it matters, and how to adapt it to their context. These experiences continue to shape how every training is designed and delivered.</p>
+      <p>This reflects a growing consensus in global health that learning systems, not isolated trainings, are what ultimately strengthen health systems over time.</p>
+    </div>
+    <div class="lesson-list rv-node">
+      <div class="lesson-row"><span class="no">01</span><div><h4>Relevance over content</h4><p>Training lands when it connects directly to the participant's daily reality and challenges.</p></div></div>
+      <div class="lesson-row"><span class="no">02</span><div><h4>Participation over lecture</h4><p>People remember what they discuss and apply, not what they are told passively.</p></div></div>
+      <div class="lesson-row"><span class="no">03</span><div><h4>Follow-up compounds gains</h4><p>One-off events fade. Reinforcement through supervision and peer check-ins sustains change.</p></div></div>
+      <div class="lesson-row"><span class="no">04</span><div><h4>Context shapes everything</h4><p>Guidelines must be interpreted through local resources, culture, and system realities.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ JOIN ════════════════════════════════════════════════════ -->
+<div class="join">
   <div>
-    <h3>Explore <em>LeafSpire</em></h3>
-    <p>Youth mentorship, mental wellbeing, and community action — building the next generation of health leaders.</p>
+    <h3>Explore <i>LeafSpire</i></h3>
+    <p>Youth mentorship, mental wellbeing, and community action, building the next generation of health leaders.</p>
   </div>
-  <a class="join-btn" href="https://leafspire.github.io/leafoundation/" target="_blank">Explore Learning Content →</a>
+  <a class="join-btn" href="https://leafspire.github.io/leafoundation/" target="_blank" rel="noopener">Explore Learning Content <span aria-hidden="true">→</span></a>
 </div>
 
-<!-- ═══ CONTACT ════════════════════════════════════════════════════════ -->
-<div class="contact-section">
-  <div class="contact-left">
-    <div class="rv" style="font-family:var(--ff-ui);font-size:.58rem;font-weight:600;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;"><span style="display:block;width:24px;height:1px;background:var(--gold)"></span>Get in Touch</div>
-    <h2 class="rv d1">Training Enquiries</h2>
-    <p class="sub rv d2">Interested in collaborating, hosting a session, or learning more about LeafSpire?</p>
-    <form method="POST" action="https://formspree.io/f/xwvpkvzl" class="rv d2">
-      <div class="ff-row ff"><div><input type="text" name="name" placeholder="Name" required></div><div><input type="email" name="email" placeholder="Email" required></div></div>
-      <div class="ff"><textarea name="message" placeholder="Your message or enquiry…" rows="4"></textarea></div>
-      <button type="submit" class="send-btn">Send Message →</button>
-    </form>
-  </div>
-  <div class="contact-right rv">
-    <h3>Connect &amp; follow the work</h3>
-    <div class="socials">
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:74px;max-width:860px;">
+</main>
 
-  <!-- X -->
-  <a href="https://x.com/Leafspire" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-x-twitter"></i></a>
-
-  <!-- Facebook -->
-  <a href="https://www.facebook.com/iamescriva/" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-facebook-f"></i></a>
-
-  <!-- Instagram -->
-  <a href="https://www.instagram.com/leafspirefoundation/" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-instagram"></i></a>
-
-  <!-- LinkedIn -->
-  <a href="https://www.linkedin.com/in/josemariaescriva/" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-linkedin-in"></i></a>
-
-  <!-- GitHub -->
-  <a href="https://github.com/escrivajosemaria" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-github"></i></a>
-
-  <!-- Portfolio -->
-  <a href="https://leafspire.github.io/leafoundation/" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-solid fa-globe"></i></a>
-
-  <!-- YouTube -->
-  <a href="https://youtube.com/@escrivahypercollective?si=qVorezgzhYidVWwV" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-youtube"></i></a>
-
-  <!-- WordPress -->
-  <a href="http://esvarj.wordpress.com" target="_blank" style="height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#bdbdbd;font-size:20px;background:transparent;"><i class="fa-brands fa-wordpress"></i></a>
-
-</div>
-    </div>
-  </div>
-</div>
-
-<div class="footer-bar">
-  <p>&copy; Escriva Josemaria 2024</p>
-  <p>Design: escriva.https</p>
-</div>
+<footer class="site-footer">
+  <ul class="footer-socials" aria-label="Social media links">
+    <a href="https://x.com/escriva_ke" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://web.facebook.com/escriva101/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/escriva_ke/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/josemariaescriva/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="https://github.com/escrivajosemaria" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="https://leafspire.github.io/leafoundation/" target="_blank" rel="noopener noreferrer" aria-label="Portfolio"><i class="fa-solid fa-globe"></i></a>
+            <a href="https://www.youtube.com/@escriva_ke" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="https://gravatar.com/josemariaescriva82" target="_blank" rel="noopener noreferrer" aria-label="WordPress"><i class="fa-brands fa-wordpress"></i></a>
+  </ul>
+  <p class="footer-copy">&copy; Escriva Josemaria 2024</p>
+</footer>
 
 <script>
 (function(){
-  /* PROGRESS */
-  const pb = document.getElementById('prog');
-  window.addEventListener('scroll', () => {
-    const s = document.documentElement;
-    pb.style.width = (window.scrollY / (s.scrollHeight - window.innerHeight) * 100) + '%';
-  }, { passive: true });
+  var menuEl=document.getElementById('menu');
+  document.getElementById('mt').addEventListener('click',function(e){
+    e.preventDefault();
+    menuEl.classList.add('on');
+    menuEl.setAttribute('aria-hidden','false');
+  });
+  document.getElementById('mc').addEventListener('click',function(){
+    menuEl.classList.remove('on');
+    menuEl.setAttribute('aria-hidden','true');
+  });
 
-  /* NAV SOLID */
-  const hdr = document.getElementById('header');
-  window.addEventListener('scroll', () => hdr.classList.toggle('solid', window.scrollY > 60), { passive: true });
-
-  /* MENU */
-  const menuEl = document.getElementById('menu'), ov = document.getElementById('mo');
-  document.getElementById('mt').addEventListener('click', e => { e.preventDefault(); menuEl.classList.add('on'); ov.classList.add('on'); });
-  document.getElementById('mc').addEventListener('click', () => { menuEl.classList.remove('on'); ov.classList.remove('on'); });
-  ov.addEventListener('click', () => { menuEl.classList.remove('on'); ov.classList.remove('on'); });
-
-  /* REVEAL */
-  const rvObs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); rvObs.unobserve(e.target); } });
-  }, { threshold: .08, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.rv, .topic-cell, .lesson-cell').forEach(el => rvObs.observe(el));
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var nodes = document.querySelectorAll('.rv-node');
+  if(prefersReduced){
+    nodes.forEach(function(el){ el.classList.add('vis'); });
+  } else if('IntersectionObserver' in window){
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('vis'); obs.unobserve(e.target); }
+      });
+    }, { threshold:.15 });
+    nodes.forEach(function(el){ obs.observe(el); });
+  } else {
+    nodes.forEach(function(el){ el.classList.add('vis'); });
+  }
 })();
 </script>
 </body>
